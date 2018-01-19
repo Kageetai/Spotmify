@@ -76,16 +76,15 @@ module.exports = (app, options) => {
           const refreshToken = body.refresh_token;
 
           // we can also pass the token to the browser to make requests from there
+          res.cookie('accessToken', accessToken);
+          res.cookie('refreshToken', refreshToken);
           res.redirect(`/#${
             querystring.stringify({
               access_token: accessToken,
               refresh_token: refreshToken,
             })}`);
         } else {
-          res.redirect(`/#${
-            querystring.stringify({
-              error: 'invalid_token',
-            })}`);
+          res.redirect('/');
         }
       });
     }
