@@ -11,6 +11,7 @@ import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
+import { withCookies, Cookies } from 'react-cookie';
 
 import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
@@ -30,6 +31,15 @@ import reducer from './reducer';
 import saga from './saga';
 
 export class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+  componentWillMount() {
+    const { cookies } = this.props;
+
+    this.state = {
+      accessToken: cookies.get('accessToken') || '',
+      refreshToken: cookies.get('refreshToken') || '',
+    };
+  }
+
   /**
    * when initial state username is not null, submit the form to load repos
    */
@@ -104,6 +114,7 @@ HomePage.propTypes = {
   onSubmitForm: PropTypes.func,
   username: PropTypes.string,
   onChangeUsername: PropTypes.func,
+  cookies: PropTypes.instanceOf(Cookies).isRequired,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -132,4 +143,5 @@ export default compose(
   withReducer,
   withSaga,
   withConnect,
+  withCookies,
 )(HomePage);
