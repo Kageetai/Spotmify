@@ -26,6 +26,7 @@ import { makeSelectUsername } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import A from '../../components/A';
+import UserProfile from '../../components/UserProfile';
 
 export class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   componentWillMount() {
@@ -54,13 +55,13 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     const {
       loading, error, user,
     } = this.props;
-
+    console.log(user);
 
     return (
       <article>
         <Helmet>
           <title>Home Page</title>
-          <meta name="description" content="A React.js Boilerplate application homepage" />
+          <meta name="description" content="Spotmify homepage" />
         </Helmet>
         <CenteredSection>
           <H2>
@@ -75,7 +76,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
             ) : null}
 
             { user && !loading ? (
-              <A href={user.uri}>{user.display_name}</A>
+              <UserProfile user={user} />
             ) : null}
           </H2>
         </CenteredSection>
