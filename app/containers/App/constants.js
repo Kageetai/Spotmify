@@ -9,6 +9,10 @@
  * export const YOUR_ACTION_CONSTANT = 'yourproject/YourContainer/YOUR_ACTION_CONSTANT';
  */
 
+export const SET_TOKENS = 'spotmify/App/SET_TOKENS';
+export const LOAD_USER = 'spotmify/App/LOAD_USER';
+export const LOAD_USER_SUCCESS = 'spotmify/App/LOAD_USER_SUCCESS';
+export const LOAD_USER_ERROR = 'spotmify/App/LOAD_USER_ERROR';
 export const LOAD_REPOS = 'boilerplate/App/LOAD_REPOS';
 export const LOAD_REPOS_SUCCESS = 'boilerplate/App/LOAD_REPOS_SUCCESS';
 export const LOAD_REPOS_ERROR = 'boilerplate/App/LOAD_REPOS_ERROR';

@@ -26,4 +26,12 @@ export default defineMessages({
     id: 'boilerplate.containers.HomePage.tryme.atPrefix',
     defaultMessage: '@',
   },
+  login: {
+    id: 'boilerplate.containers.HomePage.login',
+    defaultMessage: 'Login',
+    error: {
+      id: 'boilerplate.containers.HomePage.login.error',
+      defaultMessage: 'Couldn\'t login, try again',
+    },
+  },
 });

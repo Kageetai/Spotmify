@@ -13,6 +13,16 @@ const makeSelectCurrentUser = () => createSelector(
   (globalState) => globalState.get('currentUser')
 );
 
+const makeSelectTokens = () => createSelector(
+  selectGlobal,
+  (globalState) => globalState.getIn('tokens')
+);
+
+const makeSelectUser = () => createSelector(
+  selectGlobal,
+  (globalState) => globalState.getIn('user')
+);
+
 const makeSelectLoading = () => createSelector(
   selectGlobal,
   (globalState) => globalState.get('loading')
@@ -35,6 +45,8 @@ const makeSelectLocation = () => createSelector(
 
 export {
   selectGlobal,
+  makeSelectTokens,
+  makeSelectUser,
   makeSelectCurrentUser,
   makeSelectLoading,
   makeSelectError,
