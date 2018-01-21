@@ -16,10 +16,68 @@
  */
 
 import {
+  SET_TOKENS,
+  LOAD_USER,
+  LOAD_USER_SUCCESS,
+  LOAD_USER_ERROR,
   LOAD_REPOS,
   LOAD_REPOS_SUCCESS,
   LOAD_REPOS_ERROR,
 } from './constants';
+
+/**
+ * Set Spotify access and refresh tokens
+ *
+ * @return {object} An action object with a type of SET_TOKENS
+ */
+export function setTokens(accessToken, refreshToken) {
+  return {
+    type: SET_TOKENS,
+    tokens: {
+      accessToken,
+      refreshToken,
+    },
+  };
+}
+
+/**
+ * Set Spotify access and refresh tokens
+ *
+ * @return {object} An action object with a type of SET_TOKENS
+ */
+export function loadUser() {
+  return {
+    type: LOAD_USER,
+  };
+}
+
+/**
+ * Dispatched when the repositories are loaded by the request saga
+ *
+ * @param  {object} user The user data
+ *
+ * @return {object}      An action object with a type of LOAD_REPOS_SUCCESS passing the repos
+ */
+export function loadUserSuccess(user) {
+  return {
+    type: LOAD_USER_SUCCESS,
+    user,
+  };
+}
+
+/**
+ * Dispatched when loading the repositories fails
+ *
+ * @param  {object} error The error
+ *
+ * @return {object}       An action object with a type of LOAD_REPOS_ERROR passing the error
+ */
+export function loadUserError(error) {
+  return {
+    type: LOAD_USER_ERROR,
+    error,
+  };
+}
 
 /**
  * Load the repositories, this action starts the request saga

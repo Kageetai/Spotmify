@@ -12,4 +12,12 @@ export default defineMessages({
     id: `${scope}.header`,
     defaultMessage: 'This is the HomePage container!',
   },
+  login: {
+    id: 'boilerplate.containers.HomePage.login',
+    defaultMessage: 'Login',
+    error: {
+      id: 'boilerplate.containers.HomePage.login.error',
+      defaultMessage: 'Couldn\'t login, try again',
+    },
+  },
 });

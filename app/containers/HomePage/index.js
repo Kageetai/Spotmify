@@ -13,31 +13,28 @@ import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { withCookies, Cookies } from 'react-cookie';
 
-import injectReducer from 'utils/injectReducer';
-import injectSaga from 'utils/injectSaga';
-import { makeSelectRepos, makeSelectLoading, makeSelectError } from 'containers/App/selectors';
-import H2 from 'components/H2';
-import ReposList from 'components/ReposList';
-import AtPrefix from './AtPrefix';
+import injectReducer from '../../utils/injectReducer';
+import injectSaga from '../../utils/injectSaga';
+import { makeSelectRepos, makeSelectLoading, makeSelectError, makeSelectUser } from '../../containers/App/selectors';
+import { loadRepos, loadUser, setTokens } from '../App/actions';
+import appSaga from '../App/saga';
+import H2 from '../../components/H2';
 import CenteredSection from './CenteredSection';
-import Form from './Form';
-import Input from './Input';
-import Section from './Section';
 import messages from './messages';
-import { loadRepos } from '../App/actions';
 import { changeUsername } from './actions';
 import { makeSelectUsername } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
+import A from '../../components/A';
 
 export class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   componentWillMount() {
     const { cookies } = this.props;
 
-    this.state = {
+    this.setState({
       accessToken: cookies.get('accessToken') || '',
       refreshToken: cookies.get('refreshToken') || '',
-    };
+    });
   }
 
   /**
@@ -47,15 +44,17 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     if (this.props.username && this.props.username.trim().length > 0) {
       this.props.onSubmitForm();
     }
+    if (this.state.accessToken) {
+      this.props.onSetTokens(this.state.accessToken, this.state.refreshToken);
+      this.props.onGetUser();
+    }
   }
 
   render() {
-    const { loading, error, repos } = this.props;
-    const reposListProps = {
-      loading,
-      error,
-      repos,
-    };
+    const {
+      loading, error, user,
+    } = this.props;
+
 
     return (
       <article>
@@ -63,39 +62,23 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
           <title>Home Page</title>
           <meta name="description" content="A React.js Boilerplate application homepage" />
         </Helmet>
-        <div>
-          <a href="/login">Login</a>
+        <CenteredSection>
+          <H2>
+            {!this.state.accessToken || !this.state.refreshToken ? (
+              <A href="/login">
+                <FormattedMessage {...messages.login} />
+              </A>
+            ) : null}
 
-          <CenteredSection>
-            <H2>
-              <FormattedMessage {...messages.startProjectHeader} />
-            </H2>
-            <p>
-              <FormattedMessage {...messages.startProjectMessage} />
-            </p>
-          </CenteredSection>
-          <Section>
-            <H2>
-              <FormattedMessage {...messages.trymeHeader} />
-            </H2>
-            <Form onSubmit={this.props.onSubmitForm}>
-              <label htmlFor="username">
-                <FormattedMessage {...messages.trymeMessage} />
-                <AtPrefix>
-                  <FormattedMessage {...messages.trymeAtPrefix} />
-                </AtPrefix>
-                <Input
-                  id="username"
-                  type="text"
-                  placeholder="mxstbr"
-                  value={this.props.username}
-                  onChange={this.props.onChangeUsername}
-                />
-              </label>
-            </Form>
-            <ReposList {...reposListProps} />
-          </Section>
-        </div>
+            {error ? (
+              <FormattedMessage {...messages.login.error} />
+            ) : null}
+
+            { user && !loading ? (
+              <A href={user.uri}>{user.display_name}</A>
+            ) : null}
+          </H2>
+        </CenteredSection>
       </article>
     );
   }
@@ -114,12 +97,17 @@ HomePage.propTypes = {
   onSubmitForm: PropTypes.func,
   username: PropTypes.string,
   onChangeUsername: PropTypes.func,
+  onGetUser: PropTypes.func,
+  onSetTokens: PropTypes.func,
   cookies: PropTypes.instanceOf(Cookies).isRequired,
+  user: PropTypes.any,
 };
 
 export function mapDispatchToProps(dispatch) {
   return {
     onChangeUsername: (evt) => dispatch(changeUsername(evt.target.value)),
+    onGetUser: () => dispatch(loadUser()),
+    onSetTokens: (accessToken, refreshToken) => dispatch(setTokens(accessToken, refreshToken)),
     onSubmitForm: (evt) => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(loadRepos());
@@ -130,6 +118,7 @@ export function mapDispatchToProps(dispatch) {
 const mapStateToProps = createStructuredSelector({
   repos: makeSelectRepos(),
   username: makeSelectUsername(),
+  user: makeSelectUser(),
   loading: makeSelectLoading(),
   error: makeSelectError(),
 });
@@ -138,10 +127,12 @@ const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
 const withReducer = injectReducer({ key: 'home', reducer });
 const withSaga = injectSaga({ key: 'home', saga });
+const withAppSaga = injectSaga({ key: 'app', saga: appSaga });
 
 export default compose(
   withReducer,
   withSaga,
+  withAppSaga,
   withConnect,
   withCookies,
 )(HomePage);
