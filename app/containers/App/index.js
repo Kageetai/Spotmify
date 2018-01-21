@@ -30,10 +30,10 @@ export default function App() {
   return (
     <AppWrapper>
       <Helmet
-        titleTemplate="%s - React.js Boilerplate"
-        defaultTitle="React.js Boilerplate"
+        titleTemplate="%s - Spotmify"
+        defaultTitle="Spotmify"
       >
-        <meta name="description" content="A React.js Boilerplate application" />
+        <meta name="description" content="View and export your spotify library" />
       </Helmet>
       <Header />
       <Switch>

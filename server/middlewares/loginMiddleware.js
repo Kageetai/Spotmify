@@ -78,11 +78,7 @@ module.exports = (app, options) => {
           // we can also pass the token to the browser to make requests from there
           res.cookie('accessToken', accessToken);
           res.cookie('refreshToken', refreshToken);
-          res.redirect(`/#${
-            querystring.stringify({
-              access_token: accessToken,
-              refresh_token: refreshToken,
-            })}`);
+          res.redirect('/');
         } else {
           res.redirect('/');
         }
