@@ -13,9 +13,14 @@ const makeSelectCurrentUser = () => createSelector(
   (globalState) => globalState.get('currentUser')
 );
 
-const makeSelectTokens = () => createSelector(
+const makeSelectAccessToken = () => createSelector(
   selectGlobal,
-  (globalState) => globalState.getIn('tokens')
+  (globalState) => globalState.get('accessToken')
+);
+
+const makeSelectRefreshToken = () => createSelector(
+  selectGlobal,
+  (globalState) => globalState.get('refreshToken')
 );
 
 const makeSelectUser = () => createSelector(
@@ -45,7 +50,8 @@ const makeSelectLocation = () => createSelector(
 
 export {
   selectGlobal,
-  makeSelectTokens,
+  makeSelectAccessToken,
+  makeSelectRefreshToken,
   makeSelectUser,
   makeSelectCurrentUser,
   makeSelectLoading,

@@ -11,12 +11,11 @@ import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
-import { withCookies, Cookies } from 'react-cookie';
 
 import injectReducer from '../../utils/injectReducer';
 import injectSaga from '../../utils/injectSaga';
-import { makeSelectRepos, makeSelectLoading, makeSelectError, makeSelectUser } from '../../containers/App/selectors';
-import { loadRepos, loadUser, setTokens } from '../App/actions';
+import { makeSelectRepos, makeSelectLoading, makeSelectError, makeSelectAccessToken, makeSelectUser } from '../../containers/App/selectors';
+import { loadRepos, loadUser, getTokens } from '../App/actions';
 import appSaga from '../App/saga';
 import H2 from '../../components/H2';
 import CenteredSection from './CenteredSection';
@@ -28,25 +27,14 @@ import saga from './saga';
 import A from '../../components/A';
 import UserProfile from '../../components/UserProfile';
 
-export class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+export class HomePage extends React.PureComponent {
   componentWillMount() {
-    const { cookies } = this.props;
-
-    this.setState({
-      accessToken: cookies.get('accessToken') || '',
-      refreshToken: cookies.get('refreshToken') || '',
-    });
+    // TODO find better place for this
+    this.props.onGetTokens();
   }
 
-  /**
-   * when initial state username is not null, submit the form to load repos
-   */
-  componentDidMount() {
-    if (this.props.username && this.props.username.trim().length > 0) {
-      this.props.onSubmitForm();
-    }
-    if (this.state.accessToken) {
-      this.props.onSetTokens(this.state.accessToken, this.state.refreshToken);
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.accessToken && nextProps.accessToken) {
       this.props.onGetUser();
     }
   }
@@ -55,7 +43,6 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     const {
       loading, error, user,
     } = this.props;
-    console.log(user);
 
     return (
       <article>
@@ -65,7 +52,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
         </Helmet>
         <CenteredSection>
           <H2>
-            {!this.state.accessToken || !this.state.refreshToken ? (
+            {!this.props.accessToken ? (
               <A href="/login">
                 <FormattedMessage {...messages.login} />
               </A>
@@ -99,8 +86,8 @@ HomePage.propTypes = {
   username: PropTypes.string,
   onChangeUsername: PropTypes.func,
   onGetUser: PropTypes.func,
-  onSetTokens: PropTypes.func,
-  cookies: PropTypes.instanceOf(Cookies).isRequired,
+  onGetTokens: PropTypes.func,
+  accessToken: PropTypes.string,
   user: PropTypes.any,
 };
 
@@ -108,7 +95,7 @@ export function mapDispatchToProps(dispatch) {
   return {
     onChangeUsername: (evt) => dispatch(changeUsername(evt.target.value)),
     onGetUser: () => dispatch(loadUser()),
-    onSetTokens: (accessToken, refreshToken) => dispatch(setTokens(accessToken, refreshToken)),
+    onGetTokens: () => dispatch(getTokens()),
     onSubmitForm: (evt) => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(loadRepos());
@@ -119,6 +106,7 @@ export function mapDispatchToProps(dispatch) {
 const mapStateToProps = createStructuredSelector({
   repos: makeSelectRepos(),
   username: makeSelectUsername(),
+  accessToken: makeSelectAccessToken(),
   user: makeSelectUser(),
   loading: makeSelectLoading(),
   error: makeSelectError(),
@@ -135,5 +123,4 @@ export default compose(
   withSaga,
   withAppSaga,
   withConnect,
-  withCookies,
 )(HomePage);

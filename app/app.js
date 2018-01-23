@@ -16,7 +16,6 @@ import { ConnectedRouter } from 'react-router-redux';
 import FontFaceObserver from 'fontfaceobserver';
 import createHistory from 'history/createBrowserHistory';
 import 'sanitize.css/sanitize.css';
-import { CookiesProvider } from 'react-cookie';
 
 // Import root app
 import App from 'containers/App';
@@ -72,9 +71,7 @@ const render = (messages) => {
     <Provider store={store}>
       <LanguageProvider messages={messages}>
         <ConnectedRouter history={history}>
-          <CookiesProvider>
-            <App />
-          </CookiesProvider>
+          <App />
         </ConnectedRouter>
       </LanguageProvider>
     </Provider>,
