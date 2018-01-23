@@ -9,6 +9,7 @@
  * export const YOUR_ACTION_CONSTANT = 'yourproject/YourContainer/YOUR_ACTION_CONSTANT';
  */
 
+export const GET_TOKENS = 'spotmify/App/GET_TOKENS';
 export const SET_TOKENS = 'spotmify/App/SET_TOKENS';
 export const LOAD_USER = 'spotmify/App/LOAD_USER';
 export const LOAD_USER_SUCCESS = 'spotmify/App/LOAD_USER_SUCCESS';

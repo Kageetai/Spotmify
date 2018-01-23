@@ -16,6 +16,7 @@
  */
 
 import {
+  GET_TOKENS,
   SET_TOKENS,
   LOAD_USER,
   LOAD_USER_SUCCESS,
@@ -30,13 +31,22 @@ import {
  *
  * @return {object} An action object with a type of SET_TOKENS
  */
+export function getTokens() {
+  return {
+    type: GET_TOKENS,
+  };
+}
+
+/**
+ * Set Spotify access and refresh tokens
+ *
+ * @return {object} An action object with a type of SET_TOKENS
+ */
 export function setTokens(accessToken, refreshToken) {
   return {
     type: SET_TOKENS,
-    tokens: {
-      accessToken,
-      refreshToken,
-    },
+    accessToken,
+    refreshToken,
   };
 }
 

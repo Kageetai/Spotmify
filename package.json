@@ -78,7 +78,6 @@
     "minimist": "1.2.0",
     "prop-types": "15.6.2",
     "react": "16.6.0",
-    "react-cookie": "^2.1.2",
     "react-dom": "16.6.0",
     "react-helmet": "5.2.0",
     "react-intl": "2.7.2",
@@ -91,6 +90,7 @@
     "sanitize.css": "4.1.0",
     "spotify-web-api-js": "^0.23.0",
     "styled-components": "4.0.2",
+    "universal-cookie": "^2.1.2",
     "warning": "4.0.2"
   },
   "devDependencies": {

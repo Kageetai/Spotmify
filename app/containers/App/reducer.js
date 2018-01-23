@@ -24,10 +24,8 @@ import {
 
 // The initial state of the App
 const initialState = fromJS({
-  tokens: {
-    accessToken: '',
-    refreshToken: '',
-  },
+  accessToken: '',
+  refreshToken: '',
   loading: false,
   error: false,
   user: {},
@@ -41,7 +39,8 @@ function appReducer(state = initialState, action) {
   switch (action.type) {
     case SET_TOKENS:
       return state
-        .setIn('tokens', action.tokens)
+        .set('accessToken', action.accessToken)
+        .set('refreshToken', action.refreshToken)
         .set('error', false);
     case LOAD_USER:
       return state

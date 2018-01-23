@@ -15,7 +15,6 @@ import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router/immutable';
 import history from 'utils/history';
 import 'sanitize.css/sanitize.css';
-import { CookiesProvider } from 'react-cookie';
 
 // Import root app
 import App from 'containers/App';
@@ -44,9 +43,7 @@ const render = messages => {
     <Provider store={store}>
       <LanguageProvider messages={messages}>
         <ConnectedRouter history={history}>
-          <CookiesProvider>
-            <App />
-          </CookiesProvider>
+          <App />
         </ConnectedRouter>
       </LanguageProvider>
     </Provider>,
