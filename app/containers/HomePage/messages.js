@@ -34,4 +34,8 @@ export default defineMessages({
       defaultMessage: 'Couldn\'t login, try again',
     },
   },
+  logout: {
+    id: 'boilerplate.containers.HomePage.logout',
+    defaultMessage: 'Logout',
+  },
 });

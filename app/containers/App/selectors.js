@@ -23,6 +23,11 @@ const makeSelectRefreshToken = () => createSelector(
   (globalState) => globalState.get('refreshToken')
 );
 
+const makeSelectExpires = () => createSelector(
+  selectGlobal,
+  (globalState) => globalState.get('expires')
+);
+
 const makeSelectUser = () => createSelector(
   selectGlobal,
   (globalState) => globalState.getIn('user')
@@ -52,6 +57,7 @@ export {
   selectGlobal,
   makeSelectAccessToken,
   makeSelectRefreshToken,
+  makeSelectExpires,
   makeSelectUser,
   makeSelectCurrentUser,
   makeSelectLoading,

@@ -14,8 +14,14 @@ import { createStructuredSelector } from 'reselect';
 
 import injectReducer from '../../utils/injectReducer';
 import injectSaga from '../../utils/injectSaga';
-import { makeSelectRepos, makeSelectLoading, makeSelectError, makeSelectAccessToken, makeSelectUser } from '../../containers/App/selectors';
-import { loadRepos, loadUser, getTokens } from '../App/actions';
+import {
+  makeSelectRepos,
+  makeSelectLoading,
+  makeSelectError,
+  makeSelectAccessToken,
+  makeSelectUser,
+} from '../../containers/App/selectors';
+import { loadRepos, loadUser, deleteTokens } from '../App/actions';
 import appSaga from '../App/saga';
 import H2 from '../../components/H2';
 import CenteredSection from './CenteredSection';
@@ -29,19 +35,14 @@ import UserProfile from '../../components/UserProfile';
 
 export class HomePage extends React.PureComponent {
   componentWillMount() {
-    // TODO find better place for this
-    this.props.onGetTokens();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (!this.props.accessToken && nextProps.accessToken) {
+    if (this.props.accessToken) {
       this.props.onGetUser();
     }
   }
 
   render() {
     const {
-      loading, error, user,
+      loading, error, user, accessToken, onDeleteTokens,
     } = this.props;
 
     return (
@@ -52,17 +53,21 @@ export class HomePage extends React.PureComponent {
         </Helmet>
         <CenteredSection>
           <H2>
-            {!this.props.accessToken ? (
+            {!accessToken ? (
               <A href="/login">
                 <FormattedMessage {...messages.login} />
               </A>
-            ) : null}
+            ) : (
+              <A onClick={onDeleteTokens}>
+                <FormattedMessage {...messages.logout} />
+              </A>
+            )}
 
             {error ? (
               <FormattedMessage {...messages.login.error} />
             ) : null}
 
-            { user && !loading ? (
+            { user && !loading && accessToken ? (
               <UserProfile user={user} />
             ) : null}
           </H2>
@@ -87,6 +92,7 @@ HomePage.propTypes = {
   onChangeUsername: PropTypes.func,
   onGetUser: PropTypes.func,
   onGetTokens: PropTypes.func,
+  onDeleteTokens: PropTypes.func,
   accessToken: PropTypes.string,
   user: PropTypes.any,
 };
@@ -95,7 +101,7 @@ export function mapDispatchToProps(dispatch) {
   return {
     onChangeUsername: (evt) => dispatch(changeUsername(evt.target.value)),
     onGetUser: () => dispatch(loadUser()),
-    onGetTokens: () => dispatch(getTokens()),
+    onDeleteTokens: () => dispatch(deleteTokens()),
     onSubmitForm: (evt) => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(loadRepos());
