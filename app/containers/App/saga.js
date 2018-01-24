@@ -6,9 +6,10 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 import Spotify from 'spotify-web-api-js';
 
 import request from 'utils/request';
+import { isLoggedIn } from 'utils/auth';
 
 import { GET_TOKENS, LOAD_USER } from './constants';
-import { makeSelectAccessToken, makeSelectExpires, makeSelectRefreshToken } from './selectors';
+import { makeSelectAccessToken, makeSelectRefreshToken } from './selectors';
 import { loadUserError, loadUserSuccess, refreshTokensError, setTokens } from './actions';
 
 const spotifyApi = new Spotify();
@@ -16,14 +17,15 @@ const spotifyApi = new Spotify();
 export function* checkTokens() {
   let accessToken = yield select(makeSelectAccessToken());
   const refreshToken = yield select(makeSelectRefreshToken());
-  let expires = yield select(makeSelectExpires());
 
-  if (expires < Date.now()) {
+  if (isLoggedIn) {
     try {
-      ({ accessToken, expires } = yield call(request, '/refresh_token', {
+      const newTokens = yield call(request, '/refresh_token', {
         credentials: 'same-origin',
-      }));
-      yield put(setTokens(accessToken, refreshToken, expires));
+      });
+      // eslint-disable-next-line prefer-destructuring
+      accessToken = newTokens.accessToken;
+      yield put(setTokens(accessToken, refreshToken, newTokens.expires));
     } catch (err) {
       yield put(refreshTokensError(err));
     }

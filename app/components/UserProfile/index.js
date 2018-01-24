@@ -49,7 +49,10 @@ class UserProfile extends React.Component { // eslint-disable-line react/prefer-
 
 UserProfile.propTypes = {
   user: PropTypes.object,
-  error: PropTypes.bool,
+  error: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.bool,
+  ]),
   loading: PropTypes.bool,
 };
 

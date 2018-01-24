@@ -1,4 +1,6 @@
 /* eslint-disable global-require */
+const moment = require('moment');
+
 const request = require('request'); // "Request" library
 const querystring = require('querystring');
 const cookieParser = require('cookie-parser');
@@ -72,14 +74,11 @@ module.exports = (app, options) => {
 
       request.post(authOptions, (error, response, body) => {
         if (!error && response.statusCode === 200) {
-          const accessToken = body.access_token;
-          const refreshToken = body.refresh_token;
-          const expiresIn = body.expires_in;
-
-          // we can also pass the token to the browser to make requests from there
-          res.cookie('accessToken', accessToken);
-          res.cookie('refreshToken', refreshToken);
-          res.cookie('expires', Date.now() + (expiresIn * 1000));
+          // eslint-disable-next-line camelcase
+          const { access_token, refresh_token, expires_in } = body;
+          res.cookie('accessToken', access_token);
+          res.cookie('refreshToken', refresh_token);
+          res.cookie('expires', moment().add(expires_in, 's').format());
           res.redirect('/');
         } else {
           res.redirect('/');
@@ -103,9 +102,11 @@ module.exports = (app, options) => {
 
     request.post(authOptions, (error, response, body) => {
       if (!error && response.statusCode === 200) {
+        // eslint-disable-next-line camelcase
+        const { access_token, expires_in } = body;
         res.send({
-          accessToken: body.access_token,
-          expires: Date.now() + (body.expires_in * 1000),
+          accessToken: access_token,
+          expires: moment().add(expires_in, 's').format(),
         });
       }
     });

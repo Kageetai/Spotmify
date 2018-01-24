@@ -11,7 +11,8 @@
  */
 
 import { fromJS } from 'immutable';
-import Cookies from 'universal-cookie';
+import Cookies from 'js-cookie';
+import moment from 'moment';
 
 import {
   SET_TOKENS,
@@ -25,13 +26,11 @@ import {
   LOAD_REPOS_ERROR,
 } from './constants';
 
-const cookies = new Cookies();
-
 // The initial state of the App
 const initialState = fromJS({
-  accessToken: cookies.get('accessToken') || '',
-  refreshToken: cookies.get('refreshToken') || '',
-  expires: parseInt(cookies.get('expires'), 10) || 0,
+  accessToken: Cookies.get('accessToken') || '',
+  refreshToken: Cookies.get('refreshToken') || '',
+  expires: Cookies.get('expires') || moment(),
   loading: false,
   error: false,
   user: {},
@@ -44,18 +43,18 @@ const initialState = fromJS({
 function appReducer(state = initialState, action) {
   switch (action.type) {
     case SET_TOKENS:
-      cookies.set('accessToken', action.accessToken);
-      cookies.set('refreshToken', action.refreshToken);
-      cookies.set('expires', action.expires);
+      Cookies.set('accessToken', action.accessToken);
+      Cookies.set('refreshToken', action.refreshToken);
+      Cookies.set('expires', action.expires);
       return state
         .set('accessToken', action.accessToken)
         .set('refreshToken', action.refreshToken)
         .set('expires', action.expires)
         .set('error', false);
     case DELETE_TOKENS:
-      cookies.remove('accessToken');
-      cookies.remove('refreshToken');
-      cookies.remove('expires');
+      Cookies.remove('accessToken');
+      Cookies.remove('refreshToken');
+      Cookies.remove('expires');
       return state
         .set('accessToken', initialState.accessToken)
         .set('refreshToken', initialState.refreshToken)
