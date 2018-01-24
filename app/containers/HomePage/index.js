@@ -14,6 +14,7 @@ import { createStructuredSelector } from 'reselect';
 
 import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
+import { isLoggedIn } from 'utils/auth';
 import {
   makeSelectRepos,
   makeSelectLoading,
@@ -21,7 +22,7 @@ import {
   makeSelectAccessToken,
   makeSelectUser,
 } from 'containers/App/selectors';
-import { loadRepos, loadUser, deleteTokens } from 'containers/App/actions';
+import { loadRepos, loadUser } from 'containers/App/actions';
 import appSaga from 'containers/App/saga';
 import Button from 'components/Button';
 import UserProfile from 'components/UserProfile';
@@ -32,18 +33,18 @@ import { changeUsername } from './actions';
 import { makeSelectUsername } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
+import CenteredSection from './CenteredSection';
 
 export class HomePage extends React.PureComponent {
   componentWillMount() {
-    if (this.props.accessToken) {
+    if (isLoggedIn()) {
       this.props.onGetUser();
     }
   }
 
   render() {
-    const {
-      loading, error, user, accessToken, onDeleteTokens,
-    } = this.props;
+    const { loading, error, user } = this.props;
+    const loggedIn = isLoggedIn();
 
     return (
       <article>
@@ -52,21 +53,19 @@ export class HomePage extends React.PureComponent {
           <meta name="description" content="Spotmify homepage" />
         </Helmet>
         <Section>
-          {!accessToken ? (
-            <Button href="/login">
-              <FormattedMessage {...messages.login} />
-            </Button>
-          ) : (
-            <Button onClick={onDeleteTokens}>
-              <FormattedMessage {...messages.logout} />
-            </Button>
+          {!loggedIn && (
+            <CenteredSection>
+              <Button href="/login">
+                <FormattedMessage {...messages.login} />
+              </Button>
+            </CenteredSection>
           )}
 
           {error ? (
             <FormattedMessage {...messages.login.error} />
           ) : null}
 
-          {accessToken ? (
+          {loggedIn ? (
             <UserProfile user={user} loading={loading} error={error} />
           ) : null}
         </Section>
@@ -90,19 +89,14 @@ HomePage.propTypes = {
   onChangeUsername: PropTypes.func,
   onGetUser: PropTypes.func,
   onGetTokens: PropTypes.func,
-  onDeleteTokens: PropTypes.func,
   accessToken: PropTypes.string,
   user: PropTypes.any,
 };
 
 export function mapDispatchToProps(dispatch) {
   return {
-    onChangeUsername: (evt) => dispatch(changeUsername(evt.target.value)),
+    onChangeUsername: evt => dispatch(changeUsername(evt.target.value)),
     onGetUser: () => dispatch(loadUser()),
-    onDeleteTokens: (evt) => {
-      evt.preventDefault();
-      dispatch(deleteTokens());
-    },
     onSubmitForm: (evt) => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(loadRepos());
