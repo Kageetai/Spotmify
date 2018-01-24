@@ -4,21 +4,35 @@
  * List all the features
  */
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { createStructuredSelector } from 'reselect';
 
+import injectSaga from 'utils/injectSaga';
+import {
+  makeSelectAccessToken,
+  makeSelectError,
+  makeSelectLoading,
+  makeSelectLibrary,
+} from 'containers/App/selectors';
+import { loadLibrary } from 'containers/App/actions';
+import saga from 'containers/App/saga';
 import H1 from 'components/H1';
+
 import messages from './messages';
 import List from './List';
 import ListItem from './ListItem';
 import ListItemTitle from './ListItemTitle';
+import { isLoggedIn } from '../../utils/auth';
 
-export default class FeaturePage extends React.Component { // eslint-disable-line react/prefer-stateless-function
-
-  // Since state and props are static,
-  // there's no need to re-render this component
-  shouldComponentUpdate() {
-    return false;
+class LibraryPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
+  componentWillMount() {
+    if (isLoggedIn()) {
+      this.props.onGetLibrary();
+    }
   }
 
   render() {
@@ -81,3 +95,37 @@ export default class FeaturePage extends React.Component { // eslint-disable-lin
     );
   }
 }
+
+LibraryPage.propTypes = {
+  loading: PropTypes.bool,
+  error: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.bool,
+  ]),
+  onGetLibrary: PropTypes.func,
+  onGetTokens: PropTypes.func,
+  accessToken: PropTypes.string,
+  library: PropTypes.any,
+};
+
+export function mapDispatchToProps(dispatch) {
+  return {
+    onGetLibrary: () => dispatch(loadLibrary()),
+  };
+}
+
+const mapStateToProps = createStructuredSelector({
+  accessToken: makeSelectAccessToken(),
+  library: makeSelectLibrary(),
+  loading: makeSelectLoading(),
+  error: makeSelectError(),
+});
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+
+const withSaga = injectSaga({ key: 'app', saga });
+
+export default compose(
+  withSaga,
+  withConnect,
+)(LibraryPage);
