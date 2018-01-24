@@ -1,5 +1,10 @@
 import { createGlobalStyle } from 'styled-components';
 
+export const colors = {
+  primary: '#27ba60',
+  primaryHover: '#2bcd6b',
+};
+
 const GlobalStyle = createGlobalStyle`
   html,
   body {

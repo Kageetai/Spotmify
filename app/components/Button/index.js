@@ -11,7 +11,6 @@ import PropTypes from 'prop-types';
 
 import A from './A';
 import StyledButton from './StyledButton';
-import Wrapper from './Wrapper';
 
 function Button(props) {
   // Render an anchor tag
@@ -30,11 +29,7 @@ function Button(props) {
     );
   }
 
-  return (
-    <Wrapper>
-      {button}
-    </Wrapper>
-  );
+  return button;
 }
 
 Button.propTypes = {

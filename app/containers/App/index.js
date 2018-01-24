@@ -33,7 +33,7 @@ export default function App() {
         titleTemplate="%s - Spotmify"
         defaultTitle="Spotmify"
       >
-        <meta name="description" content="View and export your spotify library" />
+        <meta name="description" content="View and export your spotify library and playlists" />
       </Helmet>
       <Header />
       <Switch>

@@ -23,14 +23,13 @@ import {
 } from '../../containers/App/selectors';
 import { loadRepos, loadUser, deleteTokens } from '../App/actions';
 import appSaga from '../App/saga';
-import H2 from '../../components/H2';
 import CenteredSection from './CenteredSection';
 import messages from './messages';
 import { changeUsername } from './actions';
 import { makeSelectUsername } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import A from '../../components/A';
+import Button from '../../components/Button';
 import UserProfile from '../../components/UserProfile';
 
 export class HomePage extends React.PureComponent {
@@ -52,25 +51,23 @@ export class HomePage extends React.PureComponent {
           <meta name="description" content="Spotmify homepage" />
         </Helmet>
         <CenteredSection>
-          <H2>
-            {!accessToken ? (
-              <A href="/login">
-                <FormattedMessage {...messages.login} />
-              </A>
-            ) : (
-              <A onClick={onDeleteTokens}>
-                <FormattedMessage {...messages.logout} />
-              </A>
-            )}
+          {!accessToken ? (
+            <Button href="/login">
+              <FormattedMessage {...messages.login} />
+            </Button>
+          ) : (
+            <Button onClick={onDeleteTokens}>
+              <FormattedMessage {...messages.logout} />
+            </Button>
+          )}
 
-            {error ? (
-              <FormattedMessage {...messages.login.error} />
-            ) : null}
+          {error ? (
+            <FormattedMessage {...messages.login.error} />
+          ) : null}
 
-            {accessToken ? (
-              <UserProfile user={user} loading={loading} error={error} />
-            ) : null}
-          </H2>
+          {accessToken ? (
+            <UserProfile user={user} loading={loading} error={error} />
+          ) : null}
         </CenteredSection>
       </article>
     );
