@@ -1,5 +1,10 @@
 import { injectGlobal } from 'styled-components';
 
+export const colors = {
+  primary: '#27ba60',
+  primaryHover: '#2bcd6b',
+};
+
 /* eslint no-unused-expressions: 0 */
 injectGlobal`
   html,

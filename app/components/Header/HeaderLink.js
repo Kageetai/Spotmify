@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { colors } from '../../global-styles';
+
 export default styled(Link)`
   display: inline-flex;
   padding: 0.25em 2em;
@@ -15,11 +17,11 @@ export default styled(Link)`
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: bold;
   font-size: 16px;
-  border: 2px solid #41ADDD;
-  color: #41ADDD;
+  border: 2px solid ${colors.primary};
+  color: ${colors.primary};
 
   &:active {
-    background: #41ADDD;
+    background: ${colors.primary};
     color: #FFF;
   }
 `;

@@ -1,5 +1,7 @@
 import { css } from 'styled-components';
 
+import { colors } from '../../global-styles';
+
 const buttonStyles = css`
   display: inline-block;
   box-sizing: border-box;
@@ -14,11 +16,11 @@ const buttonStyles = css`
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: bold;
   font-size: 16px;
-  border: 2px solid #41addd;
-  color: #41addd;
+  border: 2px solid ${colors.primary};
+  color: ${colors.primary};
 
   &:active {
-    background: #41addd;
+    background: ${colors.primary};
     color: #fff;
   }
 `;

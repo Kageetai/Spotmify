@@ -4,11 +4,14 @@
 
 import styled from 'styled-components';
 
+import { colors } from '../../global-styles';
+
 const A = styled.a`
-  color: #41addd;
+  color: ${colors.primary};
+  text-decoration: none;
 
   &:hover {
-    color: #6cc0e5;
+    color: ${colors.primaryHover};
   }
 `;
 
