@@ -7,6 +7,7 @@ import A from '../A';
 import messages from './messages';
 import LoadingIndicator from '../LoadingIndicator';
 import NormalImg from '../Img';
+import H3 from '../H3';
 
 const StyledUserProfile = styled.div`
   display: flex;
@@ -33,7 +34,7 @@ class UserProfile extends React.Component { // eslint-disable-line react/prefer-
           ) : null}
         </A>
         <ProfileInfo>
-          <A href={user.uri}>{user.display_name}</A>
+          <A href={user.uri}><H3>{user.display_name}</H3></A>
           <div><FormattedMessage {...messages.country} values={{ country: user.country }} /></div>
           {user.followers && (
             <div><FormattedMessage {...messages.followers} values={{ followers: user.followers.total }} /></div>

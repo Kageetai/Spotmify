@@ -28,7 +28,7 @@ export default defineMessages({
   },
   login: {
     id: 'boilerplate.containers.HomePage.login',
-    defaultMessage: 'Login',
+    defaultMessage: 'Login with Spotify',
     error: {
       id: 'boilerplate.containers.HomePage.login.error',
       defaultMessage: 'Couldn\'t login, try again',
