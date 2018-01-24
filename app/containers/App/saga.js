@@ -8,9 +8,16 @@ import Spotify from 'spotify-web-api-js';
 import request from 'utils/request';
 import { isLoggedIn } from 'utils/auth';
 
-import { GET_TOKENS, LOAD_USER } from './constants';
+import { GET_TOKENS, LOAD_LIBRARY, LOAD_USER } from './constants';
 import { makeSelectAccessToken, makeSelectRefreshToken } from './selectors';
-import { loadUserError, loadUserSuccess, refreshTokensError, setTokens } from './actions';
+import {
+  loadLibraryError,
+  loadLibrarySuccess,
+  loadUserError,
+  loadUserSuccess,
+  refreshTokensError,
+  setTokens,
+} from './actions';
 
 const spotifyApi = new Spotify();
 
@@ -34,9 +41,6 @@ export function* checkTokens() {
   yield call(spotifyApi.setAccessToken, accessToken);
 }
 
-/**
- * Github repos request/response handler
- */
 export function* getUser() {
   yield call(checkTokens);
   try {
@@ -44,6 +48,16 @@ export function* getUser() {
     yield put(loadUserSuccess(user));
   } catch (err) {
     yield put(loadUserError(err));
+  }
+}
+
+export function* getLibrary() {
+  yield call(checkTokens);
+  try {
+    const library = yield call(spotifyApi.getMySavedTracks);
+    yield put(loadLibrarySuccess(library));
+  } catch (err) {
+    yield put(loadLibraryError(err));
   }
 }
 
@@ -57,4 +71,5 @@ export default function* spotifyData() {
   // It will be cancelled automatically on component unmount
   yield takeLatest(GET_TOKENS, checkTokens);
   yield takeLatest(LOAD_USER, getUser);
+  yield takeLatest(LOAD_LIBRARY, getLibrary);
 }

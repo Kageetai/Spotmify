@@ -30,7 +30,12 @@ const makeSelectExpires = () => createSelector(
 
 const makeSelectUser = () => createSelector(
   selectGlobal,
-  globalState => globalState.getIn('user')
+  globalState => globalState.getIn(['user'])
+);
+
+const makeSelectLibrary = () => createSelector(
+  selectGlobal,
+  globalState => globalState.getIn(['library'])
 );
 
 const makeSelectLoading = () => createSelector(
@@ -41,11 +46,6 @@ const makeSelectLoading = () => createSelector(
 const makeSelectError = () => createSelector(
   selectGlobal,
   globalState => globalState.get('error')
-);
-
-const makeSelectRepos = () => createSelector(
-  selectGlobal,
-  globalState => globalState.getIn(['userData', 'repositories'])
 );
 
 const makeSelectLocation = () => createSelector(
@@ -59,9 +59,9 @@ export {
   makeSelectRefreshToken,
   makeSelectExpires,
   makeSelectUser,
+  makeSelectLibrary,
   makeSelectCurrentUser,
   makeSelectLoading,
   makeSelectError,
-  makeSelectRepos,
   makeSelectLocation,
 };

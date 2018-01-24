@@ -1,27 +1,27 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import ListItemTitle from '../ListItemTitle';
+import List from '../List';
 
-describe('<ListItemTitle />', () => {
-  it('should render an <p> tag', () => {
-    const renderedComponent = shallow(<ListItemTitle />);
-    expect(renderedComponent.type()).toEqual('p');
+describe('<List />', () => {
+  it('should render an <ul> tag', () => {
+    const renderedComponent = shallow(<List />);
+    expect(renderedComponent.type()).toEqual('ul');
   });
 
   it('should have a className attribute', () => {
-    const renderedComponent = shallow(<ListItemTitle />);
+    const renderedComponent = shallow(<List />);
     expect(renderedComponent.prop('className')).toBeDefined();
   });
 
   it('should adopt a valid attribute', () => {
     const id = 'test';
-    const renderedComponent = shallow(<ListItemTitle id={id} />);
+    const renderedComponent = shallow(<List id={id} />);
     expect(renderedComponent.prop('id')).toEqual(id);
   });
 
   it('should not adopt an invalid attribute', () => {
-    const renderedComponent = shallow(<ListItemTitle attribute={'test'} />);
+    const renderedComponent = shallow(<List attribute="test" />);
     expect(renderedComponent.prop('attribute')).toBeUndefined();
   });
 });

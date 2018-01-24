@@ -21,9 +21,9 @@ import {
   LOAD_USER,
   LOAD_USER_SUCCESS,
   LOAD_USER_ERROR,
-  LOAD_REPOS_SUCCESS,
-  LOAD_REPOS,
-  LOAD_REPOS_ERROR,
+  LOAD_LIBRARY,
+  LOAD_LIBRARY_SUCCESS,
+  LOAD_LIBRARY_ERROR,
 } from './constants';
 
 // The initial state of the App
@@ -34,10 +34,7 @@ const initialState = fromJS({
   loading: false,
   error: false,
   user: {},
-  currentUser: false,
-  userData: {
-    repositories: false,
-  },
+  library: {},
 });
 
 function appReducer(state = initialState, action) {
@@ -64,27 +61,23 @@ function appReducer(state = initialState, action) {
       return state
         .set('loading', true)
         .set('error', false)
-        .setIn('user', {});
+        .setIn(['user'], initialState.user);
     case LOAD_USER_SUCCESS:
       return state
-        .setIn('user', action.user)
+        .setIn(['user'], action.user)
         .set('loading', false);
-    case REFRESH_TOKENS_ERROR:
-    case LOAD_USER_ERROR:
-      return state
-        .set('error', action.error)
-        .set('loading', false);
-    case LOAD_REPOS:
+    case LOAD_LIBRARY:
       return state
         .set('loading', true)
         .set('error', false)
-        .setIn(['userData', 'repositories'], false);
-    case LOAD_REPOS_SUCCESS:
+        .setIn(['library'], initialState.library);
+    case LOAD_LIBRARY_SUCCESS:
       return state
-        .setIn(['userData', 'repositories'], action.repos)
-        .set('loading', false)
-        .set('currentUser', action.username);
-    case LOAD_REPOS_ERROR:
+        .setIn(['library'], action.library)
+        .set('loading', false);
+    case REFRESH_TOKENS_ERROR:
+    case LOAD_USER_ERROR:
+    case LOAD_LIBRARY_ERROR:
       return state
         .set('error', action.error)
         .set('loading', false);

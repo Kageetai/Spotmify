@@ -23,9 +23,9 @@ import {
   LOAD_USER,
   LOAD_USER_SUCCESS,
   LOAD_USER_ERROR,
-  LOAD_REPOS,
-  LOAD_REPOS_SUCCESS,
-  LOAD_REPOS_ERROR,
+  LOAD_LIBRARY,
+  LOAD_LIBRARY_SUCCESS,
+  LOAD_LIBRARY_ERROR,
 } from './constants';
 
 /**
@@ -71,9 +71,8 @@ export function refreshTokensError(error) {
   };
 }
 
-
 /**
- * Set Spotify access and refresh tokens
+ * Load user data from Spotify
  *
  * @return {object} An action object with a type of SET_TOKENS
  */
@@ -84,11 +83,11 @@ export function loadUser() {
 }
 
 /**
- * Dispatched when the repositories are loaded by the request saga
+ * Dispatched when the user is loaded by the request saga
  *
  * @param  {object} user The user data
  *
- * @return {object}      An action object with a type of LOAD_REPOS_SUCCESS passing the repos
+ * @return {object}      An action object with a type of LOAD_USER_SUCCESS passing the user
  */
 export function loadUserSuccess(user) {
   return {
@@ -98,11 +97,11 @@ export function loadUserSuccess(user) {
 }
 
 /**
- * Dispatched when loading the repositories fails
+ * Dispatched when loading the user fails
  *
  * @param  {object} error The error
  *
- * @return {object}       An action object with a type of LOAD_REPOS_ERROR passing the error
+ * @return {object}       An action object with a type of LOAD_USER_ERROR passing the error
  */
 export function loadUserError(error) {
   return {
@@ -112,42 +111,40 @@ export function loadUserError(error) {
 }
 
 /**
- * Load the repositories, this action starts the request saga
+ * Load users library from Spotify
  *
- * @return {object} An action object with a type of LOAD_REPOS
+ * @return {object} An action object with a type of SET_TOKENS
  */
-export function loadRepos() {
+export function loadLibrary() {
   return {
-    type: LOAD_REPOS,
+    type: LOAD_LIBRARY,
   };
 }
 
 /**
- * Dispatched when the repositories are loaded by the request saga
+ * Dispatched when the library is loaded by the request saga
  *
- * @param  {array} repos The repository data
- * @param  {string} username The current username
+ * @param  {object} library The library data
  *
- * @return {object}      An action object with a type of LOAD_REPOS_SUCCESS passing the repos
+ * @return {object}      An action object with a type of LOAD_LIBRARY_SUCCESS passing the library
  */
-export function reposLoaded(repos, username) {
+export function loadLibrarySuccess(library) {
   return {
-    type: LOAD_REPOS_SUCCESS,
-    repos,
-    username,
+    type: LOAD_LIBRARY_SUCCESS,
+    library,
   };
 }
 
 /**
- * Dispatched when loading the repositories fails
+ * Dispatched when loading the library fails
  *
  * @param  {object} error The error
  *
- * @return {object}       An action object with a type of LOAD_REPOS_ERROR passing the error
+ * @return {object}       An action object with a type of LOAD_LIBRARY_ERROR passing the error
  */
-export function repoLoadingError(error) {
+export function loadLibraryError(error) {
   return {
-    type: LOAD_REPOS_ERROR,
+    type: LOAD_LIBRARY_ERROR,
     error,
   };
 }

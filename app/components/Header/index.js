@@ -31,7 +31,7 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
                 <FormattedMessage {...messages.home} />
               </HeaderLink>
               <HeaderLink to="/features">
-                <FormattedMessage {...messages.features} />
+                <FormattedMessage {...messages.library} />
               </HeaderLink>
             </div>
             {isLoggedIn() ? (
