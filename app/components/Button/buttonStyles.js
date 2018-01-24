@@ -18,6 +18,10 @@ const buttonStyles = css`
   font-size: 16px;
   border: 2px solid ${colors.primary};
   color: ${colors.primary};
+  
+  &:hover {
+    color: ${colors.primaryHover};  
+  }
 
   &:active {
     background: ${colors.primary};

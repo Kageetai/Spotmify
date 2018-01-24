@@ -25,8 +25,8 @@ import { loadRepos, loadUser, deleteTokens } from 'containers/App/actions';
 import appSaga from 'containers/App/saga';
 import Button from 'components/Button';
 import UserProfile from 'components/UserProfile';
+import Section from 'components/Section';
 
-import CenteredSection from './CenteredSection';
 import messages from './messages';
 import { changeUsername } from './actions';
 import { makeSelectUsername } from './selectors';
@@ -51,7 +51,7 @@ export class HomePage extends React.PureComponent {
           <title>Home Page</title>
           <meta name="description" content="Spotmify homepage" />
         </Helmet>
-        <CenteredSection>
+        <Section>
           {!accessToken ? (
             <Button href="/login">
               <FormattedMessage {...messages.login} />
@@ -69,7 +69,7 @@ export class HomePage extends React.PureComponent {
           {accessToken ? (
             <UserProfile user={user} loading={loading} error={error} />
           ) : null}
-        </CenteredSection>
+        </Section>
       </article>
     );
   }

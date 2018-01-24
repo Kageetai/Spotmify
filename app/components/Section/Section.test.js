@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import Section from '../Section';
+import Section from './';
 
 describe('<Section />', () => {
   it('should render an <section> tag', () => {
@@ -21,7 +21,7 @@ describe('<Section />', () => {
   });
 
   it('should not adopt an invalid attribute', () => {
-    const renderedComponent = shallow(<Section attribute={'test'} />);
+    const renderedComponent = shallow(<Section attribute="test" />);
     expect(renderedComponent.prop('attribute')).toBeUndefined();
   });
 });
