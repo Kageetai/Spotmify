@@ -26,12 +26,14 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
         </A>
         <Section>
           <NavBar>
-            <HeaderLink to="/">
-              <FormattedMessage {...messages.home} />
-            </HeaderLink>
-            <HeaderLink to="/features">
-              <FormattedMessage {...messages.features} />
-            </HeaderLink>
+            <div>
+              <HeaderLink to="/">
+                <FormattedMessage {...messages.home} />
+              </HeaderLink>
+              <HeaderLink to="/features">
+                <FormattedMessage {...messages.features} />
+              </HeaderLink>
+            </div>
             {isLoggedIn() ? (
               <Button onClick={this.props.onLogout}>
                 <FormattedMessage {...messages.logout} />
