@@ -98,7 +98,10 @@ export function mapDispatchToProps(dispatch) {
   return {
     onChangeUsername: (evt) => dispatch(changeUsername(evt.target.value)),
     onGetUser: () => dispatch(loadUser()),
-    onDeleteTokens: () => dispatch(deleteTokens()),
+    onDeleteTokens: (evt) => {
+      evt.preventDefault();
+      dispatch(deleteTokens());
+    },
     onSubmitForm: (evt) => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(loadRepos());
