@@ -11,9 +11,12 @@
  */
 
 import { fromJS } from 'immutable';
+import Cookies from 'universal-cookie';
 
 import {
   SET_TOKENS,
+  DELETE_TOKENS,
+  REFRESH_TOKENS_ERROR,
   LOAD_USER,
   LOAD_USER_SUCCESS,
   LOAD_USER_ERROR,
@@ -22,10 +25,13 @@ import {
   LOAD_REPOS_ERROR,
 } from './constants';
 
+const cookies = new Cookies();
+
 // The initial state of the App
 const initialState = fromJS({
-  accessToken: '',
-  refreshToken: '',
+  accessToken: cookies.get('accessToken') || '',
+  refreshToken: cookies.get('refreshToken') || '',
+  expires: parseInt(cookies.get('expires'), 10) || 0,
   loading: false,
   error: false,
   user: {},
@@ -38,9 +44,22 @@ const initialState = fromJS({
 function appReducer(state = initialState, action) {
   switch (action.type) {
     case SET_TOKENS:
+      cookies.set('accessToken', action.accessToken);
+      cookies.set('refreshToken', action.refreshToken);
+      cookies.set('expires', action.expires);
       return state
         .set('accessToken', action.accessToken)
         .set('refreshToken', action.refreshToken)
+        .set('expires', action.expires)
+        .set('error', false);
+    case DELETE_TOKENS:
+      cookies.remove('accessToken');
+      cookies.remove('refreshToken');
+      cookies.remove('expires');
+      return state
+        .set('accessToken', initialState.accessToken)
+        .set('refreshToken', initialState.refreshToken)
+        .set('expires', initialState.expires)
         .set('error', false);
     case LOAD_USER:
       return state
@@ -51,6 +70,7 @@ function appReducer(state = initialState, action) {
       return state
         .setIn('user', action.user)
         .set('loading', false);
+    case REFRESH_TOKENS_ERROR:
     case LOAD_USER_ERROR:
       return state
         .set('error', action.error)

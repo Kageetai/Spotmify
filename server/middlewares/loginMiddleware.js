@@ -19,6 +19,7 @@ const generateRandomString = (length) => {
 };
 
 const stateKey = 'spotify_auth_state';
+const scope = 'user-read-private user-read-email';
 
 /**
  * Spotify login middleware
@@ -31,7 +32,6 @@ module.exports = (app, options) => {
     res.cookie(stateKey, state);
 
     // your application requests authorization
-    const scope = 'user-read-private user-read-email';
     res.redirect(`https://accounts.spotify.com/authorize?${
       querystring.stringify({
         response_type: 'code',
@@ -74,10 +74,12 @@ module.exports = (app, options) => {
         if (!error && response.statusCode === 200) {
           const accessToken = body.access_token;
           const refreshToken = body.refresh_token;
+          const expiresIn = body.expires_in;
 
           // we can also pass the token to the browser to make requests from there
           res.cookie('accessToken', accessToken);
           res.cookie('refreshToken', refreshToken);
+          res.cookie('expires', Date.now() + (expiresIn * 1000));
           res.redirect('/');
         } else {
           res.redirect('/');
@@ -88,7 +90,7 @@ module.exports = (app, options) => {
 
   app.get('/refresh_token', (req, res) => {
     // requesting access token from refresh token
-    const refreshToken = req.query.refresh_token;
+    const { refreshToken } = req.cookies;
     const authOptions = {
       url: 'https://accounts.spotify.com/api/token',
       headers: { Authorization: `Basic ${Buffer.from(`${options.clientId}:${options.clientSecret}`).toString('base64')}` },
@@ -101,9 +103,9 @@ module.exports = (app, options) => {
 
     request.post(authOptions, (error, response, body) => {
       if (!error && response.statusCode === 200) {
-        const accessToken = body.access_token;
         res.send({
-          access_token: accessToken,
+          accessToken: body.access_token,
+          expires: Date.now() + (body.expires_in * 1000),
         });
       }
     });
