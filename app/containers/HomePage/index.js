@@ -12,25 +12,26 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
-import injectReducer from '../../utils/injectReducer';
-import injectSaga from '../../utils/injectSaga';
+import injectReducer from 'utils/injectReducer';
+import injectSaga from 'utils/injectSaga';
 import {
   makeSelectRepos,
   makeSelectLoading,
   makeSelectError,
   makeSelectAccessToken,
   makeSelectUser,
-} from '../../containers/App/selectors';
-import { loadRepos, loadUser, deleteTokens } from '../App/actions';
-import appSaga from '../App/saga';
+} from 'containers/App/selectors';
+import { loadRepos, loadUser, deleteTokens } from 'containers/App/actions';
+import appSaga from 'containers/App/saga';
+import Button from 'components/Button';
+import UserProfile from 'components/UserProfile';
+
 import CenteredSection from './CenteredSection';
 import messages from './messages';
 import { changeUsername } from './actions';
 import { makeSelectUsername } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import Button from '../../components/Button';
-import UserProfile from '../../components/UserProfile';
 
 export class HomePage extends React.PureComponent {
   componentWillMount() {

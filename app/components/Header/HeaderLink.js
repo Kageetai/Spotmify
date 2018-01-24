@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { colors } from '../../global-styles';
+import { colors } from 'global-styles';
 
 export default styled(Link)`
   display: inline-flex;

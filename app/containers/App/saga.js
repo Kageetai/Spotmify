@@ -5,10 +5,11 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 import Spotify from 'spotify-web-api-js';
 
+import request from 'utils/request';
+
 import { GET_TOKENS, LOAD_USER } from './constants';
 import { makeSelectAccessToken, makeSelectExpires, makeSelectRefreshToken } from './selectors';
 import { loadUserError, loadUserSuccess, refreshTokensError, setTokens } from './actions';
-import request from '../../utils/request';
 
 const spotifyApi = new Spotify();
 

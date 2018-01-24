@@ -4,7 +4,7 @@
 
 import styled from 'styled-components';
 
-import { colors } from '../../global-styles';
+import { colors } from 'global-styles';
 
 const A = styled.a`
   color: ${colors.primary};
