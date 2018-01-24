@@ -3,10 +3,12 @@ import styled from 'styled-components';
 
 import { colors } from 'global-styles';
 
+import buttonStyles from 'components/Button/buttonStyles';
+
 export default styled(Link)`
-  display: inline-flex;
+  ${buttonStyles};
   padding: 0.25em 2em;
-  margin: 1em;
+  margin-right: 1em;
   text-decoration: none;
   border-radius: 4px;
   -webkit-font-smoothing: antialiased;
