@@ -12,27 +12,21 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
-import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
 import { isLoggedIn } from 'utils/auth';
 import {
-  makeSelectRepos,
   makeSelectLoading,
   makeSelectError,
   makeSelectAccessToken,
   makeSelectUser,
 } from 'containers/App/selectors';
-import { loadRepos, loadUser } from 'containers/App/actions';
-import appSaga from 'containers/App/saga';
+import { loadUser } from 'containers/App/actions';
+import saga from 'containers/App/saga';
 import Button from 'components/Button';
 import UserProfile from 'components/UserProfile';
 import Section from 'components/Section';
 
 import messages from './messages';
-import { changeUsername } from './actions';
-import { makeSelectUsername } from './selectors';
-import reducer from './reducer';
-import saga from './saga';
 import CenteredSection from './CenteredSection';
 
 export class HomePage extends React.PureComponent {
@@ -80,13 +74,6 @@ HomePage.propTypes = {
     PropTypes.object,
     PropTypes.bool,
   ]),
-  repos: PropTypes.oneOfType([
-    PropTypes.array,
-    PropTypes.bool,
-  ]),
-  onSubmitForm: PropTypes.func,
-  username: PropTypes.string,
-  onChangeUsername: PropTypes.func,
   onGetUser: PropTypes.func,
   onGetTokens: PropTypes.func,
   accessToken: PropTypes.string,
@@ -95,18 +82,11 @@ HomePage.propTypes = {
 
 export function mapDispatchToProps(dispatch) {
   return {
-    onChangeUsername: evt => dispatch(changeUsername(evt.target.value)),
     onGetUser: () => dispatch(loadUser()),
-    onSubmitForm: (evt) => {
-      if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-      dispatch(loadRepos());
-    },
   };
 }
 
 const mapStateToProps = createStructuredSelector({
-  repos: makeSelectRepos(),
-  username: makeSelectUsername(),
   accessToken: makeSelectAccessToken(),
   user: makeSelectUser(),
   loading: makeSelectLoading(),
@@ -115,13 +95,9 @@ const mapStateToProps = createStructuredSelector({
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
-const withReducer = injectReducer({ key: 'home', reducer });
-const withSaga = injectSaga({ key: 'home', saga });
-const withAppSaga = injectSaga({ key: 'app', saga: appSaga });
+const withSaga = injectSaga({ key: 'app', saga });
 
 export default compose(
-  withReducer,
   withSaga,
-  withAppSaga,
   withConnect,
 )(HomePage);
