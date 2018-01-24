@@ -67,8 +67,8 @@ export class HomePage extends React.PureComponent {
               <FormattedMessage {...messages.login.error} />
             ) : null}
 
-            { user && !loading && accessToken ? (
-              <UserProfile user={user} />
+            {accessToken ? (
+              <UserProfile user={user} loading={loading} error={error} />
             ) : null}
           </H2>
         </CenteredSection>
