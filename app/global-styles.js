@@ -1,8 +1,8 @@
 import { createGlobalStyle } from 'styled-components';
 
 export const colors = {
-  primary: '#27ba60',
-  primaryHover: '#2bcd6b',
+  primary: '#1ED760',
+  primaryHover: '#2EBD59',
 };
 
 const GlobalStyle = createGlobalStyle`
