@@ -21,7 +21,7 @@ const generateRandomString = (length) => {
 };
 
 const stateKey = 'spotify_auth_state';
-const scope = 'user-read-private user-read-email';
+const scope = 'user-read-private user-read-email user-library-read';
 
 /**
  * Spotify login middleware
