@@ -17,80 +17,56 @@ import {
   makeSelectError,
   makeSelectLoading,
   makeSelectLibrary,
+  makeSelectLibraryTotal,
 } from 'containers/App/selectors';
 import { loadLibrary } from 'containers/App/actions';
 import saga from 'containers/App/saga';
 import H1 from 'components/H1';
+import Button from 'components/Button';
 
 import messages from './messages';
 import List from './List';
 import ListItem from './ListItem';
-import ListItemTitle from './ListItemTitle';
 import { isLoggedIn } from '../../utils/auth';
 
 class LibraryPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
+  constructor() {
+    super();
+    this.loadMore = this.loadMore.bind(this);
+  }
+
   componentWillMount() {
     if (isLoggedIn()) {
       this.props.onGetLibrary();
     }
   }
 
+  loadMore(evt) {
+    evt.preventDefault();
+    this.props.onGetLibrary();
+  }
+
   render() {
     return (
       <div>
         <Helmet>
-          <title>Feature Page</title>
-          <meta name="description" content="Feature page of React.js Boilerplate application" />
+          <title>Library Page</title>
+          <meta name="description" content="Your Spotify library" />
         </Helmet>
         <H1>
           <FormattedMessage {...messages.header} />
         </H1>
+        <FormattedMessage {...messages.libraryTotal} values={{ count: this.props.libraryTotal }} />
         <List>
-          <ListItem>
-            <ListItemTitle>
-              <FormattedMessage {...messages.scaffoldingHeader} />
-            </ListItemTitle>
-            <p>
-              <FormattedMessage {...messages.scaffoldingMessage} />
-            </p>
-          </ListItem>
-
-          <ListItem>
-            <ListItemTitle>
-              <FormattedMessage {...messages.feedbackHeader} />
-            </ListItemTitle>
-            <p>
-              <FormattedMessage {...messages.feedbackMessage} />
-            </p>
-          </ListItem>
-
-          <ListItem>
-            <ListItemTitle>
-              <FormattedMessage {...messages.routingHeader} />
-            </ListItemTitle>
-            <p>
-              <FormattedMessage {...messages.routingMessage} />
-            </p>
-          </ListItem>
-
-          <ListItem>
-            <ListItemTitle>
-              <FormattedMessage {...messages.networkHeader} />
-            </ListItemTitle>
-            <p>
-              <FormattedMessage {...messages.networkMessage} />
-            </p>
-          </ListItem>
-
-          <ListItem>
-            <ListItemTitle>
-              <FormattedMessage {...messages.intlHeader} />
-            </ListItemTitle>
-            <p>
-              <FormattedMessage {...messages.intlMessage} />
-            </p>
-          </ListItem>
+          {this.props.library && this.props.library.map((item) => {
+            const { track } = item;
+            const artist = track.artists[0];
+            return (
+              <ListItem key={track.id}>{artist.name} - {track.name}</ListItem>
+            );
+          })}
         </List>
+        <div><Button onClick={this.loadMore}>Load more</Button></div>
       </div>
     );
   }
@@ -103,9 +79,9 @@ LibraryPage.propTypes = {
     PropTypes.bool,
   ]),
   onGetLibrary: PropTypes.func,
-  onGetTokens: PropTypes.func,
   accessToken: PropTypes.string,
-  library: PropTypes.any,
+  library: PropTypes.array,
+  libraryTotal: PropTypes.number,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -117,6 +93,7 @@ export function mapDispatchToProps(dispatch) {
 const mapStateToProps = createStructuredSelector({
   accessToken: makeSelectAccessToken(),
   library: makeSelectLibrary(),
+  libraryTotal: makeSelectLibraryTotal(),
   loading: makeSelectLoading(),
   error: makeSelectError(),
 });

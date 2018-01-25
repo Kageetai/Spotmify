@@ -38,7 +38,7 @@ export default function App() {
       <Header />
       <Switch>
         <Route exact path="/" component={HomePage} />
-        <Route path="/features" component={LibraryPage} />
+        <Route path="/library" component={LibraryPage} />
         <Route path="" component={NotFoundPage} />
       </Switch>
       <Footer />
