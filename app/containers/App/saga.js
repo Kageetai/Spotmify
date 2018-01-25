@@ -9,7 +9,7 @@ import request from 'utils/request';
 import { isLoggedIn } from 'utils/auth';
 
 import { GET_TOKENS, LOAD_LIBRARY, LOAD_USER } from './constants';
-import { makeSelectAccessToken, makeSelectRefreshToken } from './selectors';
+import { makeSelectAccessToken, makeSelectRefreshToken, makeSelectLibrary } from './selectors';
 import {
   loadLibraryError,
   loadLibrarySuccess,
@@ -25,7 +25,7 @@ export function* checkTokens() {
   let accessToken = yield select(makeSelectAccessToken());
   const refreshToken = yield select(makeSelectRefreshToken());
 
-  if (isLoggedIn) {
+  if (!isLoggedIn) {
     try {
       const newTokens = yield call(request, '/refresh_token', {
         credentials: 'same-origin',
@@ -41,7 +41,7 @@ export function* checkTokens() {
   yield call(spotifyApi.setAccessToken, accessToken);
 }
 
-export function* getUser() {
+export function* loadUser() {
   yield call(checkTokens);
   try {
     const user = yield call(spotifyApi.getMe);
@@ -51,11 +51,16 @@ export function* getUser() {
   }
 }
 
-export function* getLibrary() {
+export function* loadLibrary() {
   yield call(checkTokens);
+  const library = yield select(makeSelectLibrary());
+
   try {
-    const library = yield call(spotifyApi.getMySavedTracks);
-    yield put(loadLibrarySuccess(library));
+    const newLibrary = yield call(spotifyApi.getMySavedTracks, {
+      offset: library.length,
+      limit: 50,
+    });
+    yield put(loadLibrarySuccess(newLibrary));
   } catch (err) {
     yield put(loadLibraryError(err));
   }
@@ -70,6 +75,6 @@ export default function* spotifyData() {
   // It returns task descriptor (just like fork) so we can continue execution
   // It will be cancelled automatically on component unmount
   yield takeLatest(GET_TOKENS, checkTokens);
-  yield takeLatest(LOAD_USER, getUser);
-  yield takeLatest(LOAD_LIBRARY, getLibrary);
+  yield takeLatest(LOAD_USER, loadUser);
+  yield takeLatest(LOAD_LIBRARY, loadLibrary);
 }

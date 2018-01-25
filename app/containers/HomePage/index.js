@@ -75,7 +75,6 @@ HomePage.propTypes = {
     PropTypes.bool,
   ]),
   onGetUser: PropTypes.func,
-  onGetTokens: PropTypes.func,
   accessToken: PropTypes.string,
   user: PropTypes.any,
 };

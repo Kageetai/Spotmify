@@ -29,7 +29,12 @@ const makeSelectUser = () => createSelector(
 
 const makeSelectLibrary = () => createSelector(
   selectGlobal,
-  globalState => globalState.getIn(['library'])
+  globalState => globalState.get('library').toJS()
+);
+
+const makeSelectLibraryTotal = () => createSelector(
+  selectGlobal,
+  globalState => globalState.getIn(['libraryTotal'])
 );
 
 const makeSelectLoading = () => createSelector(
@@ -54,6 +59,7 @@ export {
   makeSelectExpires,
   makeSelectUser,
   makeSelectLibrary,
+  makeSelectLibraryTotal,
   makeSelectCurrentUser,
   makeSelectLoading,
   makeSelectError,

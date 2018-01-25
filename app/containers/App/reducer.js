@@ -34,7 +34,8 @@ const initialState = fromJS({
   loading: false,
   error: false,
   user: {},
-  library: {},
+  library: [],
+  libraryTotal: 0,
 });
 
 function appReducer(state = initialState, action) {
@@ -69,11 +70,11 @@ function appReducer(state = initialState, action) {
     case LOAD_LIBRARY:
       return state
         .set('loading', true)
-        .set('error', false)
-        .setIn(['library'], initialState.library);
+        .set('error', false);
     case LOAD_LIBRARY_SUCCESS:
       return state
-        .setIn(['library'], action.library)
+        .update('library', library => library.concat(action.library.items))
+        .set('libraryTotal', action.library.total)
         .set('loading', false);
     case REFRESH_TOKENS_ERROR:
     case LOAD_USER_ERROR:

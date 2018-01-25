@@ -18,5 +18,5 @@ export const LOAD_USER_SUCCESS = 'spotmify/App/LOAD_USER_SUCCESS';
 export const LOAD_USER_ERROR = 'spotmify/App/LOAD_USER_ERROR';
 export const LOAD_LIBRARY = 'spotmify/App/LOAD_LIBRARY';
 export const LOAD_LIBRARY_SUCCESS = 'spotmify/App/LOAD_LIBRARY_SUCCESS';
-export const LOAD_LIBRARY_ERROR = 'spotmify/App/LOAD_USER_ERROR';
+export const LOAD_LIBRARY_ERROR = 'spotmify/App/LOAD_LIBRARY_ERROR';
 export const DEFAULT_LOCALE = 'en';
