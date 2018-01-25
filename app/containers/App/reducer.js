@@ -36,6 +36,7 @@ const initialState = fromJS({
   user: {},
   library: [],
   libraryTotal: 0,
+  libraryHasNextPage: true,
 });
 
 function appReducer(state = initialState, action) {
@@ -75,6 +76,7 @@ function appReducer(state = initialState, action) {
       return state
         .update('library', library => library.concat(action.library.items))
         .set('libraryTotal', action.library.total)
+        .set('libraryHasNextPage', !!action.library.next)
         .set('loading', false);
     case REFRESH_TOKENS_ERROR:
     case LOAD_USER_ERROR:

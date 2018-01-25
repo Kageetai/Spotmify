@@ -10,6 +10,8 @@ import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
+import ReactTable from 'react-table';
+import 'react-table/react-table.css';
 
 import injectSaga from 'utils/injectSaga';
 import {
@@ -25,8 +27,6 @@ import H1 from 'components/H1';
 import Button from 'components/Button';
 
 import messages from './messages';
-import List from './List';
-import ListItem from './ListItem';
 import { isLoggedIn } from '../../utils/auth';
 
 class LibraryPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -47,6 +47,9 @@ class LibraryPage extends React.Component { // eslint-disable-line react/prefer-
   }
 
   render() {
+    if (this.props.library) {
+      console.log(this.props.library);
+    }
     return (
       <div>
         <Helmet>
@@ -57,15 +60,52 @@ class LibraryPage extends React.Component { // eslint-disable-line react/prefer-
           <FormattedMessage {...messages.header} />
         </H1>
         <FormattedMessage {...messages.libraryTotal} values={{ count: this.props.libraryTotal }} />
-        <List>
-          {this.props.library && this.props.library.map((item) => {
-            const { track } = item;
-            const artist = track.artists[0];
-            return (
-              <ListItem key={track.id}>{artist.name} - {track.name}</ListItem>
-            );
-          })}
-        </List>
+        <ReactTable
+          data={this.props.library}
+          columns={[
+            {
+              Header: 'Track',
+              columns: [
+                {
+                  Header: 'Name',
+                  id: 'trackName',
+                  accessor: i => i.track.name,
+                },
+                {
+                  Header: 'Added At',
+                  accessor: 'added_at',
+                },
+                {
+                  Header: 'Duration',
+                  id: 'duration',
+                  accessor: i => i.track.duration_ms,
+                },
+              ],
+            },
+            {
+              Header: 'Artists',
+              columns: [
+                {
+                  Header: 'Name',
+                  id: 'artistName',
+                  accessor: i => i.track.artists[0].name,
+                },
+              ],
+            },
+            {
+              Header: 'Stats',
+              columns: [
+                {
+                  Header: 'Popularity',
+                  id: 'popularity',
+                  accessor: i => i.track.popularity,
+                },
+              ],
+            },
+          ]}
+          defaultPageSize={20}
+          className="-striped -highlight"
+        />
         <div><Button onClick={this.loadMore}>Load more</Button></div>
       </div>
     );
