@@ -14,6 +14,7 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 
 import injectSaga from 'utils/injectSaga';
+import { isLoggedIn } from 'utils/auth';
 import {
   makeSelectAccessToken,
   makeSelectError,
@@ -25,9 +26,11 @@ import { loadLibrary } from 'containers/App/actions';
 import saga from 'containers/App/saga';
 import H1 from 'components/H1';
 import Button from 'components/Button';
+import A from 'components/A';
+import Section from 'components/Section';
 
 import messages from './messages';
-import { isLoggedIn } from '../../utils/auth';
+import AlbumCover from './AlbumCover';
 
 class LibraryPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -47,66 +50,75 @@ class LibraryPage extends React.Component { // eslint-disable-line react/prefer-
   }
 
   render() {
-    if (this.props.library) {
-      console.log(this.props.library);
-    }
     return (
       <div>
         <Helmet>
           <title>Library Page</title>
           <meta name="description" content="Your Spotify library" />
         </Helmet>
-        <H1>
-          <FormattedMessage {...messages.header} />
-        </H1>
-        <FormattedMessage {...messages.libraryTotal} values={{ count: this.props.libraryTotal }} />
+
+        <Section>
+          <H1>
+            <FormattedMessage {...messages.header} />
+          </H1>
+          <FormattedMessage {...messages.libraryTotal} values={{ count: this.props.libraryTotal }} />
+        </Section>
+
         <ReactTable
           data={this.props.library}
           columns={[
             {
-              Header: 'Track',
-              columns: [
-                {
-                  Header: 'Name',
-                  id: 'trackName',
-                  accessor: i => i.track.name,
-                },
-                {
-                  Header: 'Added At',
-                  accessor: 'added_at',
-                },
-                {
-                  Header: 'Duration',
-                  id: 'duration',
-                  accessor: i => i.track.duration_ms,
-                },
-              ],
+              Header: 'Name',
+              id: 'trackName',
+              accessor: i => i.track.name,
+              Cell: row => (
+                <A href={row.original.track.uri}>{row.value}</A>
+              ),
             },
             {
-              Header: 'Artists',
-              columns: [
-                {
-                  Header: 'Name',
-                  id: 'artistName',
-                  accessor: i => i.track.artists[0].name,
-                },
-              ],
+              Header: 'Artist',
+              id: 'artist',
+              accessor: i => i.track.artists[0].name,
+              Cell: row => (
+                <A href={row.original.track.artists[0].uri}>{row.value}</A>
+              ),
             },
             {
-              Header: 'Stats',
-              columns: [
-                {
-                  Header: 'Popularity',
-                  id: 'popularity',
-                  accessor: i => i.track.popularity,
-                },
-              ],
+              Header: 'Album',
+              id: 'album',
+              accessor: i => i.track.album.name,
+              Cell: row => (
+                <A href={row.original.track.album.uri}>{console.log(row.original)}
+                  <AlbumCover src={row.original.track.album.images[2].url} />{row.value}
+                </A>
+              ),
+            },
+            {
+              Header: 'Duration',
+              id: 'duration',
+              accessor: i => i.track.duration_ms,
+            },
+            {
+              Header: 'Added At',
+              id: 'addedAt',
+              accessor: 'added_at',
+            },
+            {
+              Header: 'Popularity',
+              id: 'popularity',
+              accessor: i => i.track.popularity,
             },
           ]}
-          defaultPageSize={20}
+          defaultSorted={[
+            {
+              id: 'addedAt',
+              desc: true,
+            },
+          ]}
+          defaultPageSize={50}
           className="-striped -highlight"
         />
-        <div><Button onClick={this.loadMore}>Load more</Button></div>
+        <Button onClick={this.loadMore}>Load more</Button>
       </div>
     );
   }
