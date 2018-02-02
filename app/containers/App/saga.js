@@ -3,46 +3,103 @@
  */
 
 import { call, put, select, takeLatest } from 'redux-saga/effects';
+import moment from 'moment';
 import Spotify from 'spotify-web-api-js';
 
-import request from 'utils/request';
-import { isLoggedIn } from 'utils/auth';
+import { isLoggedIn, isExpired } from 'utils/auth';
 
-import { GET_TOKENS, LOAD_LIBRARY, LOAD_USER } from './constants';
-import { makeSelectAccessToken, makeSelectRefreshToken, makeSelectLibrary } from './selectors';
+import { LOGIN, GET_TOKENS, LOAD_LIBRARY, LOAD_USER, DELETE_TOKENS } from './constants';
+import { makeSelectAccessToken, makeSelectLibrary } from './selectors';
 import {
   loadLibraryError,
   loadLibrarySuccess,
   loadUserError,
   loadUserSuccess,
-  refreshTokensError,
+  loginError,
   setTokens,
 } from './actions';
 
 const spotifyApi = new Spotify();
 
-export function* checkTokens() {
-  let accessToken = yield select(makeSelectAccessToken());
-  const refreshToken = yield select(makeSelectRefreshToken());
+const clientId = '94860236c7db4b85b0039499df4df4d7';
+const redirectUri = window.location.origin;
+const stateKey = 'spotify_auth_state';
+const scope = 'user-read-private user-read-email user-library-read';
 
-  if (!isLoggedIn) {
-    try {
-      const newTokens = yield call(request, '/refresh_token', {
-        credentials: 'same-origin',
-      });
-      // eslint-disable-next-line prefer-destructuring
-      accessToken = newTokens.accessToken;
-      yield put(setTokens(accessToken, refreshToken, newTokens.expires));
-    } catch (err) {
-      yield put(refreshTokensError(err));
-    }
+/**
+ * Generates a random string containing numbers and letters
+ * @param  {number} length The length of the string
+ * @return {string} The generated string
+ */
+const generateRandomString = (length) => {
+  let text = '';
+  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+  for (let i = 0; i < length; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
   }
+  return text;
+};
 
-  yield call(spotifyApi.setAccessToken, accessToken);
+/**
+ * Obtains parameters from the hash of the URL
+ * @return Object
+ */
+function getHashParams() {
+  const hashParams = {};
+  const r = /([^&;=]+)=?([^&;]*)/g;
+  const q = window.location.hash.substring(1);
+  let e = r.exec(q);
+  while (e) {
+    hashParams[e[1]] = decodeURIComponent(e[2]);
+    e = r.exec(q);
+  }
+  return hashParams;
 }
 
+export function* login() {
+  const state = generateRandomString(16);
+
+  localStorage.setItem(stateKey, state);
+  window.location =
+    `https://accounts.spotify.com/authorize?response_type=token&client_id=${encodeURIComponent(clientId)
+    }&scope=${encodeURIComponent(scope)
+    }&redirect_uri=${encodeURIComponent(redirectUri)
+    }&state=${encodeURIComponent(state)}`;
+}
+
+export function* logout() {
+  sessionStorage.removeItem('accessToken');
+  sessionStorage.removeItem('expires');
+}
+
+export function* checkTokens() {
+  const params = getHashParams();
+  const accessToken = params.access_token;
+  const storedToken = sessionStorage.getItem('accessToken');
+  const expires = sessionStorage.getItem('expires');
+  const storedState = localStorage.getItem(stateKey);
+  const { state } = params;
+  const expiresIn = params.expires_in;
+
+  if (storedToken && !isExpired(expires)) {
+    yield call(spotifyApi.setAccessToken, storedToken);
+  } else if (accessToken && (state == null || state !== storedState)) {
+    yield put(loginError('login error'));
+  } else {
+    localStorage.removeItem(stateKey);
+    if (accessToken && expiresIn) {
+      sessionStorage.setItem('accessToken', accessToken);
+      sessionStorage.setItem('expires', moment().add(expiresIn, 's').format());
+      yield put(setTokens(accessToken, moment().add(expiresIn, 's').format()));
+      yield call(spotifyApi.setAccessToken, accessToken);
+    }
+  }
+  // TODO remove hash params
+}
+checkTokens();
+
 export function* loadUser() {
-  yield call(checkTokens);
   try {
     const user = yield call(spotifyApi.getMe);
     yield put(loadUserSuccess(user));
@@ -52,7 +109,6 @@ export function* loadUser() {
 }
 
 export function* loadLibrary() {
-  yield call(checkTokens);
   const library = yield select(makeSelectLibrary());
 
   try {
@@ -74,6 +130,10 @@ export default function* spotifyData() {
   // By using `takeLatest` only the result of the latest API call is applied.
   // It returns task descriptor (just like fork) so we can continue execution
   // It will be cancelled automatically on component unmount
+  yield checkTokens();
+
+  yield takeLatest(LOGIN, login);
+  yield takeLatest(DELETE_TOKENS, logout);
   yield takeLatest(GET_TOKENS, checkTokens);
   yield takeLatest(LOAD_USER, loadUser);
   yield takeLatest(LOAD_LIBRARY, loadLibrary);

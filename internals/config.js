@@ -2,7 +2,7 @@ const resolve = require('path').resolve;
 const pullAll = require('lodash/pullAll');
 const uniq = require('lodash/uniq');
 
-const ReactBoilerplate = {
+const Spotmify = {
   // This refers to the react-boilerplate version this project is based on.
   version: '3.5.0',
 
@@ -42,8 +42,8 @@ const ReactBoilerplate = {
 
     entry(pkg) {
       const dependencyNames = Object.keys(pkg.dependencies);
-      const exclude = pkg.dllPlugin.exclude || ReactBoilerplate.dllPlugin.defaults.exclude;
-      const include = pkg.dllPlugin.include || ReactBoilerplate.dllPlugin.defaults.include;
+      const exclude = pkg.dllPlugin.exclude || Spotmify.dllPlugin.defaults.exclude;
+      const include = pkg.dllPlugin.include || Spotmify.dllPlugin.defaults.include;
       const includeDependencies = uniq(dependencyNames.concat(include));
 
       return {
@@ -53,4 +53,4 @@ const ReactBoilerplate = {
   },
 };
 
-module.exports = ReactBoilerplate;
+module.exports = Spotmify;

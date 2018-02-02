@@ -20,7 +20,7 @@ import {
   makeSelectAccessToken,
   makeSelectUser,
 } from 'containers/App/selectors';
-import { loadUser } from 'containers/App/actions';
+import { login, loadUser } from 'containers/App/actions';
 import saga from 'containers/App/saga';
 import Button from 'components/Button';
 import UserProfile from 'components/UserProfile';
@@ -49,7 +49,7 @@ export class HomePage extends React.PureComponent {
         <Section>
           {!loggedIn && (
             <CenteredSection>
-              <Button href="/login">
+              <Button onClick={this.props.onLogin}>
                 <FormattedMessage {...messages.login} />
               </Button>
             </CenteredSection>
@@ -74,6 +74,7 @@ HomePage.propTypes = {
     PropTypes.object,
     PropTypes.bool,
   ]),
+  onLogin: PropTypes.func,
   onGetUser: PropTypes.func,
   accessToken: PropTypes.string,
   user: PropTypes.any,
@@ -82,6 +83,7 @@ HomePage.propTypes = {
 export function mapDispatchToProps(dispatch) {
   return {
     onGetUser: () => dispatch(loadUser()),
+    onLogin: () => dispatch(login()),
   };
 }
 
