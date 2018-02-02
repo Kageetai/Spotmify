@@ -6,7 +6,7 @@ import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
 import { isLoggedIn } from 'utils/auth';
-import { deleteTokens } from 'containers/App/actions';
+import { login, deleteTokens } from 'containers/App/actions';
 
 import A from './A';
 import NavBar from './NavBar';
@@ -39,7 +39,7 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
                 <FormattedMessage {...messages.logout} />
               </Button>
             ) : (
-              <Button href="/login">
+              <Button onClick={this.props.onLogin}>
                 <FormattedMessage {...messages.login} />
               </Button>
             )}
@@ -52,6 +52,7 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
 
 Header.propTypes = {
   accessToken: PropTypes.string,
+  onLogin: PropTypes.func,
   onLogout: PropTypes.func,
 };
 
@@ -64,6 +65,10 @@ export function mapDispatchToProps(dispatch) {
     onLogout: (evt) => {
       evt.preventDefault();
       dispatch(deleteTokens());
+    },
+    onLogin: (evt) => {
+      evt.preventDefault();
+      dispatch(login());
     },
   };
 }

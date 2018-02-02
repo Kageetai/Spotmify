@@ -11,13 +11,11 @@
  */
 
 import { fromJS } from 'immutable';
-import Cookies from 'js-cookie';
-import moment from 'moment';
 
 import {
+  LOGIN_ERROR,
   SET_TOKENS,
   DELETE_TOKENS,
-  REFRESH_TOKENS_ERROR,
   LOAD_USER,
   LOAD_USER_SUCCESS,
   LOAD_USER_ERROR,
@@ -28,9 +26,8 @@ import {
 
 // The initial state of the App
 const initialState = fromJS({
-  accessToken: Cookies.get('accessToken') || '',
-  refreshToken: Cookies.get('refreshToken') || '',
-  expires: Cookies.get('expires') || moment(),
+  accessToken: '',
+  expires: '',
   loading: false,
   error: false,
   user: {},
@@ -42,21 +39,13 @@ const initialState = fromJS({
 function appReducer(state = initialState, action) {
   switch (action.type) {
     case SET_TOKENS:
-      Cookies.set('accessToken', action.accessToken);
-      Cookies.set('refreshToken', action.refreshToken);
-      Cookies.set('expires', action.expires);
       return state
         .set('accessToken', action.accessToken)
-        .set('refreshToken', action.refreshToken)
         .set('expires', action.expires)
         .set('error', false);
     case DELETE_TOKENS:
-      Cookies.remove('accessToken');
-      Cookies.remove('refreshToken');
-      Cookies.remove('expires');
       return state
         .set('accessToken', initialState.accessToken)
-        .set('refreshToken', initialState.refreshToken)
         .set('expires', initialState.expires)
         .set('error', false);
     case LOAD_USER:
@@ -78,9 +67,10 @@ function appReducer(state = initialState, action) {
         .set('libraryTotal', action.library.total)
         .set('libraryHasNextPage', !!action.library.next)
         .set('loading', false);
-    case REFRESH_TOKENS_ERROR:
+    case LOGIN_ERROR:
     case LOAD_USER_ERROR:
     case LOAD_LIBRARY_ERROR:
+      console.error('error');
       return state
         .set('error', action.error)
         .set('loading', false);

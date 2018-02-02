@@ -16,10 +16,11 @@
  */
 
 import {
+  LOGIN,
+  LOGIN_ERROR,
   GET_TOKENS,
   SET_TOKENS,
   DELETE_TOKENS,
-  REFRESH_TOKENS_ERROR,
   LOAD_USER,
   LOAD_USER_SUCCESS,
   LOAD_USER_ERROR,
@@ -29,7 +30,25 @@ import {
 } from './constants';
 
 /**
- * Get Spotify access and refresh tokens
+ * Redirect the user to Spotify Login
+ *
+ * @return {object} An action object with a type of SET_TOKENS
+ */
+export function login() {
+  return {
+    type: LOGIN,
+  };
+}
+
+export function loginError(error) {
+  return {
+    type: LOGIN_ERROR,
+    error,
+  };
+}
+
+/**
+ * Get Spotify access token
  *
  * @return {object} An action object with a type of SET_TOKENS
  */
@@ -40,34 +59,26 @@ export function getTokens() {
 }
 
 /**
- * Set Spotify access and refresh tokens
+ * Set Spotify access token
  *
  * @return {object} An action object with a type of SET_TOKENS
  */
-export function setTokens(accessToken, refreshToken, expires) {
+export function setTokens(accessToken, expires) {
   return {
     type: SET_TOKENS,
     accessToken,
-    refreshToken,
     expires,
   };
 }
 
 /**
- * Delete Spotify access and refresh tokens
+ * Delete Spotify access token
  *
  * @return {object} An action object with a type of SET_TOKENS
  */
 export function deleteTokens() {
   return {
     type: DELETE_TOKENS,
-  };
-}
-
-export function refreshTokensError(error) {
-  return {
-    type: REFRESH_TOKENS_ERROR,
-    error,
   };
 }
 

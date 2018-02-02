@@ -9,10 +9,11 @@
  * export const YOUR_ACTION_CONSTANT = 'yourproject/YourContainer/YOUR_ACTION_CONSTANT';
  */
 
+export const LOGIN = 'spotmify/App/LOGIN';
+export const LOGIN_ERROR = 'spotmify/App/LOGIN_ERROR';
 export const GET_TOKENS = 'spotmify/App/GET_TOKENS';
 export const SET_TOKENS = 'spotmify/App/SET_TOKENS';
 export const DELETE_TOKENS = 'spotmify/App/DELETE_TOKENS';
-export const REFRESH_TOKENS_ERROR = 'spotmify/App/REFRESH_TOKENS_ERROR';
 export const LOAD_USER = 'spotmify/App/LOAD_USER';
 export const LOAD_USER_SUCCESS = 'spotmify/App/LOAD_USER_SUCCESS';
 export const LOAD_USER_ERROR = 'spotmify/App/LOAD_USER_ERROR';

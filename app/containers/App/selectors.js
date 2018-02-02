@@ -18,11 +18,6 @@ const makeSelectAccessToken = () => createSelector(
   globalState => globalState.get('accessToken')
 );
 
-const makeSelectRefreshToken = () => createSelector(
-  selectGlobal,
-  globalState => globalState.get('refreshToken')
-);
-
 const makeSelectExpires = () => createSelector(
   selectGlobal,
   globalState => globalState.get('expires')
@@ -66,7 +61,6 @@ const makeSelectLocation = () => createSelector(
 export {
   selectGlobal,
   makeSelectAccessToken,
-  makeSelectRefreshToken,
   makeSelectExpires,
   makeSelectUser,
   makeSelectLibrary,
