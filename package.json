@@ -2,6 +2,12 @@
   "name": "spotmify",
   "version": "3.5.0",
   "description": "A highly scalable, offline-first foundation with the best DX and a focus on performance and best practices",
+  "spotify": {
+    "clientId": "94860236c7db4b85b0039499df4df4d7",
+    "redirectUri": "/callback",
+    "stateKey": "spotify_auth_state",
+    "scope": "user-read-private user-read-email user-library-read"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/react-boilerplate/react-boilerplate.git"

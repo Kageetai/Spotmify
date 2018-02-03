@@ -5,6 +5,8 @@ import Spotify from 'spotify-web-api-js';
 
 import { isExpired } from 'utils/auth';
 
+import pkg from '../../../package.json';
+
 import { LOGIN, GET_TOKENS, LOAD_LIBRARY, LOAD_USER, DELETE_TOKENS } from './constants';
 import {
   loadLibraryError,
@@ -16,11 +18,6 @@ import {
 } from './actions';
 
 const spotifyApi = new Spotify();
-
-const clientId = '94860236c7db4b85b0039499df4df4d7';
-const redirectUri = `${window.location.origin}/callback`;
-const stateKey = 'spotify_auth_state';
-const scope = 'user-read-private user-read-email user-library-read';
 
 /**
  * Generates a random string containing numbers and letters
@@ -55,12 +52,12 @@ function getHashParams() {
 
 export function* login() {
   const state = generateRandomString(16);
-  localStorage.setItem(stateKey, state);
+  localStorage.setItem(pkg.spotify.stateKey, state);
 
   window.location =
-    `https://accounts.spotify.com/authorize?response_type=token&client_id=${encodeURIComponent(clientId)
-    }&scope=${encodeURIComponent(scope)
-    }&redirect_uri=${encodeURIComponent(redirectUri)
+    `https://accounts.spotify.com/authorize?response_type=token&client_id=${encodeURIComponent(pkg.spotify.clientId)
+    }&scope=${encodeURIComponent(pkg.spotify.scope)
+    }&redirect_uri=${encodeURIComponent(window.location.origin + pkg.spotify.redirectUri)
     }&state=${encodeURIComponent(state)}`;
 }
 
@@ -75,7 +72,7 @@ export function* checkTokens() {
   const accessToken = params.access_token;
   const storedToken = sessionStorage.getItem('accessToken');
   const expires = sessionStorage.getItem('expires');
-  const storedState = localStorage.getItem(stateKey);
+  const storedState = localStorage.getItem(pkg.spotify.stateKey);
   const { state } = params;
   const expiresIn = params.expires_in;
 
@@ -84,7 +81,7 @@ export function* checkTokens() {
   } else if (accessToken && (state == null || state !== storedState)) {
     yield put(loginError('login error'));
   } else {
-    localStorage.removeItem(stateKey);
+    localStorage.removeItem(pkg.spotify.stateKey);
     if (accessToken && expiresIn) {
       sessionStorage.setItem('accessToken', accessToken);
       sessionStorage.setItem('expires', moment().add(expiresIn, 's').format());
