@@ -126,9 +126,11 @@ export function loadUserError(error) {
  *
  * @return {object} An action object with a type of SET_TOKENS
  */
-export function loadLibrary() {
+export function loadLibrary(page = 1, pageSize = 50) {
   return {
     type: LOAD_LIBRARY,
+    page,
+    pageSize,
   };
 }
 

@@ -1,4 +1,4 @@
-import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 import moment from 'moment';
 import Spotify from 'spotify-web-api-js';
@@ -6,7 +6,6 @@ import Spotify from 'spotify-web-api-js';
 import { isExpired } from 'utils/auth';
 
 import { LOGIN, GET_TOKENS, LOAD_LIBRARY, LOAD_USER, DELETE_TOKENS } from './constants';
-import { makeSelectLibrary } from './selectors';
 import {
   loadLibraryError,
   loadLibrarySuccess,
@@ -105,13 +104,13 @@ export function* loadUser() {
   }
 }
 
-export function* loadLibrary() {
-  const library = yield select(makeSelectLibrary());
+export function* loadLibrary(action) {
+  const { page, pageSize } = action;
 
   try {
     const newLibrary = yield call(spotifyApi.getMySavedTracks, {
-      offset: library.length,
-      limit: 50,
+      offset: page * pageSize,
+      limit: pageSize,
     });
     yield put(loadLibrarySuccess(newLibrary));
   } catch (err) {
@@ -127,6 +126,7 @@ export default function* spotifyData() {
   // By using `takeLatest` only the result of the latest API call is applied.
   // It returns task descriptor (just like fork) so we can continue execution
   // It will be cancelled automatically on component unmount
+  yield checkTokens();
 
   yield takeLatest(LOGIN, login);
   yield takeLatest(DELETE_TOKENS, logout);

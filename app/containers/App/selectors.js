@@ -30,7 +30,7 @@ const makeSelectUser = () => createSelector(
 
 const makeSelectLibrary = () => createSelector(
   selectGlobal,
-  globalState => globalState.get('library').toJS()
+  globalState => globalState.getIn('library')
 );
 
 const makeSelectLibraryTotal = () => createSelector(
@@ -38,9 +38,9 @@ const makeSelectLibraryTotal = () => createSelector(
   globalState => globalState.getIn(['libraryTotal'])
 );
 
-const makeSelectLibraryHasNextPage = () => createSelector(
+const makeSelectLibraryPages = () => createSelector(
   selectGlobal,
-  globalState => globalState.getIn(['libraryHasNextPage'])
+  globalState => globalState.getIn(['libraryPages'])
 );
 
 const makeSelectLoading = () => createSelector(
@@ -65,7 +65,7 @@ export {
   makeSelectUser,
   makeSelectLibrary,
   makeSelectLibraryTotal,
-  makeSelectLibraryHasNextPage,
+  makeSelectLibraryPages,
   makeSelectCurrentUser,
   makeSelectLoading,
   makeSelectError,
