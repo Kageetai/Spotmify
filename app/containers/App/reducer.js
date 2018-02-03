@@ -72,7 +72,6 @@ function appReducer(state = initialState, action) {
     case LOGIN_ERROR:
     case LOAD_USER_ERROR:
     case LOAD_LIBRARY_ERROR:
-      console.error('error');
       return state
         .set('error', action.error)
         .set('loading', false);
