@@ -33,7 +33,7 @@ const initialState = fromJS({
   user: {},
   library: [],
   libraryTotal: 0,
-  libraryHasNextPage: true,
+  libraryPages: 0,
 });
 
 function appReducer(state = initialState, action) {
@@ -65,9 +65,9 @@ function appReducer(state = initialState, action) {
         .set('error', false);
     case LOAD_LIBRARY_SUCCESS:
       return state
-        .update('library', library => library.concat(action.library.items))
+        .setIn('library', action.library.items)
         .set('libraryTotal', action.library.total)
-        .set('libraryHasNextPage', !!action.library.next)
+        .set('libraryPages', Math.ceil(action.library.total / action.library.limit))
         .set('loading', false);
     case LOGIN_ERROR:
     case LOAD_USER_ERROR:

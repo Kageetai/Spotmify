@@ -8,38 +8,74 @@ import { createStructuredSelector } from 'reselect';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 
-import { isLoggedIn } from 'utils/auth';
 import {
   makeSelectAccessToken,
   makeSelectError,
   makeSelectLoading,
   makeSelectLibrary,
   makeSelectLibraryTotal,
+  makeSelectLibraryPages,
 } from 'containers/App/selectors';
 import { loadLibrary } from 'containers/App/actions';
 import H1 from 'components/H1';
-import Button from 'components/Button';
 import A from 'components/A';
 import Section from 'components/Section';
 
 import messages from './messages';
 import AlbumCover from './AlbumCover';
 
-class LibraryPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
+const columns = [
+  {
+    Header: 'Name',
+    id: 'trackName',
+    accessor: i => i.track.name,
+    Cell: row => (
+      <A href={row.original.track.uri}>{row.value}</A>
+    ),
+  },
+  {
+    Header: 'Artist',
+    id: 'artist',
+    accessor: i => i.track.artists[0].name,
+    Cell: row => (
+      <A href={row.original.track.artists[0].uri}>{row.value}</A>
+    ),
+  },
+  {
+    Header: 'Album',
+    id: 'album',
+    accessor: i => i.track.album.name,
+    Cell: row => (
+      <A href={row.original.track.album.uri}>
+        <AlbumCover src={row.original.track.album.images[2].url} />{row.value}
+      </A>
+    ),
+  },
+  {
+    Header: 'Duration',
+    id: 'duration',
+    accessor: i => i.track.duration_ms,
+  },
+  {
+    Header: 'Added At',
+    id: 'addedAt',
+    accessor: 'added_at',
+  },
+  {
+    Header: 'Popularity',
+    id: 'popularity',
+    accessor: i => i.track.popularity,
+  },
+];
+
+class LibraryPage extends React.Component {
   constructor() {
     super();
-    this.loadMore = this.loadMore.bind(this);
+    this.fetchData = this.fetchData.bind(this);
   }
 
-  componentWillMount() {
-    if (isLoggedIn()) {
-      this.props.onGetLibrary();
-    }
-  }
-
-  loadMore(evt) {
-    evt.preventDefault();
-    this.props.onGetLibrary();
+  fetchData(state) {
+    this.props.onGetLibrary(state.page, state.pageSize);
   }
 
   render() {
@@ -58,60 +94,21 @@ class LibraryPage extends React.Component { // eslint-disable-line react/prefer-
         </Section>
 
         <ReactTable
+          manual
           data={this.props.library}
-          columns={[
-            {
-              Header: 'Name',
-              id: 'trackName',
-              accessor: i => i.track.name,
-              Cell: row => (
-                <A href={row.original.track.uri}>{row.value}</A>
-              ),
-            },
-            {
-              Header: 'Artist',
-              id: 'artist',
-              accessor: i => i.track.artists[0].name,
-              Cell: row => (
-                <A href={row.original.track.artists[0].uri}>{row.value}</A>
-              ),
-            },
-            {
-              Header: 'Album',
-              id: 'album',
-              accessor: i => i.track.album.name,
-              Cell: row => (
-                <A href={row.original.track.album.uri}>{console.log(row.original)}
-                  <AlbumCover src={row.original.track.album.images[2].url} />{row.value}
-                </A>
-              ),
-            },
-            {
-              Header: 'Duration',
-              id: 'duration',
-              accessor: i => i.track.duration_ms,
-            },
-            {
-              Header: 'Added At',
-              id: 'addedAt',
-              accessor: 'added_at',
-            },
-            {
-              Header: 'Popularity',
-              id: 'popularity',
-              accessor: i => i.track.popularity,
-            },
-          ]}
-          defaultSorted={[
-            {
-              id: 'addedAt',
-              desc: true,
-            },
-          ]}
-          defaultPageSize={50}
+          pages={this.props.libraryPages}
+          defaultPageSize={20}
+          onFetchData={this.fetchData}
+          columns={columns}
+          sortable={false}
+          // defaultSorted={[
+          //   {
+          //     id: 'addedAt',
+          //     desc: true,
+          //   },
+          // ]}
           className="-striped -highlight"
         />
-        <Button onClick={this.loadMore}>Load more</Button>
       </div>
     );
   }
@@ -127,11 +124,12 @@ LibraryPage.propTypes = {
   accessToken: PropTypes.string,
   library: PropTypes.array,
   libraryTotal: PropTypes.number,
+  libraryPages: PropTypes.number,
 };
 
 export function mapDispatchToProps(dispatch) {
   return {
-    onGetLibrary: () => dispatch(loadLibrary()),
+    onGetLibrary: (page, pageSize) => dispatch(loadLibrary(page, pageSize)),
   };
 }
 
@@ -139,6 +137,7 @@ const mapStateToProps = createStructuredSelector({
   accessToken: makeSelectAccessToken(),
   library: makeSelectLibrary(),
   libraryTotal: makeSelectLibraryTotal(),
+  libraryPages: makeSelectLibraryPages(),
   loading: makeSelectLoading(),
   error: makeSelectError(),
 });
