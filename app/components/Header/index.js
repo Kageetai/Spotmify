@@ -6,7 +6,7 @@ import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
 import { isLoggedIn } from 'utils/auth';
-import { login, deleteTokens } from 'containers/App/actions';
+import { deleteTokens } from 'containers/App/actions';
 
 import A from './A';
 import NavBar from './NavBar';
@@ -24,27 +24,23 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
         <A href="/">
           <H1>Spotmify</H1>
         </A>
-        <Section>
-          <NavBar>
-            <div>
-              <HeaderLink to="/">
-                <FormattedMessage {...messages.home} />
-              </HeaderLink>
-              <HeaderLink to="/library">
-                <FormattedMessage {...messages.library} />
-              </HeaderLink>
-            </div>
-            {isLoggedIn() ? (
+        {isLoggedIn() && (
+          <Section>
+            <NavBar>
+              <div>
+                <HeaderLink to="/">
+                  <FormattedMessage {...messages.home} />
+                </HeaderLink>
+                <HeaderLink to="/library">
+                  <FormattedMessage {...messages.library} />
+                </HeaderLink>
+              </div>
               <Button onClick={this.props.onLogout}>
                 <FormattedMessage {...messages.logout} />
               </Button>
-            ) : (
-              <Button onClick={this.props.onLogin}>
-                <FormattedMessage {...messages.login} />
-              </Button>
-            )}
-          </NavBar>
-        </Section>
+            </NavBar>
+          </Section>
+        )}
       </header>
     );
   }
@@ -52,7 +48,6 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
 
 Header.propTypes = {
   accessToken: PropTypes.string,
-  onLogin: PropTypes.func,
   onLogout: PropTypes.func,
 };
 
@@ -65,10 +60,6 @@ export function mapDispatchToProps(dispatch) {
     onLogout: (evt) => {
       evt.preventDefault();
       dispatch(deleteTokens());
-    },
-    onLogin: (evt) => {
-      evt.preventDefault();
-      dispatch(login());
     },
   };
 }

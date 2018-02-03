@@ -47,6 +47,8 @@ function appReducer(state = initialState, action) {
       return state
         .set('accessToken', initialState.accessToken)
         .set('expires', initialState.expires)
+        .set('user', initialState.user)
+        .set('library', initialState.library)
         .set('error', false);
     case LOAD_USER:
       return state

@@ -1,4 +1,5 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { push } from 'react-router-redux';
 import moment from 'moment';
 import Spotify from 'spotify-web-api-js';
 
@@ -67,6 +68,7 @@ export function* login() {
 export function* logout() {
   sessionStorage.removeItem('accessToken');
   sessionStorage.removeItem('expires');
+  yield put(push('/'));
 }
 
 export function* checkTokens() {
