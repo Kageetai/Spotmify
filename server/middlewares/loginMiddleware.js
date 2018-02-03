@@ -1,3 +1,5 @@
+// DEPRECATED
+
 /* eslint-disable global-require */
 const moment = require('moment');
 

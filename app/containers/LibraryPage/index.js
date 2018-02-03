@@ -1,8 +1,3 @@
-/*
- * FeaturePage
- *
- * List all the features
- */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
@@ -13,7 +8,6 @@ import { createStructuredSelector } from 'reselect';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 
-import injectSaga from 'utils/injectSaga';
 import { isLoggedIn } from 'utils/auth';
 import {
   makeSelectAccessToken,
@@ -23,7 +17,6 @@ import {
   makeSelectLibraryTotal,
 } from 'containers/App/selectors';
 import { loadLibrary } from 'containers/App/actions';
-import saga from 'containers/App/saga';
 import H1 from 'components/H1';
 import Button from 'components/Button';
 import A from 'components/A';
@@ -152,9 +145,4 @@ const mapStateToProps = createStructuredSelector({
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
-const withSaga = injectSaga({ key: 'app', saga });
-
-export default compose(
-  withSaga,
-  withConnect,
-)(LibraryPage);
+export default compose(withConnect)(LibraryPage);
