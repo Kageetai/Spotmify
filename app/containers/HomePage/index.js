@@ -12,7 +12,6 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 
-import injectSaga from 'utils/injectSaga';
 import { isLoggedIn } from 'utils/auth';
 import {
   makeSelectLoading,
@@ -21,7 +20,6 @@ import {
   makeSelectUser,
 } from 'containers/App/selectors';
 import { login, loadUser } from 'containers/App/actions';
-import saga from 'containers/App/saga';
 import Button from 'components/Button';
 import UserProfile from 'components/UserProfile';
 import Section from 'components/Section';
@@ -96,9 +94,4 @@ const mapStateToProps = createStructuredSelector({
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
-const withSaga = injectSaga({ key: 'app', saga });
-
-export default compose(
-  withSaga,
-  withConnect,
-)(HomePage);
+export default compose(withConnect)(HomePage);

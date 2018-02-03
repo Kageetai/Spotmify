@@ -1,15 +1,11 @@
-/**
- * Gets the repositories of the user from Github
- */
-
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 import moment from 'moment';
 import Spotify from 'spotify-web-api-js';
 
-import { isLoggedIn, isExpired } from 'utils/auth';
+import { isExpired } from 'utils/auth';
 
 import { LOGIN, GET_TOKENS, LOAD_LIBRARY, LOAD_USER, DELETE_TOKENS } from './constants';
-import { makeSelectAccessToken, makeSelectLibrary } from './selectors';
+import { makeSelectLibrary } from './selectors';
 import {
   loadLibraryError,
   loadLibrarySuccess,
@@ -22,7 +18,7 @@ import {
 const spotifyApi = new Spotify();
 
 const clientId = '94860236c7db4b85b0039499df4df4d7';
-const redirectUri = window.location.origin;
+const redirectUri = `${window.location.origin}/callback`;
 const stateKey = 'spotify_auth_state';
 const scope = 'user-read-private user-read-email user-library-read';
 
@@ -59,8 +55,8 @@ function getHashParams() {
 
 export function* login() {
   const state = generateRandomString(16);
-
   localStorage.setItem(stateKey, state);
+
   window.location =
     `https://accounts.spotify.com/authorize?response_type=token&client_id=${encodeURIComponent(clientId)
     }&scope=${encodeURIComponent(scope)
@@ -97,7 +93,6 @@ export function* checkTokens() {
   }
   // TODO remove hash params
 }
-checkTokens();
 
 export function* loadUser() {
   try {
@@ -130,7 +125,6 @@ export default function* spotifyData() {
   // By using `takeLatest` only the result of the latest API call is applied.
   // It returns task descriptor (just like fork) so we can continue execution
   // It will be cancelled automatically on component unmount
-  yield checkTokens();
 
   yield takeLatest(LOGIN, login);
   yield takeLatest(DELETE_TOKENS, logout);
