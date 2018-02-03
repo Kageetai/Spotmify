@@ -28,12 +28,10 @@ const plugins = [
 
 if (dllPlugin) {
   glob.sync(`${dllPlugin.path}/*.dll.js`).forEach((dllPath) => {
-    plugins.push(
-      new AddAssetHtmlPlugin({
-        filepath: dllPath,
-        includeSourcemap: false,
-      })
-    );
+    plugins.push(new AddAssetHtmlPlugin({
+      filepath: dllPath,
+      includeSourcemap: false,
+    }));
   });
 }
 
@@ -111,7 +109,7 @@ function dependencyHandlers() {
   }
 
   // If DLLs are explicitly defined, we automatically create a DLLReferencePlugin for each of them.
-  const dllManifests = Object.keys(dllPlugin.dlls).map((name) => path.join(dllPath, `/${name}.json`));
+  const dllManifests = Object.keys(dllPlugin.dlls).map(name => path.join(dllPath, `/${name}.json`));
 
   return dllManifests.map((manifestPath) => {
     if (!fs.existsSync(path)) {
