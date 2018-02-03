@@ -24,7 +24,7 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
         <A href="/">
           <H1>Spotmify</H1>
         </A>
-        {isLoggedIn() && (
+        {this.props.accessToken && isLoggedIn() && (
           <Section>
             <NavBar>
               <div>

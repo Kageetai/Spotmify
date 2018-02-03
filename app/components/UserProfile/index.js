@@ -25,8 +25,13 @@ const ProfileInfo = styled.div`
 
 class UserProfile extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { user } = this.props;
-    return user ? (
+    const { user, loading, error } = this.props;
+    if (error) {
+      return (
+        <FormattedMessage {...messages.error} />
+      );
+    }
+    return user && !loading ? (
       <StyledUserProfile>
         <A href={user.uri}>
           {user.images ? (
