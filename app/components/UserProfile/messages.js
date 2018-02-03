@@ -18,4 +18,8 @@ export default defineMessages({
     id: 'boilerplate.components.userProfile.product',
     defaultMessage: 'Product: {product}',
   },
+  error: {
+    id: 'boilerplate.components.userProfile.error',
+    defaultMessage: 'Error loading user profile',
+  },
 });

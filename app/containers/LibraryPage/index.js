@@ -115,13 +115,13 @@ class LibraryPage extends React.Component {
 }
 
 LibraryPage.propTypes = {
-  loading: PropTypes.bool,
-  error: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.bool,
-  ]),
+  // loading: PropTypes.bool,
+  // error: PropTypes.oneOfType([
+  //   PropTypes.object,
+  //   PropTypes.bool,
+  // ]),
   onGetLibrary: PropTypes.func,
-  accessToken: PropTypes.string,
+  // accessToken: PropTypes.string,
   library: PropTypes.array,
   libraryTotal: PropTypes.number,
   libraryPages: PropTypes.number,

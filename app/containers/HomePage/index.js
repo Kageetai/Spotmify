@@ -35,8 +35,8 @@ export class HomePage extends React.PureComponent {
   }
 
   render() {
-    const { loading, error, user } = this.props;
-    const loggedIn = isLoggedIn();
+    const { accessToken, loading, error, user } = this.props;
+    const loggedIn = isLoggedIn() && accessToken;
 
     return (
       <article>
