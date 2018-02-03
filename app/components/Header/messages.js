@@ -14,14 +14,6 @@ export default defineMessages({
     id: 'boilerplate.components.Header.library',
     defaultMessage: 'Library',
   },
-  login: {
-    id: 'boilerplate.containers.Header.login',
-    defaultMessage: 'Login',
-    error: {
-      id: 'boilerplate.containers.Header.login.error',
-      defaultMessage: 'Couldn\'t login, try again',
-    },
-  },
   logout: {
     id: 'boilerplate.containers.Header.logout',
     defaultMessage: 'Logout',
