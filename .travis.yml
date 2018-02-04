@@ -20,7 +20,7 @@ notifications:
 
 after_success:
   - npm run coveralls
-  - surge --project ./build --domain spotmify.surge.sh
+  - surge --project ./build --domain spotmify.info
 
 cache:
   directories:
