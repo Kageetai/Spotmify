@@ -68,6 +68,7 @@ export function* logout() {
 }
 
 export function* checkTokens() {
+  console.log('checkTokens');
   const params = getHashParams();
   const accessToken = params.access_token;
   const storedToken = sessionStorage.getItem('accessToken');
@@ -78,6 +79,7 @@ export function* checkTokens() {
 
   if (storedToken && !isExpired(expires)) {
     yield call(spotifyApi.setAccessToken, storedToken);
+    yield put(setTokens(storedToken, expires));
   } else if (accessToken && (state == null || state !== storedState)) {
     yield put(loginError('login error'));
   } else {
