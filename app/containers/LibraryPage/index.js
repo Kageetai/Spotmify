@@ -22,24 +22,22 @@ import A from 'components/A';
 import Section from 'components/Section';
 
 import messages from './messages';
-import AlbumCover from './AlbumCover';
+import AlbumCover from '../../components/AlbumCover';
+import Duration from '../../components/Duration';
+import DateTime from '../../components/DateTime';
 
 const columns = [
   {
     Header: 'Name',
     id: 'trackName',
     accessor: i => i.track.name,
-    Cell: row => (
-      <A href={row.original.track.uri}>{row.value}</A>
-    ),
+    Cell: row => <A href={row.original.track.uri}>{row.value}</A>,
   },
   {
     Header: 'Artist',
     id: 'artist',
     accessor: i => i.track.artists[0].name,
-    Cell: row => (
-      <A href={row.original.track.artists[0].uri}>{row.value}</A>
-    ),
+    Cell: row => <A href={row.original.track.artists[0].uri}>{row.value}</A>,
   },
   {
     Header: 'Album',
@@ -54,16 +52,20 @@ const columns = [
   {
     Header: 'Duration',
     id: 'duration',
+    width: 80,
     accessor: i => i.track.duration_ms,
+    Cell: row => <Duration milliseconds={row.original.track.duration_ms} />,
   },
   {
     Header: 'Added At',
     id: 'addedAt',
     accessor: 'added_at',
+    Cell: row => <DateTime timestamp={row.value} />,
   },
   {
     Header: 'Popularity',
     id: 'popularity',
+    width: 90,
     accessor: i => i.track.popularity,
   },
 ];
@@ -97,6 +99,7 @@ class LibraryPage extends React.Component {
           manual
           data={this.props.library}
           pages={this.props.libraryPages}
+          loading={this.props.loading}
           defaultPageSize={20}
           onFetchData={this.fetchData}
           columns={columns}
@@ -115,7 +118,7 @@ class LibraryPage extends React.Component {
 }
 
 LibraryPage.propTypes = {
-  // loading: PropTypes.bool,
+  loading: PropTypes.bool,
   // error: PropTypes.oneOfType([
   //   PropTypes.object,
   //   PropTypes.bool,
