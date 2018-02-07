@@ -68,7 +68,6 @@ export function* logout() {
 }
 
 export function* checkTokens() {
-  console.log('checkTokens');
   const params = getHashParams();
   const accessToken = params.access_token;
   const storedToken = sessionStorage.getItem('accessToken');
@@ -91,7 +90,6 @@ export function* checkTokens() {
       yield call(spotifyApi.setAccessToken, accessToken);
     }
   }
-  // TODO remove hash params
 }
 
 export function* loadUser() {
