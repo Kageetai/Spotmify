@@ -6,7 +6,8 @@
     "clientId": "94860236c7db4b85b0039499df4df4d7",
     "redirectUri": "/callback",
     "stateKey": "spotify_auth_state",
-    "scope": "user-read-private user-read-email user-library-read"
+    "scope": "user-read-private user-read-email user-library-read",
+    "dateformat": "lll"
   },
   "repository": {
     "type": "git",
