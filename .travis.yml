@@ -21,7 +21,12 @@ notifications:
 
 after_success:
   - npm run coveralls
-  - surge --project ./build --domain spotmify.info
+#  - surge --project ./build --domain spotmify.info
+
+deploy:
+  provider: surge
+  project: ./build/
+  domain: spotmify.info
 
 cache:
   yarn: true
