@@ -27,6 +27,7 @@ deploy:
   provider: surge
   project: ./build/
   domain: spotmify.info
+  skip_cleanup: true
 
 cache:
   yarn: true
