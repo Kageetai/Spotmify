@@ -56,16 +56,23 @@ const columns = [
     Cell: row => <Duration milliseconds={row.original.track.duration_ms} />,
   },
   {
-    Header: 'Added At',
-    id: 'addedAt',
-    accessor: 'added_at',
-    Cell: row => <DateTime timestamp={row.value} />,
-  },
-  {
     Header: 'Popularity',
     id: 'popularity',
     width: 90,
     accessor: i => i.track.popularity,
+  },
+  {
+    Header: 'Explicit',
+    id: 'explicit',
+    width: 70,
+    accessor: i => i.track.explicit,
+    Cell: row => <span>{row.value ? 'yes' : 'no'}</span>,
+  },
+  {
+    Header: 'Added At',
+    id: 'addedAt',
+    accessor: 'added_at',
+    Cell: row => <DateTime timestamp={row.value} />,
   },
 ];
 

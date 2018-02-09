@@ -173,6 +173,10 @@ export function* exportCSV(action) {
       value: 'track.popularity',
     },
     {
+      label: 'explicit',
+      value: 'track.explicit',
+    },
+    {
       label: 'uri',
       value: 'track.uri',
     },
