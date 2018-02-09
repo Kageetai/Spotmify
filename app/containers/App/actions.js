@@ -27,6 +27,9 @@ import {
   LOAD_LIBRARY,
   LOAD_LIBRARY_SUCCESS,
   LOAD_LIBRARY_ERROR,
+  EXPORT_CSV,
+  EXPORT_CSV_SUCCESS,
+  EXPORT_CSV_ERROR,
 } from './constants';
 
 /**
@@ -85,7 +88,7 @@ export function deleteTokens() {
 /**
  * Load user data from Spotify
  *
- * @return {object} An action object with a type of SET_TOKENS
+ * @return {object} An action object with a type of LOAD_USER
  */
 export function loadUser() {
   return {
@@ -124,7 +127,10 @@ export function loadUserError(error) {
 /**
  * Load users library from Spotify
  *
- * @return {object} An action object with a type of SET_TOKENS
+ * @param  {number} page which page to load
+ * @param  {number} pageSize how much to load per page
+ *
+ * @return {object} An action object with a type of LOAD_LIBRARY
  */
 export function loadLibrary(page = 1, pageSize = 50) {
   return {
@@ -158,6 +164,45 @@ export function loadLibrarySuccess(library) {
 export function loadLibraryError(error) {
   return {
     type: LOAD_LIBRARY_ERROR,
+    error,
+  };
+}
+
+/**
+ * Export to CSV
+ *
+ * @param  {array} items the data to export to CSV
+ *
+ * @return {object} An action object with a type of EXPORT_CSV
+ */
+export function exportCSV(items) {
+  return {
+    type: EXPORT_CSV,
+    items,
+  };
+}
+
+/**
+ * Dispatched when the export was successful
+ *
+ * @return {object}      An action object with a type of EXPORT_CSV_SUCCESS
+ */
+export function exportCSVSuccess() {
+  return {
+    type: EXPORT_CSV_SUCCESS,
+  };
+}
+
+/**
+ * Dispatched when the export was unsuccessful
+ *
+ * @param  {object} error The error
+ *
+ * @return {object}       An action object with a type of EXPORT_CSV_ERROR passing the error
+ */
+export function exportCSVError(error) {
+  return {
+    type: EXPORT_CSV_ERROR,
     error,
   };
 }

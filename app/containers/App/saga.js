@@ -2,12 +2,21 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 import moment from 'moment';
 import Spotify from 'spotify-web-api-js';
+import Json2csv from 'json2csv';
+import FileSaver from 'file-saver';
 
 import { isExpired } from 'utils/auth';
 
 import pkg from '../../../package.json';
 
-import { LOGIN, GET_TOKENS, LOAD_LIBRARY, LOAD_USER, DELETE_TOKENS } from './constants';
+import {
+  LOGIN,
+  GET_TOKENS,
+  LOAD_LIBRARY,
+  LOAD_USER,
+  DELETE_TOKENS,
+  EXPORT_CSV,
+} from './constants';
 import {
   loadLibraryError,
   loadLibrarySuccess,
@@ -133,6 +142,35 @@ export function* loadFullLibrary() {
   }
 }
 
+export function* exportCSV(action) {
+  const fields = [
+    {
+      label: 'name',
+      value: 'track.name',
+    },
+    {
+      label: 'artist',
+      value: 'track.artists[0].name',
+    },
+    {
+      label: 'album',
+      value: 'track.album.name',
+    },
+    {
+      label: 'duration',
+      value: 'track.duration_ms',
+    },
+    {
+      label: 'popularity',
+      value: 'track.popularity',
+    },
+    'added_at',
+  ];
+  const csv = Json2csv({ data: action.items, fields, del: pkg.csvDelimiter });
+  const blob = new Blob([csv], { type: 'text/csv' });
+  FileSaver.saveAs(blob, 'export.csv');
+}
+
 /**
  * Root saga manages watcher lifecycle
  */
@@ -148,4 +186,5 @@ export default function* spotifyData() {
   yield takeLatest(GET_TOKENS, checkTokens);
   yield takeLatest(LOAD_USER, loadUser);
   yield takeLatest(LOAD_LIBRARY, loadFullLibrary);
+  yield takeLatest(EXPORT_CSV, exportCSV);
 }
