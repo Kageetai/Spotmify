@@ -157,12 +157,24 @@ export function* exportCSV(action) {
       value: 'track.album.name',
     },
     {
+      label: 'album cover',
+      value: 'track.album.images[0].url',
+    },
+    {
       label: 'duration',
       value: 'track.duration_ms',
     },
     {
+      label: 'track number',
+      value: 'track.track_number',
+    },
+    {
       label: 'popularity',
       value: 'track.popularity',
+    },
+    {
+      label: 'uri',
+      value: 'track.uri',
     },
     'added_at',
   ];
