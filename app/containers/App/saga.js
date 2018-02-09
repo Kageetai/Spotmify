@@ -178,7 +178,7 @@ export function* exportCSV(action) {
     },
     'added_at',
   ];
-  const csv = Json2csv({ data: action.items, fields, del: pkg.csvDelimiter });
+  const csv = Json2csv({ data: action.items, fields, del: pkg.spotify.csvDelimiter });
   const blob = new Blob([csv], { type: 'text/csv' });
   FileSaver.saveAs(blob, 'export.csv');
 }
