@@ -19,14 +19,26 @@ const buttonStyles = css`
   border: 2px solid ${colors.primary};
   color: ${colors.primary};
   
-  &:hover {
-    color: ${colors.primaryHover};  
-  }
+  ${props => props.disabled ? `
+    color: darkgray;
+    border-color: darkgray;
+    cursor: initial;
+    
+    &:hover {
+      color: darkgay;
+    }
+  ` : `
+    &:hover {
+      color: ${colors.primaryHover};
+      border-color: ${colors.primaryHover};
+    }
+  
+    &:active {
+      background: ${colors.primary};
+      color: #fff;
+    }
+  `}
 
-  &:active {
-    background: ${colors.primary};
-    color: #fff;
-  }
 `;
 
 export default buttonStyles;

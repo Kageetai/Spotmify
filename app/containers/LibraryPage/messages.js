@@ -22,4 +22,8 @@ export default defineMessages({
     id: 'boilerplate.containers.LibraryPage.libraryEmpty',
     defaultMessage: 'Seems like your library is empty.',
   },
+  exportCsv: {
+    id: 'boilerplate.containers.LibraryPage.exportCsv',
+    defaultMessage: 'Export CSV',
+  },
 });

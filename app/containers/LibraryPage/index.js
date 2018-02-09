@@ -13,16 +13,17 @@ import {
   makeSelectLoading,
   makeSelectLibrary,
 } from 'containers/App/selectors';
-import { loadLibrary } from 'containers/App/actions';
+import { loadLibrary, exportCSV } from 'containers/App/actions';
 import H1 from 'components/H1';
 import A from 'components/A';
 import Section from 'components/Section';
+import AlbumCover from 'components/AlbumCover';
+import Duration from 'components/Duration';
+import DateTime from 'components/DateTime';
+import Button from 'components/Button';
 import { isLoggedIn } from 'utils/auth';
 
 import messages from './messages';
-import AlbumCover from '../../components/AlbumCover';
-import Duration from '../../components/Duration';
-import DateTime from '../../components/DateTime';
 
 const columns = [
   {
@@ -91,22 +92,33 @@ class LibraryPage extends React.Component {
           </H1>
         </Section>
 
-        <ReactTable
-          data={this.props.library}
-          loading={this.props.loading}
-          defaultPageSize={20}
-          columns={columns}
-          filterable
-          loadingText="Loading... This may take a while, we are loading your full library"
-          noDataText="Seems like your library is empty."
-          defaultSorted={[
-            {
-              id: 'addedAt',
-              desc: true,
-            },
-          ]}
-          className="-striped -highlight"
-        />
+        <Section>
+          <ReactTable
+            data={this.props.library}
+            loading={this.props.loading}
+            defaultPageSize={20}
+            columns={columns}
+            filterable
+            loadingText={formatMessage(messages.libraryLoading)}
+            noDataText={formatMessage(messages.libraryEmpty)}
+            defaultSorted={[
+              {
+                id: 'addedAt',
+                desc: true,
+              },
+            ]}
+            className="-striped -highlight"
+          />
+        </Section>
+
+        <Section>
+          <Button
+            onClick={() => this.props.onExportCsv(this.props.library)}
+            disabled={this.props.loading || !this.props.library}
+          >
+            <FormattedMessage {...messages.exportCsv} />
+          </Button>
+        </Section>
       </div>
     );
   }
@@ -119,6 +131,7 @@ LibraryPage.propTypes = {
   //   PropTypes.bool,
   // ]),
   onGetLibrary: PropTypes.func,
+  onExportCsv: PropTypes.func,
   library: PropTypes.array,
   intl: PropTypes.any,
 };
@@ -126,6 +139,7 @@ LibraryPage.propTypes = {
 export function mapDispatchToProps(dispatch) {
   return {
     onGetLibrary: (page, pageSize) => dispatch(loadLibrary(page, pageSize)),
+    onExportCsv: items => dispatch(exportCSV(items)),
   };
 }
 
