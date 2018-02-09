@@ -115,6 +115,24 @@ export function* loadLibrary(action) {
   }
 }
 
+export function* loadFullLibrary() {
+  let library = [];
+  let newLibrary = [];
+
+  try {
+    do {
+      newLibrary = yield call(spotifyApi.getMySavedTracks, {
+        offset: library.length,
+        limit: 50, // 50 is the maximum page size allowed by Spotify API
+      });
+      library = library.concat(newLibrary.items);
+    } while (newLibrary.next);
+    yield put(loadLibrarySuccess(library));
+  } catch (err) {
+    yield put(loadLibraryError(err));
+  }
+}
+
 /**
  * Root saga manages watcher lifecycle
  */
@@ -129,5 +147,5 @@ export default function* spotifyData() {
   yield takeLatest(DELETE_TOKENS, logout);
   yield takeLatest(GET_TOKENS, checkTokens);
   yield takeLatest(LOAD_USER, loadUser);
-  yield takeLatest(LOAD_LIBRARY, loadLibrary);
+  yield takeLatest(LOAD_LIBRARY, loadFullLibrary);
 }

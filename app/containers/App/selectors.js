@@ -38,10 +38,6 @@ const makeSelectLibraryTotal = () => createSelector(
   globalState => globalState.getIn(['libraryTotal'])
 );
 
-const makeSelectLibraryPages = () => createSelector(
-  selectGlobal,
-  globalState => globalState.getIn(['libraryPages'])
-);
 
 const makeSelectLoading = () => createSelector(
   selectGlobal,
@@ -65,7 +61,6 @@ export {
   makeSelectUser,
   makeSelectLibrary,
   makeSelectLibraryTotal,
-  makeSelectLibraryPages,
   makeSelectCurrentUser,
   makeSelectLoading,
   makeSelectError,
