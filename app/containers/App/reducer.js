@@ -22,6 +22,7 @@ import {
   LOAD_LIBRARY,
   LOAD_LIBRARY_SUCCESS,
   LOAD_LIBRARY_ERROR,
+  EXPORT_CSV_ERROR,
 } from './constants';
 
 // The initial state of the App
@@ -65,6 +66,7 @@ function appReducer(state = initialState, action) {
     case LOGIN_ERROR:
     case LOAD_USER_ERROR:
     case LOAD_LIBRARY_ERROR:
+    case EXPORT_CSV_ERROR:
       return state
         .set('error', action.error)
         .set('loading', false);
