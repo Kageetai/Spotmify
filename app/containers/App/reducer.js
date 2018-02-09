@@ -33,7 +33,6 @@ const initialState = fromJS({
   user: {},
   library: [],
   libraryTotal: 0,
-  libraryPages: 0,
 });
 
 function appReducer(state = initialState, action) {
@@ -44,12 +43,7 @@ function appReducer(state = initialState, action) {
         .set('expires', action.expires)
         .set('error', false);
     case DELETE_TOKENS:
-      return state
-        .set('accessToken', initialState.accessToken)
-        .set('expires', initialState.expires)
-        .set('user', initialState.user)
-        .set('library', initialState.library)
-        .set('error', false);
+      return initialState;
     case LOAD_USER:
       return state
         .set('loading', true)
@@ -65,9 +59,8 @@ function appReducer(state = initialState, action) {
         .set('error', false);
     case LOAD_LIBRARY_SUCCESS:
       return state
-        .setIn('library', action.library.items)
-        .set('libraryTotal', action.library.total)
-        .set('libraryPages', Math.ceil(action.library.total / action.library.limit))
+        .setIn('library', action.library)
+        .set('libraryTotal', action.library.length)
         .set('loading', false);
     case LOGIN_ERROR:
     case LOAD_USER_ERROR:

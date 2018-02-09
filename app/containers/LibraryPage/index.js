@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
@@ -9,17 +9,15 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 
 import {
-  makeSelectAccessToken,
   makeSelectError,
   makeSelectLoading,
   makeSelectLibrary,
-  makeSelectLibraryTotal,
-  makeSelectLibraryPages,
 } from 'containers/App/selectors';
 import { loadLibrary } from 'containers/App/actions';
 import H1 from 'components/H1';
 import A from 'components/A';
 import Section from 'components/Section';
+import { isLoggedIn } from 'utils/auth';
 
 import messages from './messages';
 import AlbumCover from '../../components/AlbumCover';
@@ -71,45 +69,42 @@ const columns = [
 ];
 
 class LibraryPage extends React.Component {
-  constructor() {
-    super();
-    this.fetchData = this.fetchData.bind(this);
-  }
-
-  fetchData(state) {
-    this.props.onGetLibrary(state.page, state.pageSize);
+  componentDidMount() {
+    if (isLoggedIn() && !this.props.library) {
+      this.props.onGetLibrary();
+    }
   }
 
   render() {
+    const { formatMessage } = this.props.intl;
+
     return (
       <div>
         <Helmet>
           <title>Library Page</title>
-          <meta name="description" content="Your Spotify library" />
+          <meta name="description" content={formatMessage(messages.header)} />
         </Helmet>
 
         <Section>
           <H1>
             <FormattedMessage {...messages.header} />
           </H1>
-          <FormattedMessage {...messages.libraryTotal} values={{ count: this.props.libraryTotal }} />
         </Section>
 
         <ReactTable
-          manual
           data={this.props.library}
-          pages={this.props.libraryPages}
           loading={this.props.loading}
           defaultPageSize={20}
-          onFetchData={this.fetchData}
           columns={columns}
-          sortable={false}
-          // defaultSorted={[
-          //   {
-          //     id: 'addedAt',
-          //     desc: true,
-          //   },
-          // ]}
+          filterable
+          loadingText="Loading... This may take a while, we are loading your full library"
+          noDataText="Seems like your library is empty."
+          defaultSorted={[
+            {
+              id: 'addedAt',
+              desc: true,
+            },
+          ]}
           className="-striped -highlight"
         />
       </div>
@@ -124,10 +119,8 @@ LibraryPage.propTypes = {
   //   PropTypes.bool,
   // ]),
   onGetLibrary: PropTypes.func,
-  // accessToken: PropTypes.string,
   library: PropTypes.array,
-  libraryTotal: PropTypes.number,
-  libraryPages: PropTypes.number,
+  intl: PropTypes.any,
 };
 
 export function mapDispatchToProps(dispatch) {
@@ -137,14 +130,11 @@ export function mapDispatchToProps(dispatch) {
 }
 
 const mapStateToProps = createStructuredSelector({
-  accessToken: makeSelectAccessToken(),
   library: makeSelectLibrary(),
-  libraryTotal: makeSelectLibraryTotal(),
-  libraryPages: makeSelectLibraryPages(),
   loading: makeSelectLoading(),
   error: makeSelectError(),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
-export default compose(withConnect)(LibraryPage);
+export default compose(withConnect, injectIntl)(LibraryPage);
