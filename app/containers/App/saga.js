@@ -28,6 +28,46 @@ import {
 
 const spotifyApi = new Spotify();
 
+const csvFields = [
+  {
+    label: 'name',
+    value: 'track.name',
+  },
+  {
+    label: 'artist',
+    value: 'track.artists[0].name',
+  },
+  {
+    label: 'album',
+    value: 'track.album.name',
+  },
+  {
+    label: 'album cover',
+    value: 'track.album.images[0].url',
+  },
+  {
+    label: 'duration',
+    value: 'track.duration_ms',
+  },
+  {
+    label: 'track number',
+    value: 'track.track_number',
+  },
+  {
+    label: 'popularity',
+    value: 'track.popularity',
+  },
+  {
+    label: 'explicit',
+    value: 'track.explicit',
+  },
+  {
+    label: 'uri',
+    value: 'track.uri',
+  },
+  'added_at',
+];
+
 /**
  * Generates a random string containing numbers and letters
  * @param  {number} length The length of the string
@@ -94,8 +134,9 @@ export function* checkTokens() {
     localStorage.removeItem(pkg.spotify.stateKey);
     if (accessToken && expiresIn) {
       sessionStorage.setItem('accessToken', accessToken);
-      sessionStorage.setItem('expires', moment().add(expiresIn, 's').format());
-      yield put(setTokens(accessToken, moment().add(expiresIn, 's').format()));
+      const newExpires = moment().add(expiresIn, 's').format();
+      sessionStorage.setItem('expires', newExpires);
+      yield put(setTokens(accessToken, newExpires));
       yield call(spotifyApi.setAccessToken, accessToken);
     }
   }
@@ -143,46 +184,7 @@ export function* loadFullLibrary() {
 }
 
 export function* exportCSV(action) {
-  const fields = [
-    {
-      label: 'name',
-      value: 'track.name',
-    },
-    {
-      label: 'artist',
-      value: 'track.artists[0].name',
-    },
-    {
-      label: 'album',
-      value: 'track.album.name',
-    },
-    {
-      label: 'album cover',
-      value: 'track.album.images[0].url',
-    },
-    {
-      label: 'duration',
-      value: 'track.duration_ms',
-    },
-    {
-      label: 'track number',
-      value: 'track.track_number',
-    },
-    {
-      label: 'popularity',
-      value: 'track.popularity',
-    },
-    {
-      label: 'explicit',
-      value: 'track.explicit',
-    },
-    {
-      label: 'uri',
-      value: 'track.uri',
-    },
-    'added_at',
-  ];
-  const csv = Json2csv({ data: action.items, fields, del: pkg.spotify.csvDelimiter });
+  const csv = Json2csv({ data: action.items, fields: csvFields, del: pkg.spotify.csvDelimiter });
   const blob = new Blob([csv], { type: 'text/csv' });
   FileSaver.saveAs(blob, 'export.csv');
 }
