@@ -5,7 +5,6 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
-import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 
 import {
@@ -15,66 +14,12 @@ import {
 } from 'containers/App/selectors';
 import { loadLibrary, exportCSV } from 'containers/App/actions';
 import H1 from 'components/H1';
-import A from 'components/A';
 import Section from 'components/Section';
-import AlbumCover from 'components/AlbumCover';
-import Duration from 'components/Duration';
-import DateTime from 'components/DateTime';
+import Table from 'components/Table';
 import Button from 'components/Button';
 import { isLoggedIn } from 'utils/auth';
 
 import messages from './messages';
-
-const columns = [
-  {
-    Header: 'Name',
-    id: 'trackName',
-    accessor: i => i.track.name,
-    Cell: row => <A href={row.original.track.uri}>{row.value}</A>,
-  },
-  {
-    Header: 'Artist',
-    id: 'artist',
-    accessor: i => i.track.artists[0].name,
-    Cell: row => <A href={row.original.track.artists[0].uri}>{row.value}</A>,
-  },
-  {
-    Header: 'Album',
-    id: 'album',
-    accessor: i => i.track.album.name,
-    Cell: row => (
-      <A href={row.original.track.album.uri}>
-        <AlbumCover src={row.original.track.album.images[2].url} />{row.value}
-      </A>
-    ),
-  },
-  {
-    Header: 'Duration',
-    id: 'duration',
-    width: 80,
-    accessor: i => i.track.duration_ms,
-    Cell: row => <Duration milliseconds={row.original.track.duration_ms} />,
-  },
-  {
-    Header: 'Popularity',
-    id: 'popularity',
-    width: 90,
-    accessor: i => i.track.popularity,
-  },
-  {
-    Header: 'Explicit',
-    id: 'explicit',
-    width: 70,
-    accessor: i => i.track.explicit,
-    Cell: row => <span>{row.value ? 'yes' : 'no'}</span>,
-  },
-  {
-    Header: 'Added At',
-    id: 'addedAt',
-    accessor: 'added_at',
-    Cell: row => <DateTime timestamp={row.value} />,
-  },
-];
 
 class LibraryPage extends React.Component {
   componentDidMount() {
@@ -100,21 +45,11 @@ class LibraryPage extends React.Component {
         </Section>
 
         <Section>
-          <ReactTable
+          <Table
             data={this.props.library}
             loading={this.props.loading}
-            defaultPageSize={20}
-            columns={columns}
-            filterable
             loadingText={formatMessage(messages.libraryLoading)}
             noDataText={formatMessage(messages.libraryEmpty)}
-            defaultSorted={[
-              {
-                id: 'addedAt',
-                desc: true,
-              },
-            ]}
-            className="-striped -highlight"
           />
         </Section>
 
