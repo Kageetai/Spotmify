@@ -15,6 +15,7 @@ import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router/immutable';
 import history from 'utils/history';
 import 'sanitize.css/sanitize.css';
+import Modal from 'react-modal';
 
 // Import root app
 import App from 'containers/App';
@@ -50,6 +51,8 @@ const render = messages => {
     MOUNT_NODE,
   );
 };
+
+Modal.setAppElement(MOUNT_NODE);
 
 if (module.hot) {
   // Hot reloadable React components and translation json files

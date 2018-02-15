@@ -12,6 +12,7 @@ const A = styled.a`
 
   &:hover {
     color: ${colors.primaryHover};
+    cursor: pointer;
   }
 `;
 
