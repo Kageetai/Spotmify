@@ -34,6 +34,8 @@ import configureStore from './configureStore';
 // Import i18n messages
 import { translationMessages } from './i18n';
 
+import { modalStyles } from './global-styles';
+
 // Create redux store with history
 const initialState = {};
 const store = configureStore(initialState, history);
@@ -53,6 +55,7 @@ const render = messages => {
 };
 
 Modal.setAppElement(MOUNT_NODE);
+Modal.defaultStyles = { ...Modal.defaultStyles, ...modalStyles };
 
 if (module.hot) {
   // Hot reloadable React components and translation json files

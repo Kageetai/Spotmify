@@ -13,6 +13,9 @@ class Table extends React.PureComponent {
     super(props);
     this.state = {
       isModalOpen: false,
+      selectedItem: {
+        track: {},
+      },
     };
 
     this.columns = [
@@ -20,7 +23,7 @@ class Table extends React.PureComponent {
         Header: 'Name',
         id: 'trackName',
         accessor: i => i.track.name,
-        Cell: row => <A onClick={this.toggleModal}>{row.value}</A>,
+        Cell: row => <A onClick={() => this.openModal(row.original)}>{row.value}</A>,
       },
       {
         Header: 'Artist',
@@ -66,11 +69,21 @@ class Table extends React.PureComponent {
       },
     ];
 
-    this.toggleModal = this.toggleModal.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.hideModal = this.hideModal.bind(this);
   }
 
-  toggleModal() {
-    this.setState(state => ({ isModalOpen: !state.isModalOpen }));
+  openModal(item) {
+    this.setState({
+      isModalOpen: true,
+      selectedItem: item,
+    });
+  }
+
+  hideModal() {
+    this.setState({
+      isModalOpen: false,
+    });
   }
 
   render() {
@@ -93,14 +106,15 @@ class Table extends React.PureComponent {
           className="-striped -highlight"
         />
 
-        <Modal
-          isOpen={this.state.isModalOpen}
-          onRequestClose={this.toggleModal}
-          contentLabel="Modal"
-        >
-          <h1>Modal Content</h1>
-          <p>Etc.</p>
-        </Modal>
+        {this.state.selectedItem && (
+          <Modal
+            isOpen={this.state.isModalOpen}
+            onRequestClose={this.hideModal}
+            contentLabel="Modal"
+          >
+            <A href={this.state.selectedItem.track.uri}><h1>{this.state.selectedItem.track.name}</h1></A>
+          </Modal>
+        )}
       </div>
     );
   }
