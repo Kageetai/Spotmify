@@ -22,6 +22,10 @@ export default defineMessages({
     id: 'boilerplate.containers.LibraryPage.libraryEmpty',
     defaultMessage: 'Seems like your library is empty.',
   },
+  libraryError: {
+    id: 'boilerplate.containers.LibraryPage.libraryError',
+    defaultMessage: 'Seems like your there was an error loading your library. You can contact the developer to get help: spotmify@kageetai.net',
+  },
   exportCsv: {
     id: 'boilerplate.containers.LibraryPage.exportCsv',
     defaultMessage: 'Export CSV',

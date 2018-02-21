@@ -49,7 +49,7 @@ class LibraryPage extends React.Component {
             data={this.props.library}
             loading={this.props.loading}
             loadingText={formatMessage(messages.libraryLoading)}
-            noDataText={formatMessage(messages.libraryEmpty)}
+            noDataText={this.props.error ? formatMessage(messages.libraryError) : formatMessage(messages.libraryEmpty)}
           />
         </Section>
 
@@ -68,10 +68,10 @@ class LibraryPage extends React.Component {
 
 LibraryPage.propTypes = {
   loading: PropTypes.bool,
-  // error: PropTypes.oneOfType([
-  //   PropTypes.object,
-  //   PropTypes.bool,
-  // ]),
+  error: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.bool,
+  ]),
   onGetLibrary: PropTypes.func,
   onExportCsv: PropTypes.func,
   library: PropTypes.array,
