@@ -14,6 +14,7 @@ import {
   GET_TOKENS,
   LOAD_LIBRARY,
   LOAD_USER,
+  LOAD_TRACK,
   DELETE_TOKENS,
   EXPORT_CSV,
 } from './constants';
@@ -22,6 +23,8 @@ import {
   loadLibrarySuccess,
   loadUserError,
   loadUserSuccess,
+  loadTrackError,
+  loadTrackSuccess,
   loginError,
   setTokens,
 } from './actions';
@@ -150,7 +153,6 @@ export function* loadUser() {
     yield put(loadUserError(err));
   }
 }
-
 export function* loadLibrary(action) {
   const { page, pageSize } = action;
 
@@ -183,6 +185,16 @@ export function* loadFullLibrary() {
   }
 }
 
+export function* loadTrack(action) {
+  try {
+    const track = yield call(spotifyApi.getTrack, action.id);
+    const audioFeatures = yield call(spotifyApi.getAudioFeaturesForTrack, action.id);
+    yield put(loadTrackSuccess({ ...track, ...audioFeatures }));
+  } catch (err) {
+    yield put(loadTrackError(err));
+  }
+}
+
 export function* exportCSV(action) {
   const csv = Json2csv({ data: action.items, fields: csvFields, del: pkg.spotify.csvDelimiter });
   const blob = new Blob([csv], { type: 'text/csv' });
@@ -203,6 +215,7 @@ export default function* spotifyData() {
   yield takeLatest(DELETE_TOKENS, logout);
   yield takeLatest(GET_TOKENS, checkTokens);
   yield takeLatest(LOAD_USER, loadUser);
+  yield takeLatest(LOAD_TRACK, loadTrack);
   yield takeLatest(LOAD_LIBRARY, loadFullLibrary);
   yield takeLatest(EXPORT_CSV, exportCSV);
 }

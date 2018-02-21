@@ -32,6 +32,10 @@ const makeSelectLibraryTotal = () => createSelector(
   globalState => globalState.getIn(['libraryTotal'])
 );
 
+const makeSelectTrack = () => createSelector(
+  selectGlobal,
+  globalState => globalState.getIn(['track'])
+);
 
 const makeSelectLoading = () => createSelector(
   selectGlobal,
@@ -55,6 +59,7 @@ export {
   makeSelectUser,
   makeSelectLibrary,
   makeSelectLibraryTotal,
+  makeSelectTrack,
   makeSelectCurrentUser,
   makeSelectLoading,
   makeSelectError,

@@ -22,6 +22,9 @@ import {
   LOAD_LIBRARY,
   LOAD_LIBRARY_SUCCESS,
   LOAD_LIBRARY_ERROR,
+  LOAD_TRACK,
+  LOAD_TRACK_SUCCESS,
+  LOAD_TRACK_ERROR,
   EXPORT_CSV_ERROR,
 } from './constants';
 
@@ -34,6 +37,7 @@ const initialState = fromJS({
   user: {},
   library: [],
   libraryTotal: 0,
+  track: {},
 });
 
 function appReducer(state = initialState, action) {
@@ -63,9 +67,19 @@ function appReducer(state = initialState, action) {
         .setIn('library', action.library)
         .set('libraryTotal', action.library.length)
         .set('loading', false);
+    case LOAD_TRACK:
+      return state
+        .setIn(['track'], initialState.track)
+        .set('loading', true)
+        .set('error', false);
+    case LOAD_TRACK_SUCCESS:
+      return state
+        .setIn(['track'], action.track)
+        .set('loading', false);
     case LOGIN_ERROR:
     case LOAD_USER_ERROR:
     case LOAD_LIBRARY_ERROR:
+    case LOAD_TRACK_ERROR:
     case EXPORT_CSV_ERROR:
       return state
         .set('error', action.error)

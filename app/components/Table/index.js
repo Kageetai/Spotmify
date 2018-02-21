@@ -1,21 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactTable from 'react-table';
-import Modal from 'react-modal';
 
 import AlbumCover from 'components/AlbumCover';
 import Duration from 'components/Duration';
 import DateTime from 'components/DateTime';
 import A from 'components/A';
+import TrackModal from 'components/TrackModal';
 
 class Table extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       isModalOpen: false,
-      selectedItem: {
-        track: {},
-      },
+      selectedTrack: {},
     };
 
     this.columns = [
@@ -23,7 +21,7 @@ class Table extends React.PureComponent {
         Header: 'Name',
         id: 'trackName',
         accessor: i => i.track.name,
-        Cell: row => <A onClick={() => this.openModal(row.original)}>{row.value}</A>,
+        Cell: row => <A onClick={() => this.setTrack(row.original)}>{row.value}</A>,
       },
       {
         Header: 'Artist',
@@ -69,20 +67,19 @@ class Table extends React.PureComponent {
       },
     ];
 
-    this.openModal = this.openModal.bind(this);
-    this.hideModal = this.hideModal.bind(this);
+    this.setTrack = this.setTrack.bind(this);
+    this.unsetTrack = this.unsetTrack.bind(this);
   }
 
-  openModal(item) {
+  setTrack(track) {
     this.setState({
-      isModalOpen: true,
-      selectedItem: item,
+      selectedTrack: track,
     });
   }
 
-  hideModal() {
+  unsetTrack() {
     this.setState({
-      isModalOpen: false,
+      selectedTrack: {},
     });
   }
 
@@ -106,14 +103,11 @@ class Table extends React.PureComponent {
           className="-striped -highlight"
         />
 
-        {this.state.selectedItem && (
-          <Modal
-            isOpen={this.state.isModalOpen}
-            onRequestClose={this.hideModal}
-            contentLabel="Modal"
-          >
-            <A href={this.state.selectedItem.track.uri}><h1>{this.state.selectedItem.track.name}</h1></A>
-          </Modal>
+        {(this.state.selectedTrack && this.state.selectedTrack.track) && (
+          <TrackModal
+            id={this.state.selectedTrack.track.id}
+            onClose={this.unsetTrack}
+          />
         )}
       </div>
     );

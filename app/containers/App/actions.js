@@ -27,6 +27,9 @@ import {
   LOAD_LIBRARY,
   LOAD_LIBRARY_SUCCESS,
   LOAD_LIBRARY_ERROR,
+  LOAD_TRACK,
+  LOAD_TRACK_SUCCESS,
+  LOAD_TRACK_ERROR,
   EXPORT_CSV,
   EXPORT_CSV_SUCCESS,
   EXPORT_CSV_ERROR,
@@ -164,6 +167,48 @@ export function loadLibrarySuccess(library) {
 export function loadLibraryError(error) {
   return {
     type: LOAD_LIBRARY_ERROR,
+    error,
+  };
+}
+
+/**
+ * Load users track from Spotify
+ *
+ * @param  {string} id id of track to load
+ *
+ * @return {object} An action object with a type of LOAD_LIBRARY
+ */
+export function loadTrack(id) {
+  return {
+    type: LOAD_TRACK,
+    id,
+  };
+}
+
+/**
+ * Dispatched when the track is loaded by the request saga
+ *
+ * @param  {object} track The track data
+ *
+ * @return {object}      An action object with a type of LOAD_TRACK_SUCCESS passing the track
+ */
+export function loadTrackSuccess(track) {
+  return {
+    type: LOAD_TRACK_SUCCESS,
+    track,
+  };
+}
+
+/**
+ * Dispatched when loading the track fails
+ *
+ * @param  {object} error The error
+ *
+ * @return {object}       An action object with a type of LOAD_TRACK_ERROR passing the error
+ */
+export function loadTrackError(error) {
+  return {
+    type: LOAD_TRACK_ERROR,
     error,
   };
 }
