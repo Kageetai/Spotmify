@@ -7,6 +7,7 @@ import Duration from 'components/Duration';
 import DateTime from 'components/DateTime';
 import A from 'components/A';
 import TrackModal from 'components/TrackModal';
+import ArtistsList from 'components/ArtistsList';
 
 class Table extends React.PureComponent {
   constructor(props) {
@@ -27,7 +28,7 @@ class Table extends React.PureComponent {
         Header: 'Artist',
         id: 'artist',
         accessor: i => i.track.artists[0].name,
-        Cell: row => <A href={row.original.track.artists[0].uri}>{row.value}</A>,
+        Cell: row => <ArtistsList artists={row.original.track.artists} isLinks />,
       },
       {
         Header: 'Album',

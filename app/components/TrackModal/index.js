@@ -18,6 +18,7 @@ import { loadTrack } from 'containers/App/actions';
 import A from 'components/A';
 
 import messages from './messages';
+import ArtistsList from '../ArtistsList';
 
 class TrackModal extends React.PureComponent {
   componentDidMount() {
@@ -45,7 +46,7 @@ class TrackModal extends React.PureComponent {
       >
         <div>
           <A href={track.uri}><h1>{track.name}</h1></A>
-          <span>{track.artists[0].name}</span>
+          <ArtistsList artists={track.artists} />
         </div>
       </Modal>
     );
