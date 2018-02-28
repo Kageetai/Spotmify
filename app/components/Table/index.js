@@ -36,7 +36,7 @@ class Table extends React.PureComponent {
         accessor: i => i.track.album.name,
         Cell: row => (
           <A href={row.original.track.album.uri}>
-            <AlbumCover src={row.original.track.album.images[2].url} />{row.value}
+            <AlbumCover table src={row.original.track.album.images[2].url} />{row.value}
           </A>
         ),
       },
@@ -94,7 +94,7 @@ class Table extends React.PureComponent {
           columns={this.columns}
           filterable
           loadingText={this.props.loadingText}
-          noDataText={this.props.noDataText}
+          noDataText={this.props.loading ? '' : this.props.noDataText}
           defaultSorted={[
             {
               id: 'addedAt',

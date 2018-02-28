@@ -14,6 +14,8 @@ const A = styled.a`
     color: ${colors.primaryHover};
     cursor: pointer;
   }
+  
+  
 `;
 
 export default A;

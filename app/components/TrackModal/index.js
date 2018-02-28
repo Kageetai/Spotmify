@@ -16,9 +16,13 @@ import Modal from 'react-modal';
 import { makeSelectTrack, makeSelectError, makeSelectLoading } from 'containers/App/selectors';
 import { loadTrack } from 'containers/App/actions';
 import A from 'components/A';
+import AlbumCover from 'components/AlbumCover';
+import ArtistsList from 'components/ArtistsList';
+import Progress from 'components/Progress';
+import Ul, { Li } from 'components/Ul';
 
 import messages from './messages';
-import ArtistsList from '../ArtistsList';
+import ModalHeading from './Heading';
 
 class TrackModal extends React.PureComponent {
   componentDidMount() {
@@ -44,10 +48,21 @@ class TrackModal extends React.PureComponent {
         onRequestClose={this.props.onClose}
         contentLabel="Modal"
       >
-        <div>
-          <A href={track.uri}><h1>{track.name}</h1></A>
-          <ArtistsList artists={track.artists} />
-        </div>
+        <A href={track.album.uri}>
+          <AlbumCover floatRight src={track.album.images[1].url} />
+        </A>
+        <A href={track.uri}><ModalHeading>{track.name}</ModalHeading></A>
+        <ArtistsList isLinks artists={track.artists} />
+
+        <Ul clean>
+          <Li clean><FormattedMessage {...messages.acousticness} />: <Progress value={track.acousticness} /></Li>
+          <Li clean><FormattedMessage {...messages.danceability} /> <Progress value={track.danceability} /></Li>
+          <Li clean><FormattedMessage {...messages.energy} /> <Progress value={track.energy} /></Li>
+          <Li clean><FormattedMessage {...messages.instrumentalness} /> <Progress value={track.instrumentalness} /></Li>
+          <Li clean><FormattedMessage {...messages.liveness} /> <Progress value={track.liveness} /></Li>
+          <Li clean><FormattedMessage {...messages.speechiness} /> <Progress value={track.speechiness} /></Li>
+          <Li clean><FormattedMessage {...messages.valence} /> <Progress value={track.valence} /></Li>
+        </Ul>
       </Modal>
     );
   }
