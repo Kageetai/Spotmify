@@ -45,7 +45,9 @@ class TrackModal extends React.PureComponent {
         {!loading && track ? (
           <div>
             <A href={track.album.uri}>
-              <AlbumCover floatRight src={track.album.images[1].url} />
+              {track.album.images.length ? (
+                <AlbumCover floatRight src={track.album.images[1].url} />
+              ) : track.album.name}
             </A>
             <A href={track.uri}><ModalHeading>{track.name}</ModalHeading></A>
             <ArtistsList isLinks artists={track.artists} />
