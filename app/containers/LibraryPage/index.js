@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import 'react-table/react-table.css';
+import { List } from 'immutable';
 
 import {
   makeSelectError,
@@ -23,7 +24,7 @@ import messages from './messages';
 
 class LibraryPage extends React.Component {
   componentDidMount() {
-    if (isLoggedIn() && !this.props.library) {
+    if (isLoggedIn() && !this.props.library.size) {
       this.props.onGetLibrary();
     }
   }
@@ -74,7 +75,7 @@ LibraryPage.propTypes = {
   ]),
   onGetLibrary: PropTypes.func,
   onExportCsv: PropTypes.func,
-  library: PropTypes.array,
+  library: PropTypes.instanceOf(List),
   intl: PropTypes.any,
 };
 

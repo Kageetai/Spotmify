@@ -81,7 +81,7 @@ function appReducer(state = initialState, action) {
         .set('error', false);
     case LOAD_LIBRARY_SUCCESS:
       return state
-        .set('library', action.library)
+        .set('library', fromJS(action.library))
         .set('libraryTotal', action.library.length)
         .set('loading', false);
     case LOAD_TRACK:

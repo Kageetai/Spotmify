@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactTable from 'react-table';
+import { List } from 'immutable';
 
 import AlbumCover from 'components/AlbumCover';
 import Duration from 'components/Duration';
@@ -88,7 +89,7 @@ class Table extends React.PureComponent {
     return (
       <div>
         <ReactTable
-          data={this.props.data}
+          data={this.props.data.toJS()}
           loading={this.props.loading}
           defaultPageSize={20}
           columns={this.columns}
@@ -104,19 +105,17 @@ class Table extends React.PureComponent {
           className="-striped -highlight"
         />
 
-        {(this.state.selectedTrack && this.state.selectedTrack.track) && (
-          <TrackModal
-            id={this.state.selectedTrack.track.id}
-            onClose={this.unsetTrack}
-          />
-        )}
+        <TrackModal
+          id={this.state.selectedTrack && this.state.selectedTrack.track && this.state.selectedTrack.track.id}
+          onClose={this.unsetTrack}
+        />
       </div>
     );
   }
 }
 
 Table.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.any),
+  data: PropTypes.instanceOf(List),
   loading: PropTypes.bool,
   loadingText: PropTypes.string,
   noDataText: PropTypes.string,
