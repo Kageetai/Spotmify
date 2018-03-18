@@ -46,6 +46,25 @@ export const UserRecord = Record({
   email: '',
 });
 
+export const TrackRecord = Record({
+  album: {
+    images: [],
+    name: '',
+    uri: '',
+  },
+  name: '',
+  id: '',
+  images: [],
+  artists: [],
+  acousticness: 0,
+  danceability: 0,
+  energy: 0,
+  instrumentalness: 0,
+  liveness: 0,
+  speechiness: 0,
+  valence: 0,
+});
+
 // The initial state of the App
 const initialState = fromJS({
   accessToken: '',
@@ -55,7 +74,8 @@ const initialState = fromJS({
   user: new UserRecord({}),
   library: [],
   libraryTotal: 0,
-  track: {},
+  track: new TrackRecord({}),
+  trackLoading: false,
 });
 
 function appReducer(state = initialState, action) {
@@ -86,13 +106,13 @@ function appReducer(state = initialState, action) {
         .set('loading', false);
     case LOAD_TRACK:
       return state
-        .set('track', initialState.track)
-        .set('loading', true)
+        .set('track', new TrackRecord(initialState.track))
+        .set('trackLoading', true)
         .set('error', false);
     case LOAD_TRACK_SUCCESS:
       return state
-        .set('track', action.track)
-        .set('loading', false);
+        .set('track', new TrackRecord(action.track))
+        .set('trackLoading', false);
     case LOGIN_ERROR:
     case LOAD_USER_ERROR:
     case LOAD_LIBRARY_ERROR:
@@ -100,7 +120,8 @@ function appReducer(state = initialState, action) {
     case EXPORT_CSV_ERROR:
       return state
         .set('error', action.error)
-        .set('loading', false);
+        .set('loading', false)
+        .set('trackLoading', false);
     default:
       return state;
   }

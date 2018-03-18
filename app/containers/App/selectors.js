@@ -37,6 +37,11 @@ const makeSelectTrack = () => createSelector(
   globalState => globalState.get('track')
 );
 
+const makeSelectTrackLoading = () => createSelector(
+  selectGlobal,
+  globalState => globalState.get('trackLoading')
+);
+
 const makeSelectLoading = () => createSelector(
   selectGlobal,
   globalState => globalState.get('loading')
@@ -60,6 +65,7 @@ export {
   makeSelectLibrary,
   makeSelectLibraryTotal,
   makeSelectTrack,
+  makeSelectTrackLoading,
   makeSelectCurrentUser,
   makeSelectLoading,
   makeSelectError,

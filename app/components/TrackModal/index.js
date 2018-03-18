@@ -13,7 +13,7 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 import Modal from 'react-modal';
 // import styled from 'styled-components';
 
-import { makeSelectTrack, makeSelectError, makeSelectLoading } from 'containers/App/selectors';
+import { makeSelectTrack, makeSelectError, makeSelectTrackLoading } from 'containers/App/selectors';
 import { loadTrack } from 'containers/App/actions';
 import A from 'components/A';
 import AlbumCover from 'components/AlbumCover';
@@ -25,44 +25,42 @@ import messages from './messages';
 import ModalHeading from './Heading';
 
 class TrackModal extends React.PureComponent {
-  componentDidMount() {
-    if (this.props.id) {
-      this.props.onGetTrack(this.props.id);
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.id && !this.props.loading) {
+      this.props.onGetTrack(nextProps.id);
     }
   }
 
   render() {
-    const { track, loading, error } = this.props;
-
-    if (error) {
-      return <FormattedMessage {...messages.error} />;
-    }
-
-    if (loading) {
-      return <FormattedMessage {...messages.loading} />;
-    }
+    const { id, track, loading, error } = this.props;
 
     return (
       <Modal
-        isOpen={!!track}
+        isOpen={!!id}
         onRequestClose={this.props.onClose}
         contentLabel="Modal"
       >
-        <A href={track.album.uri}>
-          <AlbumCover floatRight src={track.album.images[1].url} />
-        </A>
-        <A href={track.uri}><ModalHeading>{track.name}</ModalHeading></A>
-        <ArtistsList isLinks artists={track.artists} />
+        {loading ? <FormattedMessage {...messages.loading} /> : null}
+        {error ? <FormattedMessage {...messages.error} /> : null}
+        {!loading && track ? (
+          <div>
+            <A href={track.album.uri}>
+              <AlbumCover floatRight src={track.album.images[1].url} />
+            </A>
+            <A href={track.uri}><ModalHeading>{track.name}</ModalHeading></A>
+            <ArtistsList isLinks artists={track.artists} />
 
-        <Ul clean>
-          <Li clean><FormattedMessage {...messages.acousticness} />: <Progress value={track.acousticness} /></Li>
-          <Li clean><FormattedMessage {...messages.danceability} /> <Progress value={track.danceability} /></Li>
-          <Li clean><FormattedMessage {...messages.energy} /> <Progress value={track.energy} /></Li>
-          <Li clean><FormattedMessage {...messages.instrumentalness} /> <Progress value={track.instrumentalness} /></Li>
-          <Li clean><FormattedMessage {...messages.liveness} /> <Progress value={track.liveness} /></Li>
-          <Li clean><FormattedMessage {...messages.speechiness} /> <Progress value={track.speechiness} /></Li>
-          <Li clean><FormattedMessage {...messages.valence} /> <Progress value={track.valence} /></Li>
-        </Ul>
+            <Ul clean>
+              <Li clean><FormattedMessage {...messages.acousticness} />: <Progress value={track.acousticness} /></Li>
+              <Li clean><FormattedMessage {...messages.danceability} /> <Progress value={track.danceability} /></Li>
+              <Li clean><FormattedMessage {...messages.energy} /> <Progress value={track.energy} /></Li>
+              <Li clean><FormattedMessage {...messages.instrumentalness} /> <Progress value={track.instrumentalness} /></Li>
+              <Li clean><FormattedMessage {...messages.liveness} /> <Progress value={track.liveness} /></Li>
+              <Li clean><FormattedMessage {...messages.speechiness} /> <Progress value={track.speechiness} /></Li>
+              <Li clean><FormattedMessage {...messages.valence} /> <Progress value={track.valence} /></Li>
+            </Ul>
+          </div>
+        ) : null}
       </Modal>
     );
   }
@@ -88,7 +86,7 @@ export function mapDispatchToProps(dispatch) {
 
 const mapStateToProps = createStructuredSelector({
   track: makeSelectTrack(),
-  loading: makeSelectLoading(),
+  loading: makeSelectTrackLoading(),
   error: makeSelectError(),
 });
 
