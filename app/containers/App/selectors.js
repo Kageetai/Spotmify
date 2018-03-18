@@ -19,22 +19,22 @@ const makeSelectExpires = () => createSelector(
 
 const makeSelectUser = () => createSelector(
   selectGlobal,
-  globalState => globalState.getIn(['user'])
+  globalState => globalState.get('user')
 );
 
 const makeSelectLibrary = () => createSelector(
   selectGlobal,
-  globalState => globalState.getIn('library')
+  globalState => globalState.get('library')
 );
 
 const makeSelectLibraryTotal = () => createSelector(
   selectGlobal,
-  globalState => globalState.getIn(['libraryTotal'])
+  globalState => globalState.get('libraryTotal')
 );
 
 const makeSelectTrack = () => createSelector(
   selectGlobal,
-  globalState => globalState.getIn(['track'])
+  globalState => globalState.get('track')
 );
 
 const makeSelectLoading = () => createSelector(

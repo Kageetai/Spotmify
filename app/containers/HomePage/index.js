@@ -20,6 +20,7 @@ import {
   makeSelectUser,
 } from 'containers/App/selectors';
 import { login, loadUser } from 'containers/App/actions';
+import { UserRecord } from 'containers/App/reducer';
 import Button from 'components/Button';
 import UserProfile from 'components/UserProfile';
 import Section from 'components/Section';
@@ -29,7 +30,7 @@ import CenteredSection from './CenteredSection';
 
 export class HomePage extends React.PureComponent {
   componentWillMount() {
-    if (isLoggedIn()) {
+    if (isLoggedIn() && !this.props.user.display_name) {
       this.props.onGetUser();
     }
   }
@@ -75,7 +76,7 @@ HomePage.propTypes = {
   onLogin: PropTypes.func,
   onGetUser: PropTypes.func,
   accessToken: PropTypes.string,
-  user: PropTypes.any,
+  user: PropTypes.instanceOf(UserRecord),
 };
 
 export function mapDispatchToProps(dispatch) {

@@ -10,7 +10,7 @@
  *   return state.set('yourStateVariable', true);
  */
 
-import { fromJS } from 'immutable';
+import { fromJS, Record } from 'immutable';
 
 import {
   LOGIN_ERROR,
@@ -28,13 +28,31 @@ import {
   EXPORT_CSV_ERROR,
 } from './constants';
 
+export const UserRecord = Record({
+  display_name: '',
+  href: '',
+  uri: '',
+  followers: {
+    href: '',
+    total: 0,
+  },
+  country: '',
+  external_urls: {
+    spotify: '',
+  },
+  images: [],
+  type: '',
+  id: '',
+  email: '',
+});
+
 // The initial state of the App
 const initialState = fromJS({
   accessToken: '',
   expires: '',
   loading: false,
   error: false,
-  user: {},
+  user: new UserRecord({}),
   library: [],
   libraryTotal: 0,
   track: {},
@@ -52,11 +70,10 @@ function appReducer(state = initialState, action) {
     case LOAD_USER:
       return state
         .set('loading', true)
-        .set('error', false)
-        .setIn(['user'], initialState.user);
+        .set('error', false);
     case LOAD_USER_SUCCESS:
       return state
-        .setIn(['user'], action.user)
+        .set('user', new UserRecord(action.user))
         .set('loading', false);
     case LOAD_LIBRARY:
       return state
@@ -64,17 +81,17 @@ function appReducer(state = initialState, action) {
         .set('error', false);
     case LOAD_LIBRARY_SUCCESS:
       return state
-        .setIn('library', action.library)
+        .set('library', action.library)
         .set('libraryTotal', action.library.length)
         .set('loading', false);
     case LOAD_TRACK:
       return state
-        .setIn(['track'], initialState.track)
+        .set('track', initialState.track)
         .set('loading', true)
         .set('error', false);
     case LOAD_TRACK_SUCCESS:
       return state
-        .setIn(['track'], action.track)
+        .set('track', action.track)
         .set('loading', false);
     case LOGIN_ERROR:
     case LOAD_USER_ERROR:
