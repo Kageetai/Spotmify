@@ -1,8 +1,10 @@
 import { createGlobalStyle } from 'styled-components';
+import { darken } from 'polished';
 
+// use official Spotify colours but slightly darker for readability
 export const colors = {
-  primary: '#1ED760',
-  primaryHover: '#2EBD59',
+  primary: darken(0.1, '#1ED760'),
+  primaryHover: darken(0.1, '#2EBD59'),
 };
 
 const GlobalStyle = createGlobalStyle`
