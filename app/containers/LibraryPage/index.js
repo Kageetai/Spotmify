@@ -47,7 +47,7 @@ class LibraryPage extends React.Component {
 
         <Section>
           <Table
-            data={this.props.library}
+            data={this.props.library.toJS()}
             loading={this.props.loading}
             loadingText={formatMessage(messages.libraryLoading)}
             noDataText={this.props.error ? formatMessage(messages.libraryError) : formatMessage(messages.libraryEmpty)}
@@ -56,7 +56,7 @@ class LibraryPage extends React.Component {
 
         <Section>
           <Button
-            onClick={() => this.props.onExportCsv(this.props.library)}
+            onClick={() => this.props.onExportCsv(this.props.library.toJS())}
             disabled={this.props.loading || !this.props.library}
           >
             <FormattedMessage {...messages.exportCsv} />

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactTable from 'react-table';
-import { List } from 'immutable';
 
 import AlbumCover from 'components/AlbumCover';
 import Duration from 'components/Duration';
@@ -9,6 +8,7 @@ import DateTime from 'components/DateTime';
 import A from 'components/A';
 import TrackModal from 'components/TrackModal';
 import ArtistsList from 'components/ArtistsList';
+import { TrackRecord } from 'containers/App/reducer';
 
 class Table extends React.PureComponent {
   constructor(props) {
@@ -89,7 +89,7 @@ class Table extends React.PureComponent {
     return (
       <div>
         <ReactTable
-          data={this.props.data.toJS()}
+          data={this.props.data}
           loading={this.props.loading}
           defaultPageSize={20}
           columns={this.columns}
@@ -115,7 +115,7 @@ class Table extends React.PureComponent {
 }
 
 Table.propTypes = {
-  data: PropTypes.instanceOf(List),
+  data: PropTypes.arrayOf(TrackRecord),
   loading: PropTypes.bool,
   loadingText: PropTypes.string,
   noDataText: PropTypes.string,
