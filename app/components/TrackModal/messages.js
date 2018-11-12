@@ -16,30 +16,30 @@ export default defineMessages({
   },
   acousticness: {
     id: 'app.components.TrackModal.acousticness',
-    defaultMessage: 'acousticness',
+    defaultMessage: 'Acousticness',
   },
   danceability: {
     id: 'app.components.TrackModal.danceability',
-    defaultMessage: 'danceability',
+    defaultMessage: 'Danceability',
   },
   energy: {
     id: 'app.components.TrackModal.energy',
-    defaultMessage: 'energy',
+    defaultMessage: 'Energy',
   },
   instrumentalness: {
     id: 'app.components.TrackModal.instrumentalness',
-    defaultMessage: 'instrumentalness',
+    defaultMessage: 'Instrumentalness',
   },
   liveness: {
     id: 'app.components.TrackModal.liveness',
-    defaultMessage: 'liveness',
+    defaultMessage: 'Liveness',
   },
   speechiness: {
     id: 'app.components.TrackModal.speechiness',
-    defaultMessage: 'speechiness',
+    defaultMessage: 'Speechiness',
   },
   valence: {
     id: 'app.components.TrackModal.valence',
-    defaultMessage: 'valence',
+    defaultMessage: 'Valence',
   },
 });

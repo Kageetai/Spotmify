@@ -54,6 +54,7 @@ export const TrackRecord = Record({
   },
   name: '',
   id: '',
+  uri: '',
   images: [],
   artists: [],
   acousticness: 0,

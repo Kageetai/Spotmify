@@ -6,6 +6,9 @@ const Ul = styled.ul`
     margin: 0;
     padding: 0;
   ` : null}
+  ${props => props.inline ? `
+    display: inline;
+  ` : null}
 `;
 
 export const Li = styled.li`

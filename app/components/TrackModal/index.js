@@ -17,9 +17,10 @@ import { makeSelectTrack, makeSelectError, makeSelectTrackLoading } from 'contai
 import { loadTrack } from 'containers/App/actions';
 import A from 'components/A';
 import AlbumCover from 'components/AlbumCover';
-import ArtistsList from 'components/ArtistsList';
+import ArtistsList, { ArtistsP } from 'components/ArtistsList';
 import Progress from 'components/Progress';
 import Ul, { Li } from 'components/Ul';
+import StatsBar from 'components/StatsBar';
 
 import messages from './messages';
 import ModalHeading from './Heading';
@@ -47,19 +48,24 @@ class TrackModal extends React.PureComponent {
             <A href={track.album.uri}>
               {track.album.images.length ? (
                 <AlbumCover floatRight src={track.album.images[1].url} />
-              ) : track.album.name}
+              ) : null}
             </A>
             <A href={track.uri}><ModalHeading>{track.name}</ModalHeading></A>
-            <ArtistsList isLinks artists={track.artists} />
+
+            <p>Album: <A href={track.album.uri}> {track.album.name}</A></p>
+
+            <ArtistsP>
+              Artist(s): <ArtistsList isLinks artists={track.artists} />
+            </ArtistsP>
 
             <Ul clean>
-              <Li clean><FormattedMessage {...messages.acousticness} />: <Progress value={track.acousticness} /></Li>
-              <Li clean><FormattedMessage {...messages.danceability} /> <Progress value={track.danceability} /></Li>
-              <Li clean><FormattedMessage {...messages.energy} /> <Progress value={track.energy} /></Li>
-              <Li clean><FormattedMessage {...messages.instrumentalness} /> <Progress value={track.instrumentalness} /></Li>
-              <Li clean><FormattedMessage {...messages.liveness} /> <Progress value={track.liveness} /></Li>
-              <Li clean><FormattedMessage {...messages.speechiness} /> <Progress value={track.speechiness} /></Li>
-              <Li clean><FormattedMessage {...messages.valence} /> <Progress value={track.valence} /></Li>
+              <Li clean><StatsBar><FormattedMessage {...messages.acousticness} /> <Progress value={track.acousticness} /></StatsBar></Li>
+              <Li clean><StatsBar><FormattedMessage {...messages.danceability} /> <Progress value={track.danceability} /></StatsBar></Li>
+              <Li clean><StatsBar><FormattedMessage {...messages.energy} /> <Progress value={track.energy} /></StatsBar></Li>
+              <Li clean><StatsBar><FormattedMessage {...messages.instrumentalness} /> <Progress value={track.instrumentalness} /></StatsBar></Li>
+              <Li clean><StatsBar><FormattedMessage {...messages.liveness} /> <Progress value={track.liveness} /></StatsBar></Li>
+              <Li clean><StatsBar><FormattedMessage {...messages.speechiness} /> <Progress value={track.speechiness} /></StatsBar></Li>
+              <Li clean><StatsBar><FormattedMessage {...messages.valence} /> <Progress value={track.valence} /></StatsBar></Li>
             </Ul>
           </div>
         ) : null}

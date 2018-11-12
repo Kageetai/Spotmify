@@ -37,6 +37,7 @@ export const modalStyles = {
     right: 0,
     bottom: 0,
     backgroundColor: 'rgba(255, 255, 255, 0.75)',
+    zIndex: 1000,
   },
   content: {
     position: 'absolute',
