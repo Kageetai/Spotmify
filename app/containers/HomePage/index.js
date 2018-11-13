@@ -11,6 +11,7 @@ import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
+import styled from 'styled-components';
 
 import { isLoggedIn } from 'utils/auth';
 import {
@@ -26,7 +27,10 @@ import UserProfile from 'components/UserProfile';
 import Section from 'components/Section';
 
 import messages from './messages';
-import CenteredSection from './CenteredSection';
+
+const Centered = styled.div`
+  text-align: center;
+`;
 
 export class HomePage extends React.PureComponent {
   componentWillMount() {
@@ -47,11 +51,11 @@ export class HomePage extends React.PureComponent {
         </Helmet>
         <Section>
           {!loggedIn && (
-            <CenteredSection>
+            <Centered>
               <Button onClick={this.props.onLogin}>
                 <FormattedMessage {...messages.login} />
               </Button>
-            </CenteredSection>
+            </Centered>
           )}
 
           {error ? <FormattedMessage {...messages.login.error} /> : null}
