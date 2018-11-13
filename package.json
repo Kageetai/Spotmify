@@ -1,6 +1,6 @@
 {
   "name": "spotmify",
-  "version": "3.7.0",
+  "version": "0.2.0",
   "description": "A highly scalable, offline-first foundation with the best DX and a focus on performance and best practices",
   "spotify": {
     "clientId": "94860236c7db4b85b0039499df4df4d7",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/react-boilerplate/react-boilerplate.git"
+    "url": "git://github.com/kageetai/spotmify.git"
   },
   "engines": {
     "npm": ">=5",
