@@ -26,10 +26,9 @@ const ProfileInfo = styled.div`
 
 const UserProfile = ({ user, error, loading }) => {
   if (error) {
-    return (
-      <FormattedMessage {...messages.error} />
-    );
+    return <FormattedMessage {...messages.error} />;
   }
+
   return user && !loading ? (
     <StyledUserProfile>
       <A href={user.uri}>
@@ -38,12 +37,29 @@ const UserProfile = ({ user, error, loading }) => {
         ) : null}
       </A>
       <ProfileInfo>
-        <A href={user.uri}><H3>{user.display_name}</H3></A>
-        <div><FormattedMessage {...messages.country} values={{ country: user.country }} /></div>
+        <A href={user.uri}>
+          <H3>{user.display_name}</H3>
+        </A>
+        <div>
+          <FormattedMessage
+            {...messages.country}
+            values={{ country: user.country }}
+          />
+        </div>
         {user.followers && (
-          <div><FormattedMessage {...messages.followers} values={{ followers: user.followers.total }} /></div>
+          <div>
+            <FormattedMessage
+              {...messages.followers}
+              values={{ followers: user.followers.total }}
+            />
+          </div>
         )}
-        <div><FormattedMessage {...messages.product} values={{ product: user.product }} /></div>
+        <div>
+          <FormattedMessage
+            {...messages.product}
+            values={{ product: user.product }}
+          />
+        </div>
       </ProfileInfo>
     </StyledUserProfile>
   ) : (
@@ -53,10 +69,7 @@ const UserProfile = ({ user, error, loading }) => {
 
 UserProfile.propTypes = {
   user: PropTypes.instanceOf(UserRecord),
-  error: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.bool,
-  ]),
+  error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   loading: PropTypes.bool,
 };
 

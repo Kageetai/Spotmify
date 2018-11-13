@@ -44,6 +44,7 @@ export const UserRecord = Record({
   type: '',
   id: '',
   email: '',
+  product: '',
 });
 
 export const TrackRecord = Record({
@@ -89,17 +90,13 @@ function appReducer(state = initialState, action) {
     case DELETE_TOKENS:
       return initialState;
     case LOAD_USER:
-      return state
-        .set('loading', true)
-        .set('error', false);
+      return state.set('loading', true).set('error', false);
     case LOAD_USER_SUCCESS:
       return state
         .set('user', new UserRecord(action.user))
         .set('loading', false);
     case LOAD_LIBRARY:
-      return state
-        .set('loading', true)
-        .set('error', false);
+      return state.set('loading', true).set('error', false);
     case LOAD_LIBRARY_SUCCESS:
       return state
         .set('library', fromJS(action.library))

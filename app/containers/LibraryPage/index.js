@@ -50,7 +50,11 @@ class LibraryPage extends React.Component {
             data={this.props.library.toJS()}
             loading={this.props.loading}
             loadingText={formatMessage(messages.libraryLoading)}
-            noDataText={this.props.error ? formatMessage(messages.libraryError) : formatMessage(messages.libraryEmpty)}
+            noDataText={
+              this.props.error
+                ? formatMessage(messages.libraryError)
+                : formatMessage(messages.libraryEmpty)
+            }
           />
         </Section>
 
@@ -69,10 +73,7 @@ class LibraryPage extends React.Component {
 
 LibraryPage.propTypes = {
   loading: PropTypes.bool,
-  error: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.bool,
-  ]),
+  error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   onGetLibrary: PropTypes.func,
   onExportCsv: PropTypes.func,
   library: PropTypes.instanceOf(List),
@@ -92,6 +93,12 @@ const mapStateToProps = createStructuredSelector({
   error: makeSelectError(),
 });
 
-const withConnect = connect(mapStateToProps, mapDispatchToProps);
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
 
-export default compose(withConnect, injectIntl)(LibraryPage);
+export default compose(
+  withConnect,
+  injectIntl,
+)(LibraryPage);

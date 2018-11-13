@@ -54,9 +54,7 @@ export class HomePage extends React.PureComponent {
             </CenteredSection>
           )}
 
-          {error ? (
-            <FormattedMessage {...messages.login.error} />
-          ) : null}
+          {error ? <FormattedMessage {...messages.login.error} /> : null}
 
           {loggedIn ? (
             <UserProfile user={user} loading={loading} error={error} />
@@ -69,10 +67,7 @@ export class HomePage extends React.PureComponent {
 
 HomePage.propTypes = {
   loading: PropTypes.bool,
-  error: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.bool,
-  ]),
+  error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   onLogin: PropTypes.func,
   onGetUser: PropTypes.func,
   accessToken: PropTypes.string,
@@ -93,6 +88,9 @@ const mapStateToProps = createStructuredSelector({
   error: makeSelectError(),
 });
 
-const withConnect = connect(mapStateToProps, mapDispatchToProps);
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
 
 export default compose(withConnect)(HomePage);

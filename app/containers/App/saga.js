@@ -76,11 +76,12 @@ const csvFields = [
  * @param  {number} length The length of the string
  * @return {string} The generated string
  */
-const generateRandomString = (length) => {
+const generateRandomString = length => {
   let text = '';
-  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const possible =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-  for (let i = 0; i < length; i++) {
+  for (let i = 0; i < length; i += 1) {
     text += possible.charAt(Math.floor(Math.random() * possible.length));
   }
   return text;
@@ -106,11 +107,13 @@ export function* login() {
   const state = generateRandomString(16);
   localStorage.setItem(pkg.spotify.stateKey, state);
 
-  window.location =
-    `https://accounts.spotify.com/authorize?response_type=token&client_id=${encodeURIComponent(pkg.spotify.clientId)
-    }&scope=${encodeURIComponent(pkg.spotify.scope)
-    }&redirect_uri=${encodeURIComponent(window.location.origin + pkg.spotify.redirectUri)
-    }&state=${encodeURIComponent(state)}`;
+  window.location = `https://accounts.spotify.com/authorize?response_type=token&client_id=${encodeURIComponent(
+    pkg.spotify.clientId,
+  )}&scope=${encodeURIComponent(
+    pkg.spotify.scope,
+  )}&redirect_uri=${encodeURIComponent(
+    window.location.origin + pkg.spotify.redirectUri,
+  )}&state=${encodeURIComponent(state)}`;
 }
 
 export function* logout() {
@@ -137,7 +140,9 @@ export function* checkTokens() {
     localStorage.removeItem(pkg.spotify.stateKey);
     if (accessToken && expiresIn) {
       sessionStorage.setItem('accessToken', accessToken);
-      const newExpires = moment().add(expiresIn, 's').format();
+      const newExpires = moment()
+        .add(expiresIn, 's')
+        .format();
       sessionStorage.setItem('expires', newExpires);
       yield put(setTokens(accessToken, newExpires));
       yield call(spotifyApi.setAccessToken, accessToken);
@@ -188,7 +193,10 @@ export function* loadFullLibrary() {
 export function* loadTrack(action) {
   try {
     const track = yield call(spotifyApi.getTrack, action.id);
-    const audioFeatures = yield call(spotifyApi.getAudioFeaturesForTrack, action.id);
+    const audioFeatures = yield call(
+      spotifyApi.getAudioFeaturesForTrack,
+      action.id,
+    );
     yield put(loadTrackSuccess({ ...track, ...audioFeatures }));
   } catch (err) {
     yield put(loadTrackError(err));
@@ -196,7 +204,11 @@ export function* loadTrack(action) {
 }
 
 export function* exportCSV(action) {
-  const csv = Json2csv({ data: action.items, fields: csvFields, del: pkg.spotify.csvDelimiter });
+  const csv = Json2csv({
+    data: action.items,
+    fields: csvFields,
+    del: pkg.spotify.csvDelimiter,
+  });
   const blob = new Blob([csv], { type: 'text/csv' });
   FileSaver.saveAs(blob, 'export.csv');
 }

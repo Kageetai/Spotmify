@@ -27,13 +27,9 @@ import saga from './saga';
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
-    render={props => (
-      isLoggedIn() ? (
-        <Component {...props} />
-      ) : (
-        <Redirect to="/" />
-      )
-    )}
+    render={props =>
+      isLoggedIn() ? <Component {...props} /> : <Redirect to="/" />
+    }
   />
 );
 
@@ -49,11 +45,11 @@ const AppWrapper = styled.div`
 export function App() {
   return (
     <AppWrapper>
-      <Helmet
-        titleTemplate="%s - Spotmify"
-        defaultTitle="Spotmify"
-      >
-        <meta name="description" content="View and export your spotify library and playlists" />
+      <Helmet titleTemplate="%s - Spotmify" defaultTitle="Spotmify">
+        <meta
+          name="description"
+          content="View and export your spotify library and playlists"
+        />
       </Helmet>
       <Header />
       <Switch>

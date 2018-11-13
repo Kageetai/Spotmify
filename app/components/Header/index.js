@@ -17,30 +17,32 @@ import Section from '../Section';
 import Button from '../Button';
 import { makeSelectAccessToken } from '../../containers/App/selectors';
 
-class Header extends React.Component { // eslint-disable-line react/prefer-stateless-function
+/* eslint-disable react/prefer-stateless-function */
+class Header extends React.Component {
   render() {
     return (
       <header>
         <A href="/">
           <H1>Spotmify</H1>
         </A>
-        {(this.props.accessToken && isLoggedIn()) && (
-          <Section>
-            <NavBar>
-              <div>
-                <HeaderLink to="/">
-                  <FormattedMessage {...messages.home} />
-                </HeaderLink>
-                <HeaderLink to="/library">
-                  <FormattedMessage {...messages.library} />
-                </HeaderLink>
-              </div>
-              <Button onClick={this.props.onLogout}>
-                <FormattedMessage {...messages.logout} />
-              </Button>
-            </NavBar>
-          </Section>
-        )}
+        {this.props.accessToken &&
+          isLoggedIn() && (
+            <Section>
+              <NavBar>
+                <div>
+                  <HeaderLink to="/">
+                    <FormattedMessage {...messages.home} />
+                  </HeaderLink>
+                  <HeaderLink to="/library">
+                    <FormattedMessage {...messages.library} />
+                  </HeaderLink>
+                </div>
+                <Button onClick={this.props.onLogout}>
+                  <FormattedMessage {...messages.logout} />
+                </Button>
+              </NavBar>
+            </Section>
+          )}
       </header>
     );
   }
@@ -57,13 +59,16 @@ const mapStateToProps = createStructuredSelector({
 
 export function mapDispatchToProps(dispatch) {
   return {
-    onLogout: (evt) => {
+    onLogout: evt => {
       evt.preventDefault();
       dispatch(deleteTokens());
     },
   };
 }
 
-const withConnect = connect(mapStateToProps, mapDispatchToProps);
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
 
 export default compose(withConnect)(Header);

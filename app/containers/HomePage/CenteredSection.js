@@ -1,6 +1,8 @@
+import styled from 'styled-components';
+
 import Section from 'components/Section';
 
-const CenteredSection = Section.extend`
+const CenteredSection = styled(Section)`
   text-align: center;
   overflow: auto;
 `;
