@@ -12,9 +12,7 @@ function Footer() {
       <section>
         <FormattedMessage {...messages.licenseMessage} />
       </section>
-      <section>
-        {/* <LocaleToggle /> */}
-      </section>
+      <section>{/* <LocaleToggle /> */}</section>
       <section>
         <FormattedMessage
           {...messages.authorMessage}

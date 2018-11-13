@@ -1,8 +1,8 @@
 /**
-*
-* LocaleToggle
-*
-*/
+ *
+ * LocaleToggle
+ *
+ */
 
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -11,7 +11,7 @@ import Select from './Select';
 import ToggleOption from '../ToggleOption';
 
 function Toggle(props) {
-  let content = (<option>--</option>);
+  let content = <option>--</option>;
 
   // If we have items, render them
   if (props.values) {
@@ -21,7 +21,7 @@ function Toggle(props) {
   }
 
   return (
-    <Select value={props.value} onChange={props.onToggle} {...props} >
+    <Select value={props.value} onChange={props.onToggle} {...props}>
       {content}
     </Select>
   );

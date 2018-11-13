@@ -1,8 +1,8 @@
 /**
-*
-* TrackModal
-*
-*/
+ *
+ * TrackModal
+ *
+ */
 
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -13,7 +13,11 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 import Modal from 'react-modal';
 // import styled from 'styled-components';
 
-import { makeSelectTrack, makeSelectError, makeSelectTrackLoading } from 'containers/App/selectors';
+import {
+  makeSelectTrack,
+  makeSelectError,
+  makeSelectTrackLoading,
+} from 'containers/App/selectors';
 import { loadTrack } from 'containers/App/actions';
 import A from 'components/A';
 import AlbumCover from 'components/AlbumCover';
@@ -50,22 +54,61 @@ class TrackModal extends React.PureComponent {
                 <AlbumCover floatRight src={track.album.images[1].url} />
               ) : null}
             </A>
-            <A href={track.uri}><ModalHeading>{track.name}</ModalHeading></A>
+            <A href={track.uri}>
+              <ModalHeading>{track.name}</ModalHeading>
+            </A>
 
-            <p>Album: <A href={track.album.uri}> {track.album.name}</A></p>
+            <p>
+              Album: <A href={track.album.uri}> {track.album.name}</A>
+            </p>
 
             <ArtistsP>
               Artist(s): <ArtistsList isLinks artists={track.artists} />
             </ArtistsP>
 
             <Ul clean>
-              <Li clean><StatsBar><FormattedMessage {...messages.acousticness} /> <Progress value={track.acousticness} /></StatsBar></Li>
-              <Li clean><StatsBar><FormattedMessage {...messages.danceability} /> <Progress value={track.danceability} /></StatsBar></Li>
-              <Li clean><StatsBar><FormattedMessage {...messages.energy} /> <Progress value={track.energy} /></StatsBar></Li>
-              <Li clean><StatsBar><FormattedMessage {...messages.instrumentalness} /> <Progress value={track.instrumentalness} /></StatsBar></Li>
-              <Li clean><StatsBar><FormattedMessage {...messages.liveness} /> <Progress value={track.liveness} /></StatsBar></Li>
-              <Li clean><StatsBar><FormattedMessage {...messages.speechiness} /> <Progress value={track.speechiness} /></StatsBar></Li>
-              <Li clean><StatsBar><FormattedMessage {...messages.valence} /> <Progress value={track.valence} /></StatsBar></Li>
+              <Li clean>
+                <StatsBar>
+                  <FormattedMessage {...messages.acousticness} />{' '}
+                  <Progress value={track.acousticness} />
+                </StatsBar>
+              </Li>
+              <Li clean>
+                <StatsBar>
+                  <FormattedMessage {...messages.danceability} />{' '}
+                  <Progress value={track.danceability} />
+                </StatsBar>
+              </Li>
+              <Li clean>
+                <StatsBar>
+                  <FormattedMessage {...messages.energy} />{' '}
+                  <Progress value={track.energy} />
+                </StatsBar>
+              </Li>
+              <Li clean>
+                <StatsBar>
+                  <FormattedMessage {...messages.instrumentalness} />{' '}
+                  <Progress value={track.instrumentalness} />
+                </StatsBar>
+              </Li>
+              <Li clean>
+                <StatsBar>
+                  <FormattedMessage {...messages.liveness} />{' '}
+                  <Progress value={track.liveness} />
+                </StatsBar>
+              </Li>
+              <Li clean>
+                <StatsBar>
+                  <FormattedMessage {...messages.speechiness} />{' '}
+                  <Progress value={track.speechiness} />
+                </StatsBar>
+              </Li>
+              <Li clean>
+                <StatsBar>
+                  <FormattedMessage {...messages.valence} />{' '}
+                  <Progress value={track.valence} />
+                </StatsBar>
+              </Li>
             </Ul>
           </div>
         ) : null}
@@ -77,10 +120,7 @@ class TrackModal extends React.PureComponent {
 TrackModal.propTypes = {
   id: PropTypes.string,
   loading: PropTypes.bool,
-  error: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.bool,
-  ]),
+  error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   onGetTrack: PropTypes.func,
   onClose: PropTypes.func,
   track: PropTypes.object,
@@ -98,6 +138,12 @@ const mapStateToProps = createStructuredSelector({
   error: makeSelectError(),
 });
 
-const withConnect = connect(mapStateToProps, mapDispatchToProps);
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
 
-export default compose(withConnect, injectIntl)(TrackModal);
+export default compose(
+  withConnect,
+  injectIntl,
+)(TrackModal);

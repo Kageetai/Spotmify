@@ -24,6 +24,6 @@ export default styled(Link)`
 
   &:active {
     background: ${colors.primary};
-    color: #FFF;
+    color: #fff;
   }
 `;

@@ -14,7 +14,6 @@ class Table extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      isModalOpen: false,
       selectedTrack: {},
     };
 
@@ -23,13 +22,17 @@ class Table extends React.PureComponent {
         Header: 'Name',
         id: 'trackName',
         accessor: i => i.track.name,
-        Cell: row => <A onClick={() => this.setTrack(row.original)}>{row.value}</A>,
+        Cell: row => (
+          <A onClick={() => this.setTrack(row.original)}>{row.value}</A>
+        ),
       },
       {
         Header: 'Artist',
         id: 'artist',
         accessor: i => i.track.artists[0].name,
-        Cell: row => <ArtistsList artists={row.original.track.artists} isLinks />,
+        Cell: row => (
+          <ArtistsList artists={row.original.track.artists} isLinks />
+        ),
       },
       {
         Header: 'Album',
@@ -37,7 +40,8 @@ class Table extends React.PureComponent {
         accessor: i => i.track.album.name,
         Cell: row => (
           <A href={row.original.track.album.uri}>
-            <AlbumCover table src={row.original.track.album.images[2].url} />{row.value}
+            <AlbumCover table src={row.original.track.album.images[2].url} />
+            {row.value}
           </A>
         ),
       },
@@ -106,7 +110,11 @@ class Table extends React.PureComponent {
         />
 
         <TrackModal
-          id={this.state.selectedTrack && this.state.selectedTrack.track && this.state.selectedTrack.track.id}
+          id={
+            this.state.selectedTrack &&
+            this.state.selectedTrack.track &&
+            this.state.selectedTrack.track.id
+          }
           onClose={this.unsetTrack}
         />
       </div>

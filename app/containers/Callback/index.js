@@ -12,9 +12,7 @@ export class Callback extends React.PureComponent {
   }
 
   render() {
-    return (
-      <Redirect to="/" />
-    );
+    return <Redirect to="/" />;
   }
 }
 
@@ -22,13 +20,15 @@ Callback.propTypes = {
   onGetTokens: PropTypes.func.isRequired,
 };
 
-
 function mapDispatchToProps(dispatch) {
   return {
     onGetTokens: () => dispatch(getTokens()),
   };
 }
 
-const withConnect = connect(null, mapDispatchToProps);
+const withConnect = connect(
+  null,
+  mapDispatchToProps,
+);
 
 export default compose(withConnect)(Callback);

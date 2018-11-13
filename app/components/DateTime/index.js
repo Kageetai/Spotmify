@@ -9,11 +9,7 @@ import pkg from '../../../package.json';
  * @return {string}
  */
 function DateTime({ timestamp }) {
-  return (
-    <span>
-      {moment(timestamp).format(pkg.spotify.dateformat)}
-    </span>
-  );
+  return <span>{moment(timestamp).format(pkg.spotify.dateformat)}</span>;
 }
 
 DateTime.propTypes = {

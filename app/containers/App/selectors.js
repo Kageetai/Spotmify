@@ -5,35 +5,63 @@ const selectGlobal = state => state.get('global');
 const selectRouter = state => state.get('router');
 
 const makeSelectAccessToken = () =>
-  createSelector(selectGlobal, globalState => globalState.get('accessToken'));
+  createSelector(
+    selectGlobal,
+    globalState => globalState.get('accessToken'),
+  );
 
 const makeSelectExpires = () =>
-  createSelector(selectGlobal, globalState => globalState.get('expires'));
+  createSelector(
+    selectGlobal,
+    globalState => globalState.get('expires'),
+  );
 
 const makeSelectUser = () =>
-  createSelector(selectGlobal, globalState => globalState.get('user'));
+  createSelector(
+    selectGlobal,
+    globalState => globalState.get('user'),
+  );
 
 const makeSelectLibrary = () =>
-  createSelector(selectGlobal, globalState => globalState.get('library'));
+  createSelector(
+    selectGlobal,
+    globalState => globalState.get('library'),
+  );
 
 const makeSelectLibraryTotal = () =>
-  createSelector(selectGlobal, globalState => globalState.get('libraryTotal'));
+  createSelector(
+    selectGlobal,
+    globalState => globalState.get('libraryTotal'),
+  );
 
 const makeSelectTrack = () =>
-  createSelector(selectGlobal, globalState => globalState.get('track'));
+  createSelector(
+    selectGlobal,
+    globalState => globalState.get('track'),
+  );
 
 const makeSelectTrackLoading = () =>
-  createSelector(selectGlobal, globalState => globalState.get('trackLoading'));
+  createSelector(
+    selectGlobal,
+    globalState => globalState.get('trackLoading'),
+  );
 
 const makeSelectLoading = () =>
-  createSelector(selectGlobal, globalState => globalState.get('loading'));
+  createSelector(
+    selectGlobal,
+    globalState => globalState.get('loading'),
+  );
 
 const makeSelectError = () =>
-  createSelector(selectGlobal, globalState => globalState.get('error'));
+  createSelector(
+    selectGlobal,
+    globalState => globalState.get('error'),
+  );
 
 const makeSelectLocation = () =>
-  createSelector(selectRouter, routerState =>
-    routerState.get('location').toJS(),
+  createSelector(
+    selectRouter,
+    routerState => routerState.get('location').toJS(),
   );
 
 export {

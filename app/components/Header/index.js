@@ -25,24 +25,23 @@ class Header extends React.Component {
         <A href="/">
           <H1>Spotmify</H1>
         </A>
-        {this.props.accessToken &&
-          isLoggedIn() && (
-            <Section>
-              <NavBar>
-                <div>
-                  <HeaderLink to="/">
-                    <FormattedMessage {...messages.home} />
-                  </HeaderLink>
-                  <HeaderLink to="/library">
-                    <FormattedMessage {...messages.library} />
-                  </HeaderLink>
-                </div>
-                <Button onClick={this.props.onLogout}>
-                  <FormattedMessage {...messages.logout} />
-                </Button>
-              </NavBar>
-            </Section>
-          )}
+        {this.props.accessToken && isLoggedIn() && (
+          <Section>
+            <NavBar>
+              <div>
+                <HeaderLink to="/">
+                  <FormattedMessage {...messages.home} />
+                </HeaderLink>
+                <HeaderLink to="/library">
+                  <FormattedMessage {...messages.library} />
+                </HeaderLink>
+              </div>
+              <Button onClick={this.props.onLogout}>
+                <FormattedMessage {...messages.logout} />
+              </Button>
+            </NavBar>
+          </Section>
+        )}
       </header>
     );
   }

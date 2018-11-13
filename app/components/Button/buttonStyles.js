@@ -18,8 +18,10 @@ const buttonStyles = css`
   font-size: 16px;
   border: 2px solid ${colors.primary};
   color: ${colors.primary};
-  
-  ${props => props.disabled ? `
+
+  ${props =>
+    props.disabled
+      ? `
     color: darkgray;
     border-color: darkgray;
     cursor: initial;
@@ -27,7 +29,8 @@ const buttonStyles = css`
     &:hover {
       color: darkgay;
     }
-  ` : `
+  `
+      : `
     &:hover {
       color: ${colors.primaryHover};
       border-color: ${colors.primaryHover};
@@ -37,8 +40,7 @@ const buttonStyles = css`
       background: ${colors.primary};
       color: #fff;
     }
-  `}
-
+  `};
 `;
 
 export default buttonStyles;

@@ -16,7 +16,8 @@ export default defineMessages({
   },
   libraryLoading: {
     id: 'boilerplate.containers.LibraryPage.libraryLoading',
-    defaultMessage: 'Loading...\nThis may take a while, we are loading your full library',
+    defaultMessage:
+      'Loading...\nThis may take a while, we are loading your full library',
   },
   libraryEmpty: {
     id: 'boilerplate.containers.LibraryPage.libraryEmpty',
@@ -24,7 +25,8 @@ export default defineMessages({
   },
   libraryError: {
     id: 'boilerplate.containers.LibraryPage.libraryError',
-    defaultMessage: 'Seems like your there was an error loading your library. You can contact the developer to get help: spotmify@kageetai.net',
+    defaultMessage:
+      'Seems like your there was an error loading your library. You can contact the developer to get help: spotmify@kageetai.net',
   },
   exportCsv: {
     id: 'boilerplate.containers.LibraryPage.exportCsv',

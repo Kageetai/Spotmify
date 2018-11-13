@@ -7,7 +7,11 @@ function Duration({ milliseconds }) {
   const duration = moment.duration(milliseconds);
   return (
     <div>
-      {duration.minutes()}:{duration.seconds().toString().padStart(2, '0')}
+      {duration.minutes()}:
+      {duration
+        .seconds()
+        .toString()
+        .padStart(2, '0')}
     </div>
   );
 }
