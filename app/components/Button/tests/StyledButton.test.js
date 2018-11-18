@@ -1,27 +1,18 @@
 import React from 'react';
+import renderer from 'react-test-renderer';
 import { shallow } from 'enzyme';
 
 import StyledButton from '../StyledButton';
 
 describe('<StyledButton />', () => {
-  it('should render an <button> tag', () => {
-    const renderedComponent = shallow(<StyledButton />);
-    expect(renderedComponent.type()).toEqual('button');
+  it('should match the snapshot', () => {
+    const wrapper = renderer.create(<StyledButton />).toJSON();
+    expect(wrapper).toMatchSnapshot();
   });
 
-  it('should have a className attribute', () => {
-    const renderedComponent = shallow(<StyledButton />);
-    expect(renderedComponent.prop('className')).toBeDefined();
-  });
-
-  it('should adopt a valid attribute', () => {
+  it('should adopt an attribute', () => {
     const id = 'test';
-    const renderedComponent = shallow(<StyledButton id={id} />);
-    expect(renderedComponent.prop('id')).toEqual(id);
-  });
-
-  it('should not adopt an invalid attribute', () => {
-    const renderedComponent = shallow(<StyledButton attribute="test" />);
-    expect(renderedComponent.prop('attribute')).toBeUndefined();
+    const wrapper = shallow(<StyledButton id={id} />);
+    expect(wrapper.prop('id')).toEqual(id);
   });
 });

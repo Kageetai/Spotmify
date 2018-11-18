@@ -1,27 +1,33 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
+import renderer from 'react-test-renderer';
 
 import Wrapper from '../Wrapper';
 
 describe('<Wrapper />', () => {
+  it('should match the snapshot', () => {
+    const wrapper = renderer.create(<Wrapper />).toJSON();
+    expect(wrapper).toMatchSnapshot();
+  });
+
   it('should render an <li> tag', () => {
-    const renderedComponent = shallow(<Wrapper />);
-    expect(renderedComponent.type()).toEqual('li');
+    const wrapper = mount(<Wrapper />);
+    expect(wrapper.find('li').type()).toEqual('li');
   });
 
   it('should have a className attribute', () => {
-    const renderedComponent = shallow(<Wrapper />);
-    expect(renderedComponent.prop('className')).toBeDefined();
+    const wrapper = mount(<Wrapper />);
+    expect(wrapper.find('li').prop('className')).toBeDefined();
   });
 
   it('should adopt a valid attribute', () => {
     const id = 'test';
-    const renderedComponent = shallow(<Wrapper id={id} />);
-    expect(renderedComponent.prop('id')).toEqual(id);
+    const wrapper = mount(<Wrapper id={id} />);
+    expect(wrapper.find('li').prop('id')).toEqual(id);
   });
 
   it('should not adopt an invalid attribute', () => {
-    const renderedComponent = shallow(<Wrapper attribute="test" />);
-    expect(renderedComponent.prop('attribute')).toBeUndefined();
+    const wrapper = mount(<Wrapper attribute="test" />);
+    expect(wrapper.find('li').prop('attribute')).toBeUndefined();
   });
 });

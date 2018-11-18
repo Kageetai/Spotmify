@@ -18,7 +18,7 @@ import Button from '../Button';
 import { makeSelectAccessToken } from '../../containers/App/selectors';
 
 /* eslint-disable react/prefer-stateless-function */
-class Header extends React.Component {
+export class Header extends React.Component {
   render() {
     return (
       <header>

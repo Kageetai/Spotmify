@@ -4,6 +4,7 @@
 
 import React from 'react';
 import { shallow } from 'enzyme';
+import renderer from 'react-test-renderer';
 
 import A from '../index';
 
@@ -17,36 +18,30 @@ const renderComponent = (props = {}) =>
   );
 
 describe('<A />', () => {
-  it('should render an <a> tag', () => {
-    const renderedComponent = renderComponent();
-    expect(renderedComponent.type()).toEqual('a');
+  it('should match the snapshot', () => {
+    const wrapper = renderer.create(<A />).toJSON();
+    expect(wrapper).toMatchSnapshot();
   });
 
   it('should have an href attribute', () => {
-    const renderedComponent = renderComponent();
-    expect(renderedComponent.prop('href')).toEqual(href);
+    const wrapper = renderComponent();
+    expect(wrapper.prop('href')).toEqual(href);
   });
 
   it('should have children', () => {
-    const renderedComponent = renderComponent();
-    expect(renderedComponent.contains(children)).toEqual(true);
-  });
-
-  it('should have a className attribute', () => {
-    const className = 'test';
-    const renderedComponent = renderComponent({ className });
-    expect(renderedComponent.find('a').hasClass(className)).toEqual(true);
+    const wrapper = renderComponent();
+    expect(wrapper.contains(children)).toEqual(true);
   });
 
   it('should adopt a target attribute', () => {
     const target = '_blank';
-    const renderedComponent = renderComponent({ target });
-    expect(renderedComponent.prop('target')).toEqual(target);
+    const wrapper = renderComponent({ target });
+    expect(wrapper.prop('target')).toEqual(target);
   });
 
   it('should adopt a type attribute', () => {
     const type = 'text/html';
-    const renderedComponent = renderComponent({ type });
-    expect(renderedComponent.prop('type')).toEqual(type);
+    const wrapper = renderComponent({ type });
+    expect(wrapper.prop('type')).toEqual(type);
   });
 });

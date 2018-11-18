@@ -46,7 +46,7 @@ export class HomePage extends React.PureComponent {
     return (
       <article>
         <Helmet>
-          <title>Home Page</title>
+          <title>Home</title>
           <meta name="description" content="Spotmify homepage" />
         </Helmet>
         <Section>

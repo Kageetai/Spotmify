@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-// import styled from 'styled-components';
 
 import pkg from '../../../package.json';
 
@@ -13,7 +12,7 @@ function DateTime({ timestamp }) {
 }
 
 DateTime.propTypes = {
-  timestamp: PropTypes.string,
+  timestamp: PropTypes.string.isRequired,
 };
 
 export default DateTime;

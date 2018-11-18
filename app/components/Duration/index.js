@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-// import styled from 'styled-components';
 
 function Duration({ milliseconds }) {
   const duration = moment.duration(milliseconds);
@@ -17,7 +16,7 @@ function Duration({ milliseconds }) {
 }
 
 Duration.propTypes = {
-  milliseconds: PropTypes.number,
+  milliseconds: PropTypes.number.isRequired,
 };
 
 export default Duration;

@@ -1,10 +1,16 @@
-// import React from 'react';
-// import { shallow } from 'enzyme';
+import React from 'react';
+import { shallow } from 'enzyme/build';
 
-// import Table from '../index';
+import Table from '../index';
 
 describe('<Table />', () => {
-  it('Expect to have unit tests specified', () => {
-    expect(true).toEqual(false);
+  it('renders ReactTable', () => {
+    const wrapper = shallow(<Table />);
+    expect(wrapper.find('ReactTable').exists()).toBeTruthy();
+  });
+
+  it('has seven columns', () => {
+    const wrapper = shallow(<Table />);
+    expect(wrapper.instance().columns).toHaveLength(7);
   });
 });

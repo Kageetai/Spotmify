@@ -1,10 +1,17 @@
-// import React from 'react';
-// import { shallow } from 'enzyme';
+import React from 'react';
+import { shallow } from 'enzyme';
+import { Redirect } from 'react-router-dom';
 
-// import { Callback } from '../index';
+import { Callback } from '../index';
 
 describe('<Callback />', () => {
-  it('Expect to have unit tests specified', () => {
-    expect(true).toEqual(false);
+  const props = {
+    onGetTokens: jest.fn(),
+  };
+
+  it('renders a datetime', () => {
+    const wrapper = shallow(<Callback {...props} />);
+    expect(wrapper.contains(<Redirect to="/" />)).toBeTruthy();
+    expect(props.onGetTokens).toHaveBeenCalled();
   });
 });

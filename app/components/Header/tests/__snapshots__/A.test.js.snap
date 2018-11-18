@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<A /> should match the snapshot 1`] = `
+.c0 {
+  color: #18aa4c;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  padding: 2em 0;
+}
+
+.c0:hover {
+  color: #249446;
+  cursor: pointer;
+}
+
+<a
+  className="c0"
+/>
+`;

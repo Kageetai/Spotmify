@@ -25,7 +25,7 @@ const makeSelectUser = () =>
 const makeSelectLibrary = () =>
   createSelector(
     selectGlobal,
-    globalState => globalState.get('library'),
+    globalState => globalState.get('library').toJS(),
   );
 
 const makeSelectLibraryTotal = () =>

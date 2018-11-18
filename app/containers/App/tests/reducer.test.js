@@ -1,18 +1,34 @@
 import { fromJS } from 'immutable';
 
-import appReducer from '../reducer';
-import { loadRepos, reposLoaded, repoLoadingError } from '../actions';
+import appReducer, { TrackRecord, UserRecord } from '../reducer';
+import {
+  loginError,
+  setTokens,
+  loadUser,
+  loadUserSuccess,
+  loadUserError,
+  loadLibrary,
+  loadLibrarySuccess,
+  loadLibraryError,
+  loadTrack,
+  loadTrackSuccess,
+  loadTrackError,
+  exportCSVError,
+} from '../actions';
 
 describe('appReducer', () => {
   let state;
   beforeEach(() => {
     state = fromJS({
+      accessToken: '',
+      expires: '',
       loading: false,
       error: false,
-      currentUser: false,
-      userData: fromJS({
-        repositories: false,
-      }),
+      user: new UserRecord({}),
+      library: [],
+      libraryTotal: 0,
+      track: new TrackRecord({}),
+      trackLoading: false,
     });
   });
 
@@ -21,40 +37,85 @@ describe('appReducer', () => {
     expect(appReducer(undefined, {})).toEqual(expectedResult);
   });
 
-  it('should handle the loadRepos action correctly', () => {
+  it('should handle the setTokens action correctly', () => {
+    const accessToken = '1234';
+    const expires = '1234';
     const expectedResult = state
-      .set('loading', true)
-      .set('error', false)
-      .setIn(['userData', 'repositories'], false);
+      .set('accessToken', accessToken)
+      .set('expires', expires);
 
-    expect(appReducer(state, loadRepos())).toEqual(expectedResult);
+    expect(appReducer(state, setTokens(accessToken, expires))).toEqual(
+      expectedResult,
+    );
   });
 
-  it('should handle the reposLoaded action correctly', () => {
-    const fixture = [
-      {
-        name: 'My Repo',
-      },
-    ];
-    const username = 'test';
+  it('should handle the deleteTokens action correctly', () => {
+    const expectedResult = state;
+    expect(appReducer(undefined, {})).toEqual(expectedResult);
+  });
+
+  it('should handle the loadUser action correctly', () => {
+    const expectedResult = state.set('loading', true).set('error', false);
+
+    expect(appReducer(state, loadUser())).toEqual(expectedResult);
+  });
+
+  it('should handle the loadUserSuccess action correctly', () => {
+    const user = {};
     const expectedResult = state
-      .setIn(['userData', 'repositories'], fixture)
+      .set('user', new UserRecord(user))
+      .set('loading', false);
+
+    expect(appReducer(state, loadUserSuccess(user))).toEqual(expectedResult);
+  });
+
+  it('should handle the loadLibrary action correctly', () => {
+    const expectedResult = state.set('loading', true).set('error', false);
+
+    expect(appReducer(state, loadLibrary())).toEqual(expectedResult);
+  });
+
+  it('should handle the loadLibrarySuccess action correctly', () => {
+    const library = [];
+    const expectedResult = state
+      .set('library', fromJS(library))
+      .set('loading', false);
+
+    expect(appReducer(state, loadLibrarySuccess(library))).toEqual(
+      expectedResult,
+    );
+  });
+
+  it('should handle the loadTrack action correctly', () => {
+    const { track } = state;
+    const expectedResult = state
+      .set('track', new TrackRecord(track))
+      .set('trackLoading', true)
+      .set('error', false);
+
+    expect(appReducer(state, loadTrack(track))).toEqual(expectedResult);
+  });
+
+  it('should handle the loadTrackSuccess action correctly', () => {
+    const track = {};
+    const expectedResult = state
+      .set('track', new TrackRecord(track))
+      .set('trackLoading', false);
+
+    expect(appReducer(state, loadTrackSuccess(track))).toEqual(expectedResult);
+  });
+
+  it('should handle the error actions correctly', () => {
+    const error = 'error';
+    const expectedResult = state
+      .set('error', error)
       .set('loading', false)
-      .set('currentUser', username);
+      .set('trackLoading', false);
 
-    expect(appReducer(state, reposLoaded(fixture, username))).toEqual(
-      expectedResult,
-    );
-  });
-
-  it('should handle the repoLoadingError action correctly', () => {
-    const fixture = {
-      msg: 'Not found',
-    };
-    const expectedResult = state.set('error', fixture).set('loading', false);
-
-    expect(appReducer(state, repoLoadingError(fixture))).toEqual(
-      expectedResult,
-    );
+    expect(appReducer(state, loginError(error))).toEqual(expectedResult);
+    expect(appReducer(state, loadUserError(error))).toEqual(expectedResult);
+    expect(appReducer(state, loadLibraryError(error))).toEqual(expectedResult);
+    expect(appReducer(state, loadTrackError(error))).toEqual(expectedResult);
+    expect(appReducer(state, exportCSVError(error))).toEqual(expectedResult);
   });
 });

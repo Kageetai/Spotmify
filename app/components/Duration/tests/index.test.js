@@ -1,10 +1,11 @@
-// import React from 'react';
-// import { shallow } from 'enzyme';
+import React from 'react';
+import { shallow } from 'enzyme';
 
-// import Duration from '../index';
+import Duration from '../index';
 
 describe('<Duration />', () => {
-  it('Expect to have unit tests specified', () => {
-    expect(true).toEqual(false);
+  it('renders a duration', () => {
+    const wrapper = shallow(<Duration milliseconds={100000} />);
+    expect(wrapper.contains(<div>1:40</div>)).toBeTruthy();
   });
 });

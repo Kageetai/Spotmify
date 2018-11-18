@@ -158,6 +158,7 @@ export function* loadUser() {
     yield put(loadUserError(err));
   }
 }
+
 export function* loadLibrary(action) {
   const { page, pageSize } = action;
 

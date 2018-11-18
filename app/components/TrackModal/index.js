@@ -11,7 +11,6 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import Modal from 'react-modal';
-// import styled from 'styled-components';
 
 import {
   makeSelectTrack,
@@ -29,7 +28,7 @@ import StatsBar from 'components/StatsBar';
 import messages from './messages';
 import ModalHeading from './Heading';
 
-class TrackModal extends React.PureComponent {
+export class TrackModal extends React.PureComponent {
   componentWillReceiveProps(nextProps) {
     if (nextProps.id && !this.props.loading) {
       this.props.onGetTrack(nextProps.id);
@@ -37,23 +36,21 @@ class TrackModal extends React.PureComponent {
   }
 
   render() {
-    const { id, track, loading, error } = this.props;
+    const { id, track, loading, error, onClose } = this.props;
 
     return (
-      <Modal
-        isOpen={!!id}
-        onRequestClose={this.props.onClose}
-        contentLabel="Modal"
-      >
+      <Modal isOpen={!!id} onRequestClose={onClose} contentLabel="Modal">
         {loading ? <FormattedMessage {...messages.loading} /> : null}
         {error ? <FormattedMessage {...messages.error} /> : null}
-        {!loading && track ? (
+
+        {!loading && !error && track ? (
           <div>
             <A href={track.album.uri}>
               {track.album.images.length ? (
                 <AlbumCover floatRight src={track.album.images[1].url} />
               ) : null}
             </A>
+
             <A href={track.uri}>
               <ModalHeading>{track.name}</ModalHeading>
             </A>

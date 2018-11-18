@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import 'react-table/react-table.css';
-import { List } from 'immutable';
 
 import {
   makeSelectError,
@@ -22,7 +21,7 @@ import { isLoggedIn } from 'utils/auth';
 
 import messages from './messages';
 
-class LibraryPage extends React.Component {
+export class LibraryPage extends React.Component {
   componentDidMount() {
     if (isLoggedIn() && !this.props.library.size) {
       this.props.onGetLibrary();
@@ -35,7 +34,7 @@ class LibraryPage extends React.Component {
     return (
       <div>
         <Helmet>
-          <title>Library Page</title>
+          <title>Library</title>
           <meta name="description" content={formatMessage(messages.header)} />
         </Helmet>
 
@@ -47,7 +46,7 @@ class LibraryPage extends React.Component {
 
         <Section>
           <Table
-            data={this.props.library.toJS()}
+            data={this.props.library}
             loading={this.props.loading}
             loadingText={formatMessage(messages.libraryLoading)}
             noDataText={
@@ -60,7 +59,7 @@ class LibraryPage extends React.Component {
 
         <Section>
           <Button
-            onClick={() => this.props.onExportCsv(this.props.library.toJS())}
+            onClick={() => this.props.onExportCsv(this.props.library)}
             disabled={this.props.loading || !this.props.library}
           >
             <FormattedMessage {...messages.exportCsv} />
@@ -76,7 +75,7 @@ LibraryPage.propTypes = {
   error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   onGetLibrary: PropTypes.func,
   onExportCsv: PropTypes.func,
-  library: PropTypes.instanceOf(List),
+  library: PropTypes.array,
   intl: PropTypes.any,
 };
 
